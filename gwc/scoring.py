@@ -1,10 +1,8 @@
 """Per-network scores, aggregation across heterogeneous network types, and reports.
 
-Why not raw MSE?  The 8 activations have wildly different output scales
-(deep ``cos`` activations have variance ~2e-4, ``tanh_rmsnorm`` ~0.4; odd
-activations have ~zero means). Averaging raw MSEs would let one activation
-dominate. Instead every network is scored **relative to budget-matched
-Monte-Carlo sampling**:
+Why not raw MSE?  The activations have very different output scales, so
+averaging raw MSEs would let one network type dominate. Instead every network
+is scored **relative to budget-matched Monte-Carlo sampling**:
 
     ratio = mse_final / (sigma^2 / N_REF)
 
@@ -18,16 +16,18 @@ The challenge's compute discount is then applied:
 ``RES = N_REF / G`` is the benchmark's *resolution*: the stored ground truth
 carries Monte-Carlo noise ``sigma^2 / G``, so no method can be measured better
 than ratio ``RES`` (1/32). The headline is the **geometric mean** of
-``adjusted_ratio`` over the split's **informative** networks (scale-free; no
+``adjusted_ratio`` over the split's **scored** networks (scale-free; no
 single network can dominate). Lower is better.
 
-Informative networks.  A network whose true final-layer means are below the
-ground-truth resolution (in practice: odd activations with symmetric weight
-distributions, whose means are ~1e-4) cannot discriminate between methods --
-predicting zero already sits at the floor. Such networks are flagged
-``informative = False`` (a property of the data, not of the submission:
-``signal_ratio = mean(target^2)/(sigma^2/N_REF) <= 3 * RES``), reported, but
-excluded from the headline so that free zeros cannot pull a geometric mean down.
+Excluded networks.  A network whose true final-layer means are below the
+ground-truth resolution cannot discriminate between methods -- predicting zero
+already sits at the floor. Such networks are flagged ``informative = False``
+(a property of the data, not of the submission:
+``signal_ratio = mean(target^2)/(sigma^2/N_REF) <= 3 * RES``). Likewise a
+network whose last-layer activation variance is below ``COLLAPSE_VAR`` has a
+near-deterministic output and a vanishing sampling bar (``degenerate = True``).
+Both kinds are reported but excluded from the headline, so that they cannot
+distort the geometric mean in either direction.
 
 Also reported: the bias-corrected ratio ``(mse - sigma^2/G) / (sigma^2/N_REF)``,
 the worst-decile geometric mean (generalisation tail), the fraction of networks
