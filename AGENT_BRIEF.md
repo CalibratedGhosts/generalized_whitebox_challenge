@@ -58,12 +58,15 @@ uv run gwc submit --estimator examples/cov_estimator.py    # ~minutes: all 256 t
 * Weight distributions differ in shape, not scale: `orth` is exactly norm-preserving, `expo` is
   skewed (nonzero third moment), `uniform` is bounded. Methods assuming Gaussian weights will
   show it in the per-strategy breakdown.
-* Odd activations (`zgauss`, `tanh_rmsnorm`) have means below the benchmark's resolution, so
-  those networks are flagged *uninformative* and excluded from the headline (predicting zero
-  there is already at the floor). Return a sensible prediction for them, but do not spend effort
-  there — the headline is decided on the other six activations.
-* `tanh_rmsnorm` couples the neurons of a layer; a per-neuron model needs a model of the layer
-  RMS.
+* `rmsnorm_sq` and `rmsnorm_exp` couple the neurons of a layer through the per-input layer RMS:
+  the target `E[φ(z_i)/R]` is a ratio of *correlated* quantities, not `E[φ(z_i)]/E[R]`. A
+  per-neuron model needs a model of the joint distribution of a neuron with the layer RMS
+  (the baselines treat the RMS as a constant — that is one of their weaknesses).
+* `rmsnorm_exp` is softmax-like: the largest pre-activations dominate the normaliser, so the
+  tails of the pre-activation distribution matter far more than for the bounded activations.
+* Any network whose target is below the benchmark's resolution is flagged *uninformative* and
+  excluded from the headline; the report lists them. With the current dataset there are none
+  (all 512 networks are informative).
 * Budget utilisation ≤ 10% gives the full discount; there is no reward for using less. Spending
   part of the budget on *metered* sampling to correct an analytic estimate is legitimate.
 

@@ -1,16 +1,22 @@
 """The 8 activation functions of the Generalized WhiteBox Challenge.
 
-Every network applies ONE of these element-wise (except ``tanh_rmsnorm``, which
-couples the neurons of a layer through an RMS normalisation) after each linear
-layer::
+Every network applies ONE of these after each linear layer::
 
     a_0 = x ~ N(0, I_width)
     a_l = phi(a_{l-1} @ W_l)          l = 1..depth
 
+Six are element-wise; ``rmsnorm_sq`` and ``rmsnorm_exp`` couple the neurons of a
+layer through an RMS normalisation over the layer (per input).
+
 The set was chosen (see docs/DESIGN.md) so that every activation is numerically
 stable at every width/depth/weight-strategy in the challenge under a fixed
-per-activation gain, while the moment maps m(mu, sigma) = E[phi(mu + sigma z)]
-are pairwise non-redundant (no pair is affinely equivalent given mu).
+per-activation gain, has *informative* targets (per-neuron means resolvable at
+the ground-truth precision -- this rules out odd activations, whose means vanish
+by sign symmetry), does not collapse to a deterministic output with depth, and
+so that the moment maps m(mu, sigma) = E[phi(mu + sigma z)] are pairwise
+non-redundant (no pair is affinely equivalent given mu).
+
+``RETIRED`` names remain callable so older datasets can be reproduced.
 
 Two implementations of the same function are provided:
 
@@ -24,7 +30,9 @@ from __future__ import annotations
 import numpy as np
 import flopscope.numpy as fnp
 
-NAMES = ("relu", "relu2_sat", "sq_sat", "cos", "tanh_rmsnorm", "gabor", "rbump", "zgauss")
+NAMES = ("relu", "relu2_sat", "sq_sat", "cos", "gabor", "rbump", "rmsnorm_sq", "rmsnorm_exp")
+# Kept callable for reproducing older datasets; not part of the challenge.
+RETIRED = ("tanh_rmsnorm", "zgauss", "rmsnorm_relu2")
 
 RMS_EPS = 1e-6
 
@@ -37,6 +45,9 @@ FORMULA = {
     "gabor": "cos(2 z) * exp(-z^2 / 2)",
     "rbump": "max(z, 0) * exp(-z)",
     "zgauss": "z * exp(-z^2)",
+    "rmsnorm_sq": "r^2,  r = z / sqrt(mean_j(z_j^2) + 1e-6)   [layer-normalised x^2]",
+    "rmsnorm_relu2": "max(r, 0)^2,  r = z / sqrt(mean_j(z_j^2) + 1e-6)   [layer-normalised ReLU^2]",
+    "rmsnorm_exp": "e / sqrt(mean_j(e_j^2) + 1e-6),  e = exp(min(z, 60))   [softmax-like]",
 }
 
 CLASS = {
@@ -48,6 +59,9 @@ CLASS = {
     "gabor": "even, localised, oscillatory",
     "rbump": "one-sided, localised",
     "zgauss": "odd, localised",
+    "rmsnorm_sq": "even, quadratic, layer-normalised (coupled)",
+    "rmsnorm_relu2": "one-sided, quadratic, layer-normalised (coupled)",
+    "rmsnorm_exp": "exponential, softmax-like, layer-normalised (coupled)",
 }
 
 # Per-activation gain g = 1 / sqrt(E[phi(z)^2]), z ~ N(0,1) (4M-sample estimate,
@@ -64,6 +78,11 @@ GAIN = {
     "gabor": 1.7994,
     "rbump": 4.8450,
     "zgauss": 3.3432,
+    # layer-normalised activations are scale-free (the next layer renormalises);
+    # gains are still 1/sqrt(E[phi^2]) on a Gaussian layer probe for consistency.
+    "rmsnorm_sq": 0.586,
+    "rmsnorm_relu2": 0.829,
+    "rmsnorm_exp": 1.0,
 }
 
 # Approximate flopscope float32 cost per element (documentation; the budget uses
@@ -71,6 +90,7 @@ GAIN = {
 FLOPS_PER_ELEMENT_APPROX = {
     "relu": 1, "relu2_sat": 5, "sq_sat": 4, "cos": 16,
     "tanh_rmsnorm": 19, "gabor": 37, "rbump": 19, "zgauss": 19,
+    "rmsnorm_sq": 4, "rmsnorm_relu2": 5, "rmsnorm_exp": 20,
 }
 
 
@@ -97,6 +117,16 @@ def _apply(name: str, z, xp):
         return r * xp.exp(-r)
     if name == "zgauss":
         return z * xp.exp(-(z * z))
+    # --- layer-normalised family (RMS over the neurons of the layer, per input) ---
+    if name == "rmsnorm_sq":
+        r = z / xp.sqrt(xp.mean(z * z, axis=-1, keepdims=True) + RMS_EPS)
+        return r * r
+    if name == "rmsnorm_relu2":
+        r = xp.maximum(z / xp.sqrt(xp.mean(z * z, axis=-1, keepdims=True) + RMS_EPS), 0.0)
+        return r * r
+    if name == "rmsnorm_exp":
+        e = xp.exp(xp.minimum(z, 60.0))
+        return e / xp.sqrt(xp.mean(e * e, axis=-1, keepdims=True) + RMS_EPS)
     raise KeyError(f"unknown activation {name!r}; valid: {NAMES}")
 
 

@@ -8,8 +8,9 @@ the next linear layer under a mean-field (independent-neurons) approximation:
     mu'_j = sum_i mu_i W_ij          v'_j = sum_i v_i W_ij^2
 
 The independence assumption ignores correlations between neurons, so this is a
-*starting point*, not the answer. For ``tanh_rmsnorm`` the layer RMS is
-approximated by sqrt(mean_j(mu'_j^2 + v'_j)).
+*starting point*, not the answer. For the layer-normalised activations
+(``rmsnorm_sq``, ``rmsnorm_exp``) the layer RMS is approximated by its
+Gaussian-moment expectation and treated as a constant (see ``_nodes``).
 
 Cost per layer ~ K * width * cost(phi) + 2 * width^2  --  a tiny fraction of the
 budget (multiplier sits at the 0.1 floor).
@@ -23,6 +24,19 @@ import flopscope.numpy as fnp
 from gwc.sdk import BaseEstimator, Network, SetupContext, activation
 
 K = 32
+
+
+def _nodes(name, Z, mu_pre, v):
+    """phi at the quadrature nodes. Layer-normalised activations use the *expected*
+    layer RMS (from the Gaussian moments) as a constant -- an approximation."""
+    if name == "rmsnorm_sq":
+        r2 = fnp.mean(mu_pre * mu_pre + v) + fnp.float32(1e-6)                        # E[mean_j z_j^2]
+        return (Z * Z) / r2
+    if name == "rmsnorm_exp":
+        e = fnp.exp(fnp.minimum(Z, 60.0))
+        r2 = fnp.mean(fnp.exp(fnp.minimum(2.0 * mu_pre + 2.0 * v, 120.0))) + fnp.float32(1e-6)  # E[e^{2z}]
+        return e / fnp.sqrt(r2)
+    return activation(name, Z)
 
 
 class Estimator(BaseEstimator):
@@ -42,11 +56,7 @@ class Estimator(BaseEstimator):
             var_pre = var @ (Wf * Wf)
             sd = fnp.sqrt(var_pre + fnp.float32(1e-12))
             Z = mu_pre[:, None] + sd[:, None] * self._x[None, :]        # (width, K) quadrature nodes
-            if net.activation == "tanh_rmsnorm":
-                rms = fnp.sqrt(fnp.mean(mu_pre * mu_pre + var_pre) + fnp.float32(1e-6))
-                A = fnp.tanh(Z / rms)
-            else:
-                A = activation(net.activation, Z)
+            A = _nodes(net.activation, Z, mu_pre, var_pre)
             m1 = A @ self._w                                             # E[phi]
             m2 = (A * A) @ self._w                                       # E[phi^2]
             mu = m1

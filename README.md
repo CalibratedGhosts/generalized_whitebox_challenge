@@ -44,17 +44,20 @@ activation name, strategy name, width, depth) and a FLOP budget, and returns its
 | `relu2_sat` | `r²/(1+r²)`, `r=max(z,0)` | one-sided, quadratic onset, saturating | 5 |
 | `sq_sat` | `z²/(1+z²)` | even, quadratic onset, saturating | 4 |
 | `cos` | `cos(z)` | periodic, bounded | 16 |
-| `tanh_rmsnorm` | `tanh(z / sqrt(mean_j z_j² + 1e-6))` | odd, bounded, **coupled across the layer** | ~19 |
 | `gabor` | `cos(2z)·exp(−z²/2)` | even, localised, oscillatory | 37 |
 | `rbump` | `r·exp(−r)`, `r=max(z,0)` | one-sided, localised | 19 |
-| `zgauss` | `z·exp(−z²)` | odd, localised | 19 |
+| `rmsnorm_sq` | `r²`, `r = z / sqrt(mean_j z_j² + 1e-6)` | even, quadratic, **layer-normalised (coupled)** | 4 |
+| `rmsnorm_exp` | `e / sqrt(mean_j e_j² + 1e-6)`, `e = exp(min(z,60))` | exponential, softmax-like, **layer-normalised (coupled)** | 20 |
 
-`tanh_rmsnorm` is the only non-element-wise one: the RMS is over the neurons of the layer
+`rmsnorm_sq` and `rmsnorm_exp` are not element-wise: the RMS is over the neurons of the layer
 (for one input), so every neuron's output depends on the whole pre-activation vector.
-Why these eight (and not `x²`, `ReLU²`, `SiLU`, ...): see [`docs/DESIGN.md`](docs/DESIGN.md) —
-every activation must be numerically stable at depth 24 under a fixed gain (rules out anything
-super-linear), and no two may be affinely equivalent as moment maps (rules out `|z|`, `elu`,
-`silu`, `softsign`, ...).
+Why these eight (and not `x²`, `ReLU²`, `tanh(rms_norm)`, `SiLU`, ...): see
+[`docs/DESIGN.md`](docs/DESIGN.md) — every activation must be numerically stable at depth 24
+under a fixed gain (rules out anything super-linear), must have *informative* targets (rules out
+odd activations such as `tanh(rms_norm)` or `z·e^{−z²}`, whose means vanish by sign symmetry),
+must not collapse to a deterministic output with depth (rules out `rmsnorm(sigmoid)`), and no
+two may be affinely equivalent as moment maps (rules out `|z|`, `elu`, `silu`, `softsign`,
+`rmsnorm(relu)`, ...).
 
 ### Weight strategies
 
@@ -108,11 +111,12 @@ HEADLINE  = geometric mean of `adjusted` over the split's INFORMATIVE networks  
 * **Resolution floor.** The stored ground truth carries Monte-Carlo noise `σ²/G` (`G = 2²¹`), so no
   method can be *measured* better than `ratio = N_REF/G = 1/32`; ratios are floored there.
 * **Informative networks.** A network whose true means are below that resolution cannot tell
-  methods apart (predicting zero already sits at the floor). Such networks — in this dataset all
-  of them are `tanh_rmsnorm` / `zgauss`, whose means are ~1e-4 with any weight strategy — are
-  flagged `informative = false` (a property of the data, decided from the ground truth alone),
-  reported, but **excluded from the headline** so that free zeros cannot drag a geometric mean
-  down. Train: 184 of 256 informative; test: 199 of 256. `gwc info` and every report list them.
+  methods apart (predicting zero already sits at the floor). Such networks are flagged
+  `informative = false` (a property of the data, decided from the ground truth alone), reported,
+  and **excluded from the headline** so that free zeros cannot drag a geometric mean down. With
+  the current activation set **all 256 train and all 256 test networks are informative** (the
+  rule exists because an earlier set with odd activations had 28% dead networks; see
+  `docs/DESIGN.md` §4b).
 * **Failures** (exception, timeout, budget exhausted, wrong shape/non-finite output): the
   prediction is replaced by zeros and scored with multiplier 1.0 — bad, but bounded.
 * **Bias-corrected ratio** `(mse − σ²/G)/(σ²/N_REF)`: the stored ground truth carries its own MC
@@ -123,17 +127,18 @@ HEADLINE  = geometric mean of `adjusted` over the split's INFORMATIVE networks  
   beating sampling, all-layers ratio, per-activation / per-strategy / per-width / per-depth
   breakdowns, budget utilisation, and the worst/best networks with error messages.
 
-Reference points, headline on the *train* split (256 networks, 184 informative; `examples/`):
+Reference points, headline on the *train* split (256 networks, all informative; `examples/`):
 
 | estimator | headline | notes |
 |---|---|---|
-| `mc_estimator` (metered sampling, 90% budget) | **0.971** | the calibration anchor; 0.86–1.11 on every activation |
-| `cov_estimator` (full-covariance Gaussian + GH) | 6.45 (test: 5.36) | beats sampling only on `gabor`; 1.7 at w≥256, 20 at w≤64 |
-| `gh_estimator` (mean-field Gaussian + GH) | 34 | correlations matter |
-| `zero_estimator` | 3.2e4 | |
+| `mc_estimator` (metered sampling, 90% budget) | **0.927** | the calibration anchor: bias-corrected geo-mean 0.996; 0.76–1.11 on every activation |
+| `cov_estimator` (full-covariance Gaussian + GH) | 30.5 (test: 28.1) | beats sampling only on `gabor`; 11 at w≥256, 62 at w≤64; 400 on `rmsnorm_sq`, 2e4 on `rmsnorm_exp` |
+| `gh_estimator` (mean-field Gaussian + GH) | 73 | correlations matter |
+| `zero_estimator` | 2.7e4 | |
 
-So the reference-style analytic method loses to sampling on most of this family, and loses
-badly at small width. Being good *everywhere* is the point.
+So the reference-style analytic method loses to sampling on most of this family — badly at small
+width and catastrophically on the layer-normalised activations, where treating the layer RMS as
+a constant is a poor approximation. Being good *everywhere* is the point.
 
 ## 3. Submitting
 
@@ -198,10 +203,10 @@ Python API: `from gwc.grader import grade, report; r = grade("my_estimator.py", 
 
 | file | idea | typical behaviour |
 |---|---|---|
-| `zero_estimator.py` | predict 0 | headline 3.2e4 (train) |
-| `mc_estimator.py` | honest metered Monte-Carlo, 90% of budget, float64 accumulation | 0.971 — the calibration anchor, uniform across activations |
-| `gh_estimator.py` | mean-field Gaussian propagation, Gauss–Hermite moments | 34 — cheap (0.1 floor) but ignores correlations |
-| `cov_estimator.py` | full-covariance Gaussian propagation, Stein-lemma gains, GH moments | 6.45 train / 5.36 test — the general analogue of the ARC reference; only wins on `gabor` |
+| `zero_estimator.py` | predict 0 | headline 2.7e4 (train) |
+| `mc_estimator.py` | honest metered Monte-Carlo, 90% of budget, float64 accumulation | 0.927 — the calibration anchor, flat across activations |
+| `gh_estimator.py` | mean-field Gaussian propagation, Gauss–Hermite moments | 73 — cheap (0.1 floor) but ignores correlations |
+| `cov_estimator.py` | full-covariance Gaussian propagation, Stein-lemma gains, GH moments | 30.5 train / 28.1 test — the general analogue of the ARC reference; only wins on `gabor` |
 
 ## 6. Layout
 

@@ -41,10 +41,10 @@
   "relu2_sat",
   "sq_sat",
   "cos",
-  "tanh_rmsnorm",
   "gabor",
   "rbump",
-  "zgauss"
+  "rmsnorm_sq",
+  "rmsnorm_exp"
  ],
  "strategies": [
   "uniform",
@@ -67,24 +67,24 @@
   {
    "index": 1,
    "split": "train",
-   "name": "001-tanh_rmsnorm-orth-40x16",
+   "name": "001-gabor-orth-40x16",
    "width": 40,
    "depth": 16,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "orth",
    "seed": 1641124457559757649,
-   "weight_sha256": "8d24b8d6439dff12154e5b1e967f4c5fd4b035d78d1a77f292779c1ab3f62777"
+   "weight_sha256": "695d8acaa32052fe4a512a37dbfe1e4bb7da3f3dfce710f19c0c525936ddf407"
   },
   {
    "index": 2,
    "split": "train",
-   "name": "002-tanh_rmsnorm-gauss-84x14",
+   "name": "002-gabor-gauss-84x14",
    "width": 84,
    "depth": 14,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "gauss",
    "seed": 3492282024452472140,
-   "weight_sha256": "691a3cc3b9764d356e5a1baed86b818461376fe21daa1c39ffc2afd089bdb934"
+   "weight_sha256": "ddc09f9568ba01da0d69d726b23fd5b84398b1ee188aadc09d548222826317e2"
   },
   {
    "index": 3,
@@ -100,24 +100,24 @@
   {
    "index": 4,
    "split": "train",
-   "name": "004-gabor-expo-256x5",
+   "name": "004-rbump-expo-256x5",
    "width": 256,
    "depth": 5,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "expo",
    "seed": 2668880031934773409,
-   "weight_sha256": "4a67d2b631e594eedd902ff68330d554b5cfaf9665f60b69eceb3978d9f9d1e7"
+   "weight_sha256": "e46376cdbfe2f3d54f4e093640cb9105b549a5135bb4ab6c2a3a7cb3c75bc4f9"
   },
   {
    "index": 5,
    "split": "train",
-   "name": "005-gabor-orth-320x4",
+   "name": "005-rbump-orth-320x4",
    "width": 320,
    "depth": 4,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "orth",
    "seed": 2387146789651446328,
-   "weight_sha256": "b7920c6c93f159464e407cf22ae952e4548760fdda94609b16e6e49cd5a4e4ab"
+   "weight_sha256": "6ae44222454cbf16f566610e94951260d1c49aa80f157bc0fa4b7b50bd8abef1"
   },
   {
    "index": 6,
@@ -133,13 +133,13 @@
   {
    "index": 7,
    "split": "train",
-   "name": "007-zgauss-uniform-84x8",
+   "name": "007-rmsnorm_exp-uniform-84x8",
    "width": 84,
    "depth": 8,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "uniform",
    "seed": 1123867902160908882,
-   "weight_sha256": "fa5047cd4ea76f2479b353616c0acb353c5f3774a7b7dd6f53a743761392e5a8"
+   "weight_sha256": "3fdeba2c0fffde3e1c4cff5b2ed236e0633787652133c9e999351e9f427a38b3"
   },
   {
    "index": 8,
@@ -155,24 +155,24 @@
   {
    "index": 9,
    "split": "train",
-   "name": "009-zgauss-gauss-72x8",
+   "name": "009-rmsnorm_exp-gauss-72x8",
    "width": 72,
    "depth": 8,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "gauss",
    "seed": 2463898304663684627,
-   "weight_sha256": "4dc15a39de6c00303df7a59edc9bb2e3c5cc9f75d819a19094f429dcf226d5fe"
+   "weight_sha256": "e631718dfc7bc99ded2206a97a3be797d11c8c95ca699f8061f49d9074bd7475"
   },
   {
    "index": 10,
    "split": "train",
-   "name": "010-gabor-expo-160x6",
+   "name": "010-rbump-expo-160x6",
    "width": 160,
    "depth": 6,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "expo",
    "seed": 2155737382723326009,
-   "weight_sha256": "7dc72ef0cf507fd4f96d117909f40b3c1d227a8bdb987df3552b7bf30e589331"
+   "weight_sha256": "2aa08d7182b015fb98a2fbac217e2b0d417082124e8e91528598cb8f0e793b02"
   },
   {
    "index": 11,
@@ -210,13 +210,13 @@
   {
    "index": 14,
    "split": "train",
-   "name": "014-gabor-orth-96x4",
+   "name": "014-rbump-orth-96x4",
    "width": 96,
    "depth": 4,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "orth",
    "seed": 2467401718281528143,
-   "weight_sha256": "a557c3fb023703505e8f8e8adec428b11e3da54afda7e77d1ae1afa335f0a7c0"
+   "weight_sha256": "7e359570413e31cecaa6bba40f9a615cf4e820ee64dc28f6e3a6f0027e948a78"
   },
   {
    "index": 15,
@@ -232,68 +232,68 @@
   {
    "index": 16,
    "split": "train",
-   "name": "016-rbump-orth-32x4",
+   "name": "016-rmsnorm_sq-orth-32x4",
    "width": 32,
    "depth": 4,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "orth",
    "seed": 549373828179174791,
-   "weight_sha256": "4fbae504743d752c78b1642b6055d515424da437bafcfd435ba592dadd82de7e"
+   "weight_sha256": "2f8fd07e712466b26419a8caff6b1d2b868d532d155f287e85acae93ce155461"
   },
   {
    "index": 17,
    "split": "train",
-   "name": "017-tanh_rmsnorm-uniform-16x16",
+   "name": "017-gabor-uniform-16x16",
    "width": 16,
    "depth": 16,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "uniform",
    "seed": 2597405165453836194,
-   "weight_sha256": "f343d6cb536ff54909ad0b19f20abc1a3c67855375eb38c89ca5503c1fb87961"
+   "weight_sha256": "58bf2676e63aa8a19ca844da18004d9f369406ac3b558a68ae9bca8675341956"
   },
   {
    "index": 18,
    "split": "train",
-   "name": "018-zgauss-gauss-84x14",
+   "name": "018-rmsnorm_exp-gauss-84x14",
    "width": 84,
    "depth": 14,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "gauss",
    "seed": 1810389138915437356,
-   "weight_sha256": "0950ac4ba930ef389f2336a8056b9edaa5cd6cef74584037f9a8c24fe3f70a6f"
+   "weight_sha256": "af7787c9a91e23a536008ba19b3d21891ab193119fe19dfff672a7f61382a25b"
   },
   {
    "index": 19,
    "split": "train",
-   "name": "019-zgauss-expo-24x20",
+   "name": "019-rmsnorm_exp-expo-24x20",
    "width": 24,
    "depth": 20,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "expo",
    "seed": 3484789391692988011,
-   "weight_sha256": "8ef4d262ae9f17ebe2df2913bd8567c76c82e6cf6655afc3304c004b38239cee"
+   "weight_sha256": "0c36dfcb59480a2184437ee5b2e5de03606a4d5f0370a739750217fb1315854d"
   },
   {
    "index": 20,
    "split": "train",
-   "name": "020-tanh_rmsnorm-gauss-256x14",
+   "name": "020-gabor-gauss-256x14",
    "width": 256,
    "depth": 14,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "gauss",
    "seed": 4105688266758209224,
-   "weight_sha256": "d4d32399b41b9f117feac931d036dc9a12ac419eae5d2ea563e314be0ad410c9"
+   "weight_sha256": "af30c0df347d7fd5c0e6d6d34fd0c0f5e342e52cbfdaf8269cb8d9f4f8afa347"
   },
   {
    "index": 21,
    "split": "train",
-   "name": "021-tanh_rmsnorm-expo-128x10",
+   "name": "021-gabor-expo-128x10",
    "width": 128,
    "depth": 10,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "expo",
    "seed": 892046509980103641,
-   "weight_sha256": "e4ebe3873b2600841f673513a6729e51f0ad1448a189c72f0cb3d28613ad84b0"
+   "weight_sha256": "a80ebed8aa3618508c782f6ce8b4aa75dd370a80cb792c9841d921c386f6e25c"
   },
   {
    "index": 22,
@@ -309,24 +309,24 @@
   {
    "index": 23,
    "split": "train",
-   "name": "023-zgauss-orth-84x10",
+   "name": "023-rmsnorm_exp-orth-84x10",
    "width": 84,
    "depth": 10,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "orth",
    "seed": 3953680991921372784,
-   "weight_sha256": "8d8b7ed94e63280784b6d43769c857a74bf2289920c61592d14c406fa077bef1"
+   "weight_sha256": "b598b402740d39daa8da53b88be9e9a9a249273c290a1c9ae41f3067b8726421"
   },
   {
    "index": 24,
    "split": "train",
-   "name": "024-rbump-orth-24x12",
+   "name": "024-rmsnorm_sq-orth-24x12",
    "width": 24,
    "depth": 12,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "orth",
    "seed": 1631787591523046957,
-   "weight_sha256": "190cf3ad18b5ea6ad965763118299aaff8db8f9f396cb84a042e9def0a5fe875"
+   "weight_sha256": "fb4ecb68dba128559c353692f42bd35cd35556fd01cc0af8dabb15206679c617"
   },
   {
    "index": 25,
@@ -342,13 +342,13 @@
   {
    "index": 26,
    "split": "train",
-   "name": "026-rbump-gauss-32x24",
+   "name": "026-rmsnorm_sq-gauss-32x24",
    "width": 32,
    "depth": 24,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "gauss",
    "seed": 4006298915958255918,
-   "weight_sha256": "a41163b8a4e798349f847f7f2801d13146f964850bd224cf0a71551f8fe553f0"
+   "weight_sha256": "3bb827bdb7276d1de8d8dbe2831cc25946086648924ad8089d0410ef607a8a92"
   },
   {
    "index": 27,
@@ -364,24 +364,24 @@
   {
    "index": 28,
    "split": "train",
-   "name": "028-zgauss-gauss-24x5",
+   "name": "028-rmsnorm_exp-gauss-24x5",
    "width": 24,
    "depth": 5,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "gauss",
    "seed": 4004684511278349264,
-   "weight_sha256": "2fe0657a948d5de3c5da66d198a690b1547c741fd424e17c2d6f5a9272fe00b1"
+   "weight_sha256": "f4d288e76cbf2c1009552bb8f75485aeaf6830374b848144404fe3ff14f70d52"
   },
   {
    "index": 29,
    "split": "train",
-   "name": "029-rbump-orth-72x5",
+   "name": "029-rmsnorm_sq-orth-72x5",
    "width": 72,
    "depth": 5,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "orth",
    "seed": 1130925306087623464,
-   "weight_sha256": "1e3c39f26b2363883c8c2a1ba35a3783da143135de18569d51163e638902b644"
+   "weight_sha256": "cb0de23a6a4f367ee483eb3dec114a3cab222b6e7b30fbd2e7d30d3a5e41419a"
   },
   {
    "index": 30,
@@ -397,24 +397,24 @@
   {
    "index": 31,
    "split": "train",
-   "name": "031-zgauss-gauss-256x4",
+   "name": "031-rmsnorm_exp-gauss-256x4",
    "width": 256,
    "depth": 4,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "gauss",
    "seed": 4129159124805488200,
-   "weight_sha256": "429ab2581d5f2758827170e45977d59d0e0c6cd77a4fc84d817798fe027a2206"
+   "weight_sha256": "f9fdb645cb2923212434846563972449a272dc63ae8df7ca874de5e0c60e95c3"
   },
   {
    "index": 32,
    "split": "train",
-   "name": "032-zgauss-expo-84x12",
+   "name": "032-rmsnorm_exp-expo-84x12",
    "width": 84,
    "depth": 12,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "expo",
    "seed": 4132145329796233280,
-   "weight_sha256": "d67c38e30347e99022ac30d1a550364cda23f06ef59080b402d1dcd2cd93c886"
+   "weight_sha256": "7e8954e16ee7c816e99afd8557de3579dc356a367f2fa0fd18ded7fdb2a9e6da"
   },
   {
    "index": 33,
@@ -430,24 +430,24 @@
   {
    "index": 34,
    "split": "train",
-   "name": "034-zgauss-gauss-56x20",
+   "name": "034-rmsnorm_exp-gauss-56x20",
    "width": 56,
    "depth": 20,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "gauss",
    "seed": 3101861417397516029,
-   "weight_sha256": "2298e6642ed062c2ee8b5b9ce9ec15975fb8bdaf2fa95790ac5d03898bd64783"
+   "weight_sha256": "60423958294142e378828a54a5c25dfcd4d18a583516a9ee8c0590f2b2626911"
   },
   {
    "index": 35,
    "split": "train",
-   "name": "035-zgauss-expo-64x12",
+   "name": "035-rmsnorm_exp-expo-64x12",
    "width": 64,
    "depth": 12,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "expo",
    "seed": 4232444521446394975,
-   "weight_sha256": "26971e4805395fc44e246ee0ae6dcc6037162cbb3c8310da8996210312f3770a"
+   "weight_sha256": "79b0f6dd1e2c1c29431a450ebf38e75754dec49c527223c71574b56f40726387"
   },
   {
    "index": 36,
@@ -463,13 +463,13 @@
   {
    "index": 37,
    "split": "train",
-   "name": "037-tanh_rmsnorm-orth-40x24",
+   "name": "037-gabor-orth-40x24",
    "width": 40,
    "depth": 24,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "orth",
    "seed": 361725404571631992,
-   "weight_sha256": "126cac7b2bc89fde07f9cb886a1e63a0a6103aa9b70fa3539cfdba52e64d089c"
+   "weight_sha256": "8cb1ee0da1fca8853d1689f3e1c00b7127a954f41b73d72b19bff3d3e4cb9f7e"
   },
   {
    "index": 38,
@@ -485,13 +485,13 @@
   {
    "index": 39,
    "split": "train",
-   "name": "039-tanh_rmsnorm-gauss-24x4",
+   "name": "039-gabor-gauss-24x4",
    "width": 24,
    "depth": 4,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "gauss",
    "seed": 4447835992038635726,
-   "weight_sha256": "b0db9839492395de037ce06f137bdbe09719ae80917f2932d399f8083916a2ed"
+   "weight_sha256": "b65144766626af21aeb9b3d337f53ebdd0c4477be2905d34fed6e4dfd4b23a70"
   },
   {
    "index": 40,
@@ -507,24 +507,24 @@
   {
    "index": 41,
    "split": "train",
-   "name": "041-rbump-uniform-72x4",
+   "name": "041-rmsnorm_sq-uniform-72x4",
    "width": 72,
    "depth": 4,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "uniform",
    "seed": 2383597391485330525,
-   "weight_sha256": "0f8469997f7e1f6347ff15b94f5e2dfba91ee5f508628c11f6e49f1aa4ccc4bf"
+   "weight_sha256": "1fc14b17391b9d3df9182a80f2e4bd14b45f0e2fdaed00d87a5a20d52db5a2e4"
   },
   {
    "index": 42,
    "split": "train",
-   "name": "042-gabor-expo-96x4",
+   "name": "042-rbump-expo-96x4",
    "width": 96,
    "depth": 4,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "expo",
    "seed": 3189805208628615984,
-   "weight_sha256": "b7e72595eb8ba51027fa3511269903fdd2b89054aa88ac50aa2bc3fe913faea7"
+   "weight_sha256": "8335b514674699637b6646dc83fd7ba39e13881c102e4e891f83af8c47baa46b"
   },
   {
    "index": 43,
@@ -540,24 +540,24 @@
   {
    "index": 44,
    "split": "train",
-   "name": "044-zgauss-gauss-384x16",
+   "name": "044-rmsnorm_exp-gauss-384x16",
    "width": 384,
    "depth": 16,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "gauss",
    "seed": 4452013159313398077,
-   "weight_sha256": "4fd25c739fd915f16adf8fe3e75e2ef77c72c501a8da2e9223777533cc0d9e8c"
+   "weight_sha256": "5fe8da6ad5da9615dbdbdcdc8c6919949ffafd4f2cd621efa9ffed306dc89ba7"
   },
   {
    "index": 45,
    "split": "train",
-   "name": "045-zgauss-orth-64x5",
+   "name": "045-rmsnorm_exp-orth-64x5",
    "width": 64,
    "depth": 5,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "orth",
    "seed": 3495954951300292901,
-   "weight_sha256": "b6a34c53ce1b561a56b72b6489c718f31d148c3f4339bd92e5968500e2c1988b"
+   "weight_sha256": "76d53c8630c1097489c6071df2e3dd6fc3cbf51e94df02c86899e9a42b67643a"
   },
   {
    "index": 46,
@@ -617,13 +617,13 @@
   {
    "index": 51,
    "split": "train",
-   "name": "051-rbump-orth-16x12",
+   "name": "051-rmsnorm_sq-orth-16x12",
    "width": 16,
    "depth": 12,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "orth",
    "seed": 1440960204535185309,
-   "weight_sha256": "cc27e3b9590b83c8c12afcfb3ac4ef5aa07a0ec6b8ca8e348bd66c32c02b183c"
+   "weight_sha256": "931b8f129d30e753bcf4f5f58245f86e12fc94228ee35a618d5962630f8b6509"
   },
   {
    "index": 52,
@@ -672,35 +672,35 @@
   {
    "index": 56,
    "split": "train",
-   "name": "056-zgauss-expo-256x16",
+   "name": "056-rmsnorm_exp-expo-256x16",
    "width": 256,
    "depth": 16,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "expo",
    "seed": 2610923320062515124,
-   "weight_sha256": "4c65417ac660bea68695953f746a61ab1d10faecf3ce654580af9dea104e2078"
+   "weight_sha256": "6725f557353f0bff0dc2ff37c6d8f9be2a6abb6a9af97680ca6b5a4bd46aa3d2"
   },
   {
    "index": 57,
    "split": "train",
-   "name": "057-zgauss-gauss-48x5",
+   "name": "057-rmsnorm_exp-gauss-48x5",
    "width": 48,
    "depth": 5,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "gauss",
    "seed": 1606673898398845036,
-   "weight_sha256": "e15160e8d2876457118db9af2c6d06ec74d184bf5fcb5eba32f11ebb79f10555"
+   "weight_sha256": "4e7846944a94e7dd33c38e2c4580b3e63a0de7d99278df967b808260b977d068"
   },
   {
    "index": 58,
    "split": "train",
-   "name": "058-rbump-gauss-320x10",
+   "name": "058-rmsnorm_sq-gauss-320x10",
    "width": 320,
    "depth": 10,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "gauss",
    "seed": 277571255150411468,
-   "weight_sha256": "2f38f8ad0afe26b419fa1ecb8abc46a201ed4d516cd14bf08c5bbaa98b2fb156"
+   "weight_sha256": "b638debaac64fe2e349d07323c91768c874854d268f3600625589338e14c545d"
   },
   {
    "index": 59,
@@ -716,57 +716,57 @@
   {
    "index": 60,
    "split": "train",
-   "name": "060-gabor-gauss-288x20",
+   "name": "060-rbump-gauss-288x20",
    "width": 288,
    "depth": 20,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "gauss",
    "seed": 3454748911783096144,
-   "weight_sha256": "e90222bea26fa7f5143bf7b18614c0553a345ed734eaa454f0a95007e16d6ed6"
+   "weight_sha256": "8307def2993897587592cfe98e469a56e56525cdd6337673aa6c47d689b4e640"
   },
   {
    "index": 61,
    "split": "train",
-   "name": "061-rbump-expo-192x14",
+   "name": "061-rmsnorm_sq-expo-192x14",
    "width": 192,
    "depth": 14,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "expo",
    "seed": 3876744735984486712,
-   "weight_sha256": "4f9a6cbbe85d084f23f4167559e19c4718b9d561b6b80b2da037d1b09828986b"
+   "weight_sha256": "d8b852c8bf8054b45c8e02d9838203c504fa834d44f63016fda6b40f6bbc0e7a"
   },
   {
    "index": 62,
    "split": "train",
-   "name": "062-rbump-gauss-288x4",
+   "name": "062-rmsnorm_sq-gauss-288x4",
    "width": 288,
    "depth": 4,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "gauss",
    "seed": 2509109263746344131,
-   "weight_sha256": "9e23dc6619eb7119c62c29bf2a8cc3aa8a65b2ec845e6bda12801e076828a781"
+   "weight_sha256": "9b574c5cfbf97bb88666e68384b73d593c0529e9ffe018ea4812d99e550a88fb"
   },
   {
    "index": 63,
    "split": "train",
-   "name": "063-gabor-expo-48x6",
+   "name": "063-rbump-expo-48x6",
    "width": 48,
    "depth": 6,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "expo",
    "seed": 3506395838438731918,
-   "weight_sha256": "1d118bdfc047a2ec3a342f249b62e103ac79cb2a318691b1089fcc8d1ed2d2ce"
+   "weight_sha256": "0d3243821fe335168e2945c2f4a6d0cf3c78a88bd02645bacae0a73e9165db18"
   },
   {
    "index": 64,
    "split": "train",
-   "name": "064-gabor-uniform-320x14",
+   "name": "064-rbump-uniform-320x14",
    "width": 320,
    "depth": 14,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "uniform",
    "seed": 1212226449960536898,
-   "weight_sha256": "7cec2601f5978330b8d02227b2de0722ad1ccdca39b5c608e25ee3b215e315ed"
+   "weight_sha256": "5b213877a666eb952d58eed4d9dadcd85040a9cd596a704d2b71f432e7ab29b1"
   },
   {
    "index": 65,
@@ -782,90 +782,90 @@
   {
    "index": 66,
    "split": "train",
-   "name": "066-tanh_rmsnorm-expo-160x4",
+   "name": "066-gabor-expo-160x4",
    "width": 160,
    "depth": 4,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "expo",
    "seed": 4552118098445389230,
-   "weight_sha256": "6e507515c3744a1366af59f82d08ff8bb40dd418e0cd58c11c461957b0b27cb5"
+   "weight_sha256": "64c96a083c8bdb9b3c8631bc2b8e237215d568c63a4aca1e343d0d2defee8d5c"
   },
   {
    "index": 67,
    "split": "train",
-   "name": "067-tanh_rmsnorm-expo-32x12",
+   "name": "067-gabor-expo-32x12",
    "width": 32,
    "depth": 12,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "expo",
    "seed": 4374820885512933894,
-   "weight_sha256": "913d1cd496a3fdf64b5aa449a831c958561b4a6de99c8cb58e74325de2ba63ca"
+   "weight_sha256": "33bb690ae5563ccadce2eb938739dc59db996016b50b3c0ca401c779d5ed1bed"
   },
   {
    "index": 68,
    "split": "train",
-   "name": "068-gabor-expo-288x4",
+   "name": "068-rbump-expo-288x4",
    "width": 288,
    "depth": 4,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "expo",
    "seed": 4175717459162087413,
-   "weight_sha256": "796900c4c5b57e14ddb22dc7df97a139022ef56515cae3a305b479a8934fbe53"
+   "weight_sha256": "9a9876ab5f7b7c1a97a9cf6df67f7f77afd3b4a03a4bad6cb5e258b9dc70e0ed"
   },
   {
    "index": 69,
    "split": "train",
-   "name": "069-tanh_rmsnorm-gauss-32x7",
+   "name": "069-gabor-gauss-32x7",
    "width": 32,
    "depth": 7,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "gauss",
    "seed": 2249797681009802934,
-   "weight_sha256": "7ade6bbfce0fd9cca486002808951310ed0e7d87295921f011275ef85b42ed80"
+   "weight_sha256": "5bf2af40bea3cf4c36ca0f2a232d9c04d87ac615c47350fda2563a98ffe60574"
   },
   {
    "index": 70,
    "split": "train",
-   "name": "070-rbump-expo-256x10",
+   "name": "070-rmsnorm_sq-expo-256x10",
    "width": 256,
    "depth": 10,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "expo",
    "seed": 266854121789822028,
-   "weight_sha256": "28d4c8d5561b66b135d36551a8f98d755c6f21712caaba74e5889b03835929ff"
+   "weight_sha256": "7475cea0a6b23d94ac0090b2430ad84daefe062f9278d5d6251402ada98b24fc"
   },
   {
    "index": 71,
    "split": "train",
-   "name": "071-zgauss-uniform-288x5",
+   "name": "071-rmsnorm_exp-uniform-288x5",
    "width": 288,
    "depth": 5,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "uniform",
    "seed": 256618801626222483,
-   "weight_sha256": "9e939717c77d5e5eb34696b799bf05ee715966916db1ba9cef5bfe0a701d4b94"
+   "weight_sha256": "2fd2f1692ba1ee0c58c708c4edb8bd26770c32bb58274bab80d356fe179092dc"
   },
   {
    "index": 72,
    "split": "train",
-   "name": "072-zgauss-gauss-352x24",
+   "name": "072-rmsnorm_exp-gauss-352x24",
    "width": 352,
    "depth": 24,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "gauss",
    "seed": 2045498379111326917,
-   "weight_sha256": "3bdb6c9770fff3bbfdc43ec28b05f0d78740d710d35d0c59d6769b2e8e981e59"
+   "weight_sha256": "6bb61950ed89a481e3663ce1ca3553f793cf684a546592b4f8e9e4c3e5cef964"
   },
   {
    "index": 73,
    "split": "train",
-   "name": "073-gabor-uniform-56x20",
+   "name": "073-rbump-uniform-56x20",
    "width": 56,
    "depth": 20,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "uniform",
    "seed": 2488801881285064497,
-   "weight_sha256": "a192eca1b114640106ce4624923fd260e49d21e24c04fde0c632612acea2ee63"
+   "weight_sha256": "878a16dcccaf3bfc8773ec2f7ec11ce400d94127bae85d20a8410ea9ca6dd526"
   },
   {
    "index": 74,
@@ -881,24 +881,24 @@
   {
    "index": 75,
    "split": "train",
-   "name": "075-rbump-expo-48x14",
+   "name": "075-rmsnorm_sq-expo-48x14",
    "width": 48,
    "depth": 14,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "expo",
    "seed": 1010798932269951485,
-   "weight_sha256": "84712fb130e0c9d1c855fdfa4c1c72a2aa6a107bf246fbf83c13c87de16b30f0"
+   "weight_sha256": "49300868575ce89ab2b65b5393ba72ea8d028c8466a579b22ed5e3897d5014af"
   },
   {
    "index": 76,
    "split": "train",
-   "name": "076-rbump-expo-16x5",
+   "name": "076-rmsnorm_sq-expo-16x5",
    "width": 16,
    "depth": 5,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "expo",
    "seed": 4239814255978172256,
-   "weight_sha256": "ca57ca5dee07a056aab03b11164c3ccfb6eeae408eb611dda347e1755a2f8369"
+   "weight_sha256": "4e770d54a3fccd6d767642b0c5aa9462f6dde4867515f8b9df017704945f1450"
   },
   {
    "index": 77,
@@ -914,57 +914,57 @@
   {
    "index": 78,
    "split": "train",
-   "name": "078-rbump-orth-24x6",
+   "name": "078-rmsnorm_sq-orth-24x6",
    "width": 24,
    "depth": 6,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "orth",
    "seed": 2449218889022067975,
-   "weight_sha256": "321f86f218fcc1123118fa8e3aad2ba56c6c6cf41b52804335f46056d5eac027"
+   "weight_sha256": "3ed845370bc8a889bc959bbad4b6cf1808c3339a274def3d2234081358e3b785"
   },
   {
    "index": 79,
    "split": "train",
-   "name": "079-tanh_rmsnorm-uniform-48x7",
+   "name": "079-gabor-uniform-48x7",
    "width": 48,
    "depth": 7,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "uniform",
    "seed": 1638840686445768009,
-   "weight_sha256": "038e13e42aefaaad9c3350d8f71fc10cec07b3f3454b096667cc6a58d29fef99"
+   "weight_sha256": "32748d1f658678ad200aaab80ac9d7c218aa89e806270359d3d4daf4c349fea6"
   },
   {
    "index": 80,
    "split": "train",
-   "name": "080-zgauss-uniform-24x8",
+   "name": "080-rmsnorm_exp-uniform-24x8",
    "width": 24,
    "depth": 8,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "uniform",
    "seed": 2135716138836340063,
-   "weight_sha256": "0e7befe8ecc3b51d7a1fb06be38eaec093684108dc4ba0ee235df066962aec30"
+   "weight_sha256": "9f57f19e39b69dbd0ac43e59bbc5e3ebba8239101cad37907ffd7e47285b0d1e"
   },
   {
    "index": 81,
    "split": "train",
-   "name": "081-zgauss-gauss-160x24",
+   "name": "081-rmsnorm_exp-gauss-160x24",
    "width": 160,
    "depth": 24,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "gauss",
    "seed": 1166009629717833277,
-   "weight_sha256": "b3c5c0aebd21833a7342bc8c868d2ce480161b183e034386210dec69f6d489ca"
+   "weight_sha256": "d1dbae07fb9b585c5ab2eae119bebecc20ebe8edd4bc0bb39172c810d2546369"
   },
   {
    "index": 82,
    "split": "train",
-   "name": "082-tanh_rmsnorm-gauss-32x24",
+   "name": "082-gabor-gauss-32x24",
    "width": 32,
    "depth": 24,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "gauss",
    "seed": 3430289404327788748,
-   "weight_sha256": "d9c2ea22b332c5fcc88f81c73ba3a6717e9a50da8b30d88356d291e5e27c7ca5"
+   "weight_sha256": "bdd3448c3d5c5a8c5dc991bbc27f6d194eed7c9d61f85189ab837a601ead9140"
   },
   {
    "index": 83,
@@ -1002,35 +1002,35 @@
   {
    "index": 86,
    "split": "train",
-   "name": "086-zgauss-uniform-288x5",
+   "name": "086-rmsnorm_exp-uniform-288x5",
    "width": 288,
    "depth": 5,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "uniform",
    "seed": 3063193364490777884,
-   "weight_sha256": "1a93aec5c56124391febd9e69d697a5ea80f965f17648d7ed92298e89234d065"
+   "weight_sha256": "fcc64d2fe40f120033d1b0e11b2a039b1b4092b1488f185b6ace07201480b128"
   },
   {
    "index": 87,
    "split": "train",
-   "name": "087-tanh_rmsnorm-orth-40x8",
+   "name": "087-gabor-orth-40x8",
    "width": 40,
    "depth": 8,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "orth",
    "seed": 509576001287056645,
-   "weight_sha256": "2a7cc46ea1642b67d83cc766bd81ea99a43849ead256d0d71d08d90866ef8e9d"
+   "weight_sha256": "2b3777746b02d1c56907bef6c75a53102793a49f5ab9dd13a9805373c53de384"
   },
   {
    "index": 88,
    "split": "train",
-   "name": "088-tanh_rmsnorm-uniform-192x10",
+   "name": "088-gabor-uniform-192x10",
    "width": 192,
    "depth": 10,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "uniform",
    "seed": 197980013667477243,
-   "weight_sha256": "884a16c5abedc3ff02cc23fe39c7c8d7a2c71dbe880d260aee18df8071e34176"
+   "weight_sha256": "04d9eeecedbffa6c9af7ca7c3f278deacc544048446dd794756b3b179abc3b08"
   },
   {
    "index": 89,
@@ -1046,13 +1046,13 @@
   {
    "index": 90,
    "split": "train",
-   "name": "090-rbump-expo-72x10",
+   "name": "090-rmsnorm_sq-expo-72x10",
    "width": 72,
    "depth": 10,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "expo",
    "seed": 4164233960945099313,
-   "weight_sha256": "8d37740d181ca6f0f0878251452499570b1c77ad8cb293907c3f67f2d09af590"
+   "weight_sha256": "f33f03be858ee76524ea94b65e384059067f798f80bfb6a3595f00f0ca97f20a"
   },
   {
    "index": 91,
@@ -1068,35 +1068,35 @@
   {
    "index": 92,
    "split": "train",
-   "name": "092-gabor-orth-288x24",
+   "name": "092-rbump-orth-288x24",
    "width": 288,
    "depth": 24,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "orth",
    "seed": 1295540546074079227,
-   "weight_sha256": "b9222ab00e2a35a0d03fb54fa844423eb64a1fbf600f74ef446db1271babb21c"
+   "weight_sha256": "48706ee307011a5f9d837a7eef91c7f27ebab738ae1c52466a6e55925d5e12a3"
   },
   {
    "index": 93,
    "split": "train",
-   "name": "093-gabor-orth-56x14",
+   "name": "093-rbump-orth-56x14",
    "width": 56,
    "depth": 14,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "orth",
    "seed": 1245195560448360588,
-   "weight_sha256": "9da4767fe3137ce2cc7de52b46d088cf27f53c93f39de4b85a0e0c2a54817532"
+   "weight_sha256": "6177ebe3147cfe2d7fe9937b60e8e204af9e81b0495f57b62ee1e083d06c8f60"
   },
   {
    "index": 94,
    "split": "train",
-   "name": "094-tanh_rmsnorm-gauss-40x4",
+   "name": "094-gabor-gauss-40x4",
    "width": 40,
    "depth": 4,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "gauss",
    "seed": 3040160656222014280,
-   "weight_sha256": "04e2da018197b95b76f501cc096390d18548276c8bf34fc2c098a6cd51d1645c"
+   "weight_sha256": "2ac88b3d3d750d152cae9d4794cd395c4df8d1c39ba58a536907e6317c151aff"
   },
   {
    "index": 95,
@@ -1112,68 +1112,68 @@
   {
    "index": 96,
    "split": "train",
-   "name": "096-zgauss-orth-256x6",
+   "name": "096-rmsnorm_exp-orth-256x6",
    "width": 256,
    "depth": 6,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "orth",
    "seed": 4540621359090898833,
-   "weight_sha256": "85471f65b0c4a8e425936a50f9b01ec5067c32e5631e29878a8e89281b99266c"
+   "weight_sha256": "2445f29ac57674808ac9d50d485bceb0964a5d6bd6119d3ee83a6b88737dbbac"
   },
   {
    "index": 97,
    "split": "train",
-   "name": "097-tanh_rmsnorm-gauss-128x20",
+   "name": "097-gabor-gauss-128x20",
    "width": 128,
    "depth": 20,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "gauss",
    "seed": 455424046813177052,
-   "weight_sha256": "3fb1d08161dd6ed59dbff0f6f6d140be8573c6dab043f2ecd81fdb5de218f5ec"
+   "weight_sha256": "c410aa2ad6f281563545ce77d6ab62c2540cb72e3b60f663a8d57c88a54d9368"
   },
   {
    "index": 98,
    "split": "train",
-   "name": "098-zgauss-gauss-320x12",
+   "name": "098-rmsnorm_exp-gauss-320x12",
    "width": 320,
    "depth": 12,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "gauss",
    "seed": 2497961391114120675,
-   "weight_sha256": "b4cd96742009e5600f157cb8ba0d0b5786e66ff568c9a2039556243822564895"
+   "weight_sha256": "243d497f72e6b78a470345fdf69a3e052801c657a42a6a7ddef38db402a4eab1"
   },
   {
    "index": 99,
    "split": "train",
-   "name": "099-rbump-orth-128x8",
+   "name": "099-rmsnorm_sq-orth-128x8",
    "width": 128,
    "depth": 8,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "orth",
    "seed": 4289259285293135278,
-   "weight_sha256": "d0351fba450157f1e8e56f3a06f4b5e89a520e9ad1f3eabc162f6882a115ec2d"
+   "weight_sha256": "dd390edbddfa26e1c351976163175e173ae10a3ae12a2095d13fec31d2eedc43"
   },
   {
    "index": 100,
    "split": "train",
-   "name": "100-rbump-gauss-320x12",
+   "name": "100-rmsnorm_sq-gauss-320x12",
    "width": 320,
    "depth": 12,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "gauss",
    "seed": 425920933132989704,
-   "weight_sha256": "e7544cb8ac4dc613e8472a617c8038f240cc7f5e5f1b94df4e45e52053110d5f"
+   "weight_sha256": "a414c546107650b76152548e9d4432606c9bdf2f35a4f47ce984fd81945c48d6"
   },
   {
    "index": 101,
    "split": "train",
-   "name": "101-tanh_rmsnorm-uniform-256x5",
+   "name": "101-gabor-uniform-256x5",
    "width": 256,
    "depth": 5,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "uniform",
    "seed": 435400142718112378,
-   "weight_sha256": "e3a63ef769b540655f56db008d4f84ce0b099a5e318eea1315f816196f480e7b"
+   "weight_sha256": "2c7944ef2be5dca99711a01f28f8dbbdbdd0489446fee9b70653a9a2d538ebde"
   },
   {
    "index": 102,
@@ -1189,46 +1189,46 @@
   {
    "index": 103,
    "split": "train",
-   "name": "103-zgauss-gauss-256x6",
+   "name": "103-rmsnorm_exp-gauss-256x6",
    "width": 256,
    "depth": 6,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "gauss",
    "seed": 722363645204416531,
-   "weight_sha256": "5f95bbb5556919f0dc6aecb7358ede61c866bbafc8189ae1bfa5d7130abc2796"
+   "weight_sha256": "0901097a76a8626015b191410fd481596ba7a7ccedb9057ccdd8379ebc6d3174"
   },
   {
    "index": 104,
    "split": "train",
-   "name": "104-tanh_rmsnorm-gauss-160x14",
+   "name": "104-gabor-gauss-160x14",
    "width": 160,
    "depth": 14,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "gauss",
    "seed": 2978595936877028836,
-   "weight_sha256": "8fec223b14ebe151c7085449c48e994267f77d98b47297d6c6873e9b41b2626f"
+   "weight_sha256": "27c73ae692284d9a6dfaabfd179199bf08067d2bf7b4a4c1d9f5689a04eb3af6"
   },
   {
    "index": 105,
    "split": "train",
-   "name": "105-tanh_rmsnorm-uniform-40x7",
+   "name": "105-gabor-uniform-40x7",
    "width": 40,
    "depth": 7,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "uniform",
    "seed": 489802845937038939,
-   "weight_sha256": "5e897681cb00949c24c96b062099a71c10e488dd336eace21057ff1bbde152dd"
+   "weight_sha256": "d1371dc1d2cffb2e56e00682f4a2b373283a42ea5a39878c6162ac04005ca181"
   },
   {
    "index": 106,
    "split": "train",
-   "name": "106-tanh_rmsnorm-orth-16x4",
+   "name": "106-gabor-orth-16x4",
    "width": 16,
    "depth": 4,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "orth",
    "seed": 4185903766701861700,
-   "weight_sha256": "b954ef0e584181b0854bf98e3bdac3057bea5ae8399d50eabb0466a555361348"
+   "weight_sha256": "ef123e135f989f9a3d9a1f882d55618c5875d76f1cb3bc2551f39fc68b59b6c4"
   },
   {
    "index": 107,
@@ -1244,13 +1244,13 @@
   {
    "index": 108,
    "split": "train",
-   "name": "108-tanh_rmsnorm-orth-64x8",
+   "name": "108-gabor-orth-64x8",
    "width": 64,
    "depth": 8,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "orth",
    "seed": 631153987234458570,
-   "weight_sha256": "e624b798436dac3473f464a3c6b2abcfc3482d1ff5b250259d4e8aabd92ccdb6"
+   "weight_sha256": "e1b231be60127dcae30da58848d1b8a2c2464040b23411d22acbfbb5f4b60386"
   },
   {
    "index": 109,
@@ -1277,13 +1277,13 @@
   {
    "index": 111,
    "split": "train",
-   "name": "111-tanh_rmsnorm-gauss-16x20",
+   "name": "111-gabor-gauss-16x20",
    "width": 16,
    "depth": 20,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "gauss",
    "seed": 1727578421609699376,
-   "weight_sha256": "b796f6f132721d93f2f0bcea275a2d920619aafe5d9d4942f46191fa1e68fc85"
+   "weight_sha256": "9dfa031128ab72e7e9ec2068c5f47dea234fba9a969d97675953e5af79eb23b2"
   },
   {
    "index": 112,
@@ -1299,13 +1299,13 @@
   {
    "index": 113,
    "split": "train",
-   "name": "113-tanh_rmsnorm-orth-48x14",
+   "name": "113-gabor-orth-48x14",
    "width": 48,
    "depth": 14,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "orth",
    "seed": 3332722804797441145,
-   "weight_sha256": "6caff3cf89fc085343d32e9f9fbe71f80548268f65c27c4164ff658088dd0a08"
+   "weight_sha256": "1b66b97c9b67ca5dc2a15d0ba8d34d691a8465cbe4d3ec533c7d7a5d54a493a4"
   },
   {
    "index": 114,
@@ -1343,24 +1343,24 @@
   {
    "index": 117,
    "split": "train",
-   "name": "117-gabor-orth-84x24",
+   "name": "117-rbump-orth-84x24",
    "width": 84,
    "depth": 24,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "orth",
    "seed": 3933173190039190370,
-   "weight_sha256": "7e936a015fda8abe87ed8718b4a43064f04cc4734c8963134c3b50b955556e63"
+   "weight_sha256": "824f068e9f5d59bc84dfbeaa5b2258ef1396a8666158e48a88c61230edcc3836"
   },
   {
    "index": 118,
    "split": "train",
-   "name": "118-gabor-orth-320x5",
+   "name": "118-rbump-orth-320x5",
    "width": 320,
    "depth": 5,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "orth",
    "seed": 1721346308979293631,
-   "weight_sha256": "282705d015c92d4a6627a8fdb37cab227b45be86bd5b1ca7695bebbdf21e6151"
+   "weight_sha256": "3b2107229394696b94df01465673fb08f9421aa528c951c1fc08abb4f968a609"
   },
   {
    "index": 119,
@@ -1387,24 +1387,24 @@
   {
    "index": 121,
    "split": "train",
-   "name": "121-tanh_rmsnorm-uniform-288x16",
+   "name": "121-gabor-uniform-288x16",
    "width": 288,
    "depth": 16,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "uniform",
    "seed": 189544168117796889,
-   "weight_sha256": "b1eb6697b4f39511a381934bb0e4e19e2933ee1115f1762c46e2a92f0d7d81ed"
+   "weight_sha256": "bdb791960e2d66fd27af10931afe88b5459ec422a8a14f5f712bd108ec5d60a4"
   },
   {
    "index": 122,
    "split": "train",
-   "name": "122-tanh_rmsnorm-orth-64x24",
+   "name": "122-gabor-orth-64x24",
    "width": 64,
    "depth": 24,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "orth",
    "seed": 835222084926054347,
-   "weight_sha256": "d01c0185db4784c83ab6f8a20a847f3e3e11c27145563681a07eaab528abe621"
+   "weight_sha256": "a697fa0e8756d475730cfb858aae7e7638e3785eb1b44df393b9bc11603551fb"
   },
   {
    "index": 123,
@@ -1420,35 +1420,35 @@
   {
    "index": 124,
    "split": "train",
-   "name": "124-zgauss-orth-48x4",
+   "name": "124-rmsnorm_exp-orth-48x4",
    "width": 48,
    "depth": 4,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "orth",
    "seed": 169183920504653107,
-   "weight_sha256": "9ee2ecde60850c3f5b7885b3f0329da288ddbd82cbc62571ded912eb34b881c5"
+   "weight_sha256": "8ce7536087a68a9485ac0df5f67b0b8d30a540671641d3c3fcdae3a7b303ca97"
   },
   {
    "index": 125,
    "split": "train",
-   "name": "125-rbump-gauss-40x6",
+   "name": "125-rmsnorm_sq-gauss-40x6",
    "width": 40,
    "depth": 6,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "gauss",
    "seed": 1456095596275072330,
-   "weight_sha256": "bb0e98df1feb6516aace219623faba8aae4d9739b5767dbf28cfd125f40c7aef"
+   "weight_sha256": "a31e3804db3e772dd9b06508680917b07ad5d335a58d34036bfcbb8b03bd1e1c"
   },
   {
    "index": 126,
    "split": "train",
-   "name": "126-tanh_rmsnorm-expo-40x14",
+   "name": "126-gabor-expo-40x14",
    "width": 40,
    "depth": 14,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "expo",
    "seed": 2311810640452636262,
-   "weight_sha256": "bc0409f7dd8cefc6405d4e34a83e99c639f3ef9d99898b2cdf1852b98ff1f822"
+   "weight_sha256": "34bf8f0264eef83a616085fb14ba53a413f2bddb9c75cfdafbee1e412e58b242"
   },
   {
    "index": 127,
@@ -1464,35 +1464,35 @@
   {
    "index": 128,
    "split": "train",
-   "name": "128-rbump-expo-32x4",
+   "name": "128-rmsnorm_sq-expo-32x4",
    "width": 32,
    "depth": 4,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "expo",
    "seed": 3714551184478278572,
-   "weight_sha256": "912a10332b4b3d4ea71dcbc903b1083bda02720b96b2ae257f52f22d97297182"
+   "weight_sha256": "568efb1adf6714c2f82d98d694d34cd887e30f8bdfb6d65575af762cd83a5d83"
   },
   {
    "index": 129,
    "split": "train",
-   "name": "129-tanh_rmsnorm-orth-288x8",
+   "name": "129-gabor-orth-288x8",
    "width": 288,
    "depth": 8,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "orth",
    "seed": 2105641177284902671,
-   "weight_sha256": "a2f99b02548e14130c16f2f290d019f485866e45837a59b27aa0e2f6d44d720f"
+   "weight_sha256": "ec633d0eb9cbb1d816c93dd7c06a15c4fa296a819df07478db2de8450b07c95e"
   },
   {
    "index": 130,
    "split": "train",
-   "name": "130-rbump-gauss-384x7",
+   "name": "130-rmsnorm_sq-gauss-384x7",
    "width": 384,
    "depth": 7,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "gauss",
    "seed": 1004962923833095274,
-   "weight_sha256": "89401fb5769bc09b38e8afcc873a95915619eba8a2b3ae87eff40c1012ed1c33"
+   "weight_sha256": "e95a043a133ba6db44bdf777c0cfde4ef8076126fca47cd8d571ebde5616d463"
   },
   {
    "index": 131,
@@ -1541,24 +1541,24 @@
   {
    "index": 135,
    "split": "train",
-   "name": "135-zgauss-gauss-96x16",
+   "name": "135-rmsnorm_exp-gauss-96x16",
    "width": 96,
    "depth": 16,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "gauss",
    "seed": 3820441007717175102,
-   "weight_sha256": "950b9ed8a4c072201579341a569a5059bd7b069e923799b6440f682c7fafd674"
+   "weight_sha256": "1d27fc0339dddc4e91a04a2a8f63947db914e5c7f9298516bf1f049e339383bf"
   },
   {
    "index": 136,
    "split": "train",
-   "name": "136-rbump-gauss-24x24",
+   "name": "136-rmsnorm_sq-gauss-24x24",
    "width": 24,
    "depth": 24,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "gauss",
    "seed": 232080133394423410,
-   "weight_sha256": "c6c8d3c575b919ed5b2e8375142be6e492928410e7186bd1791bac7daa822854"
+   "weight_sha256": "488a02b4252fa19e11ecc902eaf5a955928b7b16b8624c786ad4da09c1bc883f"
   },
   {
    "index": 137,
@@ -1585,57 +1585,57 @@
   {
    "index": 139,
    "split": "train",
-   "name": "139-rbump-orth-48x12",
+   "name": "139-rmsnorm_sq-orth-48x12",
    "width": 48,
    "depth": 12,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "orth",
    "seed": 2239481730981262892,
-   "weight_sha256": "b9ab32d5565df4f13f9ff47c96e9a90c1a973f96f828696057d7bda85c8a9ad8"
+   "weight_sha256": "cea76578ac18fa41d12aa57176609f4d56da388a6199afd641e4a166f2ebdfd6"
   },
   {
    "index": 140,
    "split": "train",
-   "name": "140-rbump-uniform-160x14",
+   "name": "140-rmsnorm_sq-uniform-160x14",
    "width": 160,
    "depth": 14,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "uniform",
    "seed": 161001448836479878,
-   "weight_sha256": "352a9be876e1e65d0bb671ddac14493b12906c2d72f7486cdc7a5feb9087e6f5"
+   "weight_sha256": "014a3cfee322c75e417c7e3e44a49d83527d91f807d01d60756f60ffc5e140d1"
   },
   {
    "index": 141,
    "split": "train",
-   "name": "141-zgauss-expo-320x20",
+   "name": "141-rmsnorm_exp-expo-320x20",
    "width": 320,
    "depth": 20,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "expo",
    "seed": 1185563849093114680,
-   "weight_sha256": "83ec3f415b583c4df1f8067104eac0072e367e083498376f49d78b154bddaa5b"
+   "weight_sha256": "c64779cd1bd63822dd356b16eb9bb848a7b477f208dc2324f61032de03e70046"
   },
   {
    "index": 142,
    "split": "train",
-   "name": "142-gabor-orth-16x8",
+   "name": "142-rbump-orth-16x8",
    "width": 16,
    "depth": 8,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "orth",
    "seed": 3066881150804768900,
-   "weight_sha256": "099916e537e6796ef6fc8a8d144dc59c932c1d253188cb96cb456175f913b7f1"
+   "weight_sha256": "033de0c87ab692e5bca1f3ed6496c72f714bc355e512ef0db0b4c545e6eb9476"
   },
   {
    "index": 143,
    "split": "train",
-   "name": "143-gabor-orth-64x6",
+   "name": "143-rbump-orth-64x6",
    "width": 64,
    "depth": 6,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "orth",
    "seed": 2998771245291862899,
-   "weight_sha256": "8c1bcb8225a4303ef08b4f5f1f8f2e47c0a6bdfd574902496dd64162edd46e77"
+   "weight_sha256": "1f5def9bad311b5ac9acc537502ed39cc6edcf9d9b8f3ceb433aab76b49005fe"
   },
   {
    "index": 144,
@@ -1651,13 +1651,13 @@
   {
    "index": 145,
    "split": "train",
-   "name": "145-rbump-expo-352x4",
+   "name": "145-rmsnorm_sq-expo-352x4",
    "width": 352,
    "depth": 4,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "expo",
    "seed": 2022827298630691528,
-   "weight_sha256": "f2a9ff07c2e4a9c8d18b55b91421b4c4e0ec0bd5a4d213c18e8de5c06057402f"
+   "weight_sha256": "fb293e921eaf43d02ce354dff397c097187324e8937852af884dd85810c161ed"
   },
   {
    "index": 146,
@@ -1673,13 +1673,13 @@
   {
    "index": 147,
    "split": "train",
-   "name": "147-tanh_rmsnorm-gauss-56x24",
+   "name": "147-gabor-gauss-56x24",
    "width": 56,
    "depth": 24,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "gauss",
    "seed": 3243409890358254579,
-   "weight_sha256": "44311315fb8f4aa4a5ca992160a95c367635029102bb5f9af0f6b24a09e65eb6"
+   "weight_sha256": "4d7f88537ade78873a7b412c586fd6211d605e719dd74af81e5b004668b59ef3"
   },
   {
    "index": 148,
@@ -1706,24 +1706,24 @@
   {
    "index": 150,
    "split": "train",
-   "name": "150-rbump-gauss-96x10",
+   "name": "150-rmsnorm_sq-gauss-96x10",
    "width": 96,
    "depth": 10,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "gauss",
    "seed": 3716985738427670623,
-   "weight_sha256": "d101656996b428a1f9058e08af4759c567188e2237b3a3729bed767cb2b1fc32"
+   "weight_sha256": "64c2754c9c6bbb0605b3dc820d4bde3e221dc76cae50c7d87c9c6760cf04accc"
   },
   {
    "index": 151,
    "split": "train",
-   "name": "151-tanh_rmsnorm-expo-16x10",
+   "name": "151-gabor-expo-16x10",
    "width": 16,
    "depth": 10,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "expo",
    "seed": 2515778029024666924,
-   "weight_sha256": "2a689fe63f87f69824b6c72d4bf00d3fe8a55a484a0616fadd50eca027add7b3"
+   "weight_sha256": "ca9a8f142fdf0a63886d21e8747ea74388a595f4c80a64eecb82ff3471faf95a"
   },
   {
    "index": 152,
@@ -1761,24 +1761,24 @@
   {
    "index": 155,
    "split": "train",
-   "name": "155-gabor-uniform-128x24",
+   "name": "155-rbump-uniform-128x24",
    "width": 128,
    "depth": 24,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "uniform",
    "seed": 4000702501620261015,
-   "weight_sha256": "90eb783419a052556162aa19c42b308cf8afdace16a4e13f2b6d86317a6a6e25"
+   "weight_sha256": "948d914438f063a35addf119a6d897afc1e337f4745a28bfe442bc430fea40de"
   },
   {
    "index": 156,
    "split": "train",
-   "name": "156-rbump-orth-64x4",
+   "name": "156-rmsnorm_sq-orth-64x4",
    "width": 64,
    "depth": 4,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "orth",
    "seed": 2747684501721119475,
-   "weight_sha256": "465a5f2ca66be4b5c940115073ceee153eaa5e59feb5dfc12082938ddc8adee4"
+   "weight_sha256": "7ca36dd16d0281588038dd08ea3d60dc6e52b14ce2fe6290e583d017037936e3"
   },
   {
    "index": 157,
@@ -1794,24 +1794,24 @@
   {
    "index": 158,
    "split": "train",
-   "name": "158-zgauss-orth-72x10",
+   "name": "158-rmsnorm_exp-orth-72x10",
    "width": 72,
    "depth": 10,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "orth",
    "seed": 1176047643825980982,
-   "weight_sha256": "4cabc0923c85a9d75ab312f5a7eee105b60aab69c8c990515a21445bf7cc8921"
+   "weight_sha256": "4cf319614b6ab6c33d7834fe31fb3311b6b6d6ab6cdd8e84fa85907780f35c7e"
   },
   {
    "index": 159,
    "split": "train",
-   "name": "159-tanh_rmsnorm-uniform-40x24",
+   "name": "159-gabor-uniform-40x24",
    "width": 40,
    "depth": 24,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "uniform",
    "seed": 3597002292561447573,
-   "weight_sha256": "5a1309881c16f31e265df45f6617b431ec48ed6e039f04746772be64f17ada9a"
+   "weight_sha256": "47239a1689fdec79a6fc0989fdb53b2229d92ee12aaa10d8bc2c0518535b4564"
   },
   {
    "index": 160,
@@ -1827,13 +1827,13 @@
   {
    "index": 161,
    "split": "train",
-   "name": "161-tanh_rmsnorm-orth-288x8",
+   "name": "161-gabor-orth-288x8",
    "width": 288,
    "depth": 8,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "orth",
    "seed": 451651538309239404,
-   "weight_sha256": "0ac16186d4972ca8811f3ebc41f61537b90257ca6e86cbfffff7855d95824745"
+   "weight_sha256": "7126c5b318b10ca6f2d309446391a89e38ec02c2f628191e613a214518a505d1"
   },
   {
    "index": 162,
@@ -1871,24 +1871,24 @@
   {
    "index": 165,
    "split": "train",
-   "name": "165-rbump-expo-32x7",
+   "name": "165-rmsnorm_sq-expo-32x7",
    "width": 32,
    "depth": 7,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "expo",
    "seed": 1598182744791403483,
-   "weight_sha256": "1a2a42c85ceb6475c5fb6bf8e711ceb0bcd9f1b6f41e96e820a73bd3cf94e089"
+   "weight_sha256": "98e4e3834b145f0d492e629a82a9129633c62cfabfe0bb7cbbbb23780c3bdba4"
   },
   {
    "index": 166,
    "split": "train",
-   "name": "166-rbump-gauss-24x4",
+   "name": "166-rmsnorm_sq-gauss-24x4",
    "width": 24,
    "depth": 4,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "gauss",
    "seed": 4589863724110854196,
-   "weight_sha256": "6b9803add0d7eddacd15179f887d79c9e824c2714383307b49fc170a80d1ca82"
+   "weight_sha256": "c1651f0e7738778f871b6d8106abdc80606635298c516d90cbe80da70720f792"
   },
   {
    "index": 167,
@@ -1915,35 +1915,35 @@
   {
    "index": 169,
    "split": "train",
-   "name": "169-rbump-gauss-32x16",
+   "name": "169-rmsnorm_sq-gauss-32x16",
    "width": 32,
    "depth": 16,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "gauss",
    "seed": 2987920039483866275,
-   "weight_sha256": "13790d2133189cdf6ff20d927d4fd7d16b1a49ea133e7c492dceb75cc1f7d3bc"
+   "weight_sha256": "956b97dee0e3caa5074783c6449772b8ddf4260bd72fed2be1da60f9ad2d8ecc"
   },
   {
    "index": 170,
    "split": "train",
-   "name": "170-zgauss-orth-96x8",
+   "name": "170-rmsnorm_exp-orth-96x8",
    "width": 96,
    "depth": 8,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "orth",
    "seed": 1903442250071653042,
-   "weight_sha256": "7f046fd3e170785e8a45ad2ad98dae17db6337237a8e3c533431c4a9526889b6"
+   "weight_sha256": "3403155b294f614429afd31d47174e35edb1e646d7fe9aefc883f8bfd3bccaea"
   },
   {
    "index": 171,
    "split": "train",
-   "name": "171-tanh_rmsnorm-uniform-128x6",
+   "name": "171-gabor-uniform-128x6",
    "width": 128,
    "depth": 6,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "uniform",
    "seed": 3860141557622986491,
-   "weight_sha256": "3c5f7de90cf0da4f515c59bf88c19f203411145ee2a933766630347a500bec10"
+   "weight_sha256": "731ee1a3828579738f81e64752eab7dca6aa4ded1c6d15717bb4a067973d9b98"
   },
   {
    "index": 172,
@@ -1970,24 +1970,24 @@
   {
    "index": 174,
    "split": "train",
-   "name": "174-gabor-gauss-56x14",
+   "name": "174-rbump-gauss-56x14",
    "width": 56,
    "depth": 14,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "gauss",
    "seed": 442890552850336750,
-   "weight_sha256": "d32464834f005fd581e87c04552123b945194938582e9d822f61555336775b08"
+   "weight_sha256": "abfc680d5434544708f46ac5fae72a44483405c190210ec162de997d74e18b4c"
   },
   {
    "index": 175,
    "split": "train",
-   "name": "175-gabor-orth-16x14",
+   "name": "175-rbump-orth-16x14",
    "width": 16,
    "depth": 14,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "orth",
    "seed": 2703700704565525513,
-   "weight_sha256": "93fbd3093dce2fcac41b8b9ea7207202f006ce1daba36adcea70ea087baea4ae"
+   "weight_sha256": "0514d9f0d77a69e18cfff4194f513aec12a4492ca0e2732bc6c13039aa8639a2"
   },
   {
    "index": 176,
@@ -2014,13 +2014,13 @@
   {
    "index": 178,
    "split": "train",
-   "name": "178-rbump-orth-48x12",
+   "name": "178-rmsnorm_sq-orth-48x12",
    "width": 48,
    "depth": 12,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "orth",
    "seed": 3842549349574402194,
-   "weight_sha256": "623ea1870cadd2bb3994fcbe970cd480054cf0f4d674c1c900c8a9dc299508dc"
+   "weight_sha256": "692d094299a444b2b946fdf362b43c30f1805fd853474488b6a788f9f2b9e582"
   },
   {
    "index": 179,
@@ -2047,46 +2047,46 @@
   {
    "index": 181,
    "split": "train",
-   "name": "181-zgauss-gauss-384x8",
+   "name": "181-rmsnorm_exp-gauss-384x8",
    "width": 384,
    "depth": 8,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "gauss",
    "seed": 1945912345134405382,
-   "weight_sha256": "a54ae3afb40a0357fad8a5a2f78e71e43b8c07c54b63622eb503d92d9bdf6a7c"
+   "weight_sha256": "5ebafd3da240104f9dfb834f8cc8a72d4cdea9ae3d68c9c1769fb96b62f6cb28"
   },
   {
    "index": 182,
    "split": "train",
-   "name": "182-zgauss-expo-56x7",
+   "name": "182-rmsnorm_exp-expo-56x7",
    "width": 56,
    "depth": 7,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "expo",
    "seed": 3049956235623211526,
-   "weight_sha256": "7fc73b7c868088d827da320d797a44a6f841bda6655898248f1371c42c0e00b3"
+   "weight_sha256": "d955b405bb3e39b78a03c73dcb856d9338deae550acee5782dde5c73f83b5fc4"
   },
   {
    "index": 183,
    "split": "train",
-   "name": "183-zgauss-gauss-32x24",
+   "name": "183-rmsnorm_exp-gauss-32x24",
    "width": 32,
    "depth": 24,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "gauss",
    "seed": 3486225402902656174,
-   "weight_sha256": "2c12f0cbb8907422ce33db6d3f8c64920dae3c1352cc58645c331157459a1756"
+   "weight_sha256": "fe6f854ef72ea7b6c83ee79e07b59a3bd11af193ffd25a5727153a22e504de3b"
   },
   {
    "index": 184,
    "split": "train",
-   "name": "184-tanh_rmsnorm-expo-56x7",
+   "name": "184-gabor-expo-56x7",
    "width": 56,
    "depth": 7,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "expo",
    "seed": 3974938304108007256,
-   "weight_sha256": "d3b430b20e1af422bbdf48756563828d1f6e015509743a24074b8e21a3cfaa3c"
+   "weight_sha256": "c07119647e570d89156eda101ed12c3505c7662f9a3d471e600107406d0773d1"
   },
   {
    "index": 185,
@@ -2124,35 +2124,35 @@
   {
    "index": 188,
    "split": "train",
-   "name": "188-zgauss-expo-64x7",
+   "name": "188-rmsnorm_exp-expo-64x7",
    "width": 64,
    "depth": 7,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "expo",
    "seed": 3791750527110039078,
-   "weight_sha256": "e671db2ec80623c8e453607aee5b341607b0679f14cc24ec59d4072a12c7fc32"
+   "weight_sha256": "266a62b684fed2d73b78713e9ee491515530fa2bf859c1a2ddc45372440b4154"
   },
   {
    "index": 189,
    "split": "train",
-   "name": "189-tanh_rmsnorm-uniform-24x14",
+   "name": "189-gabor-uniform-24x14",
    "width": 24,
    "depth": 14,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "uniform",
    "seed": 4347166970045775539,
-   "weight_sha256": "266ce93f16dfff3ade3fa307ba7b2fbe819d5677b628c3a90479ed5e018a6594"
+   "weight_sha256": "8bf99324b7d807b7cbc9fac8fb8f79866b396e167892bf7402873a75df2f9f3e"
   },
   {
    "index": 190,
    "split": "train",
-   "name": "190-gabor-expo-64x8",
+   "name": "190-rbump-expo-64x8",
    "width": 64,
    "depth": 8,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "expo",
    "seed": 443117004079076121,
-   "weight_sha256": "ba4b8ec1ee319090c8800ba0e4dda467b85e1e35c079a274a43faf60be57e828"
+   "weight_sha256": "693d211d051cc517c77b32f8289d215e62ea06c8c754afb704ca96f79d87e515"
   },
   {
    "index": 191,
@@ -2190,24 +2190,24 @@
   {
    "index": 194,
    "split": "train",
-   "name": "194-rbump-orth-320x24",
+   "name": "194-rmsnorm_sq-orth-320x24",
    "width": 320,
    "depth": 24,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "orth",
    "seed": 1091616261341224854,
-   "weight_sha256": "5f5e7e9be2284e2d8d958289d0e4eced0234e666e296bf1a2e2109838e96a3d5"
+   "weight_sha256": "177c84eed2d587c368cc0fb44d335e2d16c8f3e9ad7a54f02246d135e064139c"
   },
   {
    "index": 195,
    "split": "train",
-   "name": "195-tanh_rmsnorm-gauss-384x10",
+   "name": "195-gabor-gauss-384x10",
    "width": 384,
    "depth": 10,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "gauss",
    "seed": 1858888054423100801,
-   "weight_sha256": "19e664b843452f961d8e8e6796077750e326f5c11ffc454fdf4097f9f15607a2"
+   "weight_sha256": "d3c82ff29d60b116343cd4d6a7ff5d2d8351f83d1df081635840e73015122825"
   },
   {
    "index": 196,
@@ -2223,35 +2223,35 @@
   {
    "index": 197,
    "split": "train",
-   "name": "197-zgauss-uniform-32x6",
+   "name": "197-rmsnorm_exp-uniform-32x6",
    "width": 32,
    "depth": 6,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "uniform",
    "seed": 3654426963044774521,
-   "weight_sha256": "9e97cbe940e3fd725a866528a275ab1d3f3e1ad5403f9913cee3c403fb035e5b"
+   "weight_sha256": "77529af80d6f124d9db559f4118608614bf6fef6f1c31d7a2c5390f4554d9d23"
   },
   {
    "index": 198,
    "split": "train",
-   "name": "198-tanh_rmsnorm-orth-160x10",
+   "name": "198-gabor-orth-160x10",
    "width": 160,
    "depth": 10,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "orth",
    "seed": 2791308650318321463,
-   "weight_sha256": "bb53966fe876a0f5e775ba69270c569610ead736cf2d4ef39af7b90c2b76ae48"
+   "weight_sha256": "beb70d17ebdc74d0c65cc02cf7801082180f80516f411cc5a149449fa3079ca8"
   },
   {
    "index": 199,
    "split": "train",
-   "name": "199-tanh_rmsnorm-expo-256x6",
+   "name": "199-gabor-expo-256x6",
    "width": 256,
    "depth": 6,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "expo",
    "seed": 680852858763423121,
-   "weight_sha256": "211cd448eec8aafc1ebd040eac089bd26d4b4f686b47896fa87c35f042fd07fd"
+   "weight_sha256": "ff25e5579ae642c2ac752bbf82655d09e9b6f6f622f64a1db7162f264ef3d23f"
   },
   {
    "index": 200,
@@ -2410,24 +2410,24 @@
   {
    "index": 214,
    "split": "train",
-   "name": "214-zgauss-orth-64x20",
+   "name": "214-rmsnorm_exp-orth-64x20",
    "width": 64,
    "depth": 20,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "orth",
    "seed": 3650928335238685089,
-   "weight_sha256": "b45edcec4e2e9e054a93dc5815f0748e5b16b587b2f77066abd852f4d52519fd"
+   "weight_sha256": "68c262192f88cb5e730d29a02073955dcb333eaf8e829184660d10f204dc0d02"
   },
   {
    "index": 215,
    "split": "train",
-   "name": "215-gabor-uniform-256x12",
+   "name": "215-rbump-uniform-256x12",
    "width": 256,
    "depth": 12,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "uniform",
    "seed": 1009645838238728600,
-   "weight_sha256": "9bed9923293159777155bc1cca579214c3209896448db1cd31e1eda0e4f9917f"
+   "weight_sha256": "1de4f7299b84c57e38efb3117878092d8cce3f92ed13d270536b8ac2b45e02b8"
   },
   {
    "index": 216,
@@ -2443,13 +2443,13 @@
   {
    "index": 217,
    "split": "train",
-   "name": "217-gabor-expo-64x12",
+   "name": "217-rbump-expo-64x12",
    "width": 64,
    "depth": 12,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "expo",
    "seed": 1427563798447417005,
-   "weight_sha256": "69561e0c6c7270587935df0f65536d367b2937571ab9778aeba0bd456513db2d"
+   "weight_sha256": "b5ed3f3548d5bf119c718b20c464e63fcf86b3dc67eefecdc2d0e96419e62bc1"
   },
   {
    "index": 218,
@@ -2509,35 +2509,35 @@
   {
    "index": 223,
    "split": "train",
-   "name": "223-gabor-expo-160x24",
+   "name": "223-rbump-expo-160x24",
    "width": 160,
    "depth": 24,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "expo",
    "seed": 168376189794706636,
-   "weight_sha256": "d8af5eb96ad79fdb09d78ba22170c8d76c32868851f3202968138b3ba7306758"
+   "weight_sha256": "8284d55c28ca49909dbd43931f1219708eddbd0c82628d4695d604be7d4eb37d"
   },
   {
    "index": 224,
    "split": "train",
-   "name": "224-rbump-orth-24x7",
+   "name": "224-rmsnorm_sq-orth-24x7",
    "width": 24,
    "depth": 7,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "orth",
    "seed": 2231961747711217588,
-   "weight_sha256": "5d4d622a107cd8a5705b2b0d42238c7e2d6c05d2eee48dd95bb7239e9342d6c5"
+   "weight_sha256": "c92fbe92a823c3cba8342a44718927d2f756494ed9e09153be32fc75697b4598"
   },
   {
    "index": 225,
    "split": "train",
-   "name": "225-rbump-gauss-72x24",
+   "name": "225-rmsnorm_sq-gauss-72x24",
    "width": 72,
    "depth": 24,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "gauss",
    "seed": 622292222691430780,
-   "weight_sha256": "a2173fdce22a6d64a0f49b5ce966ec83ba9a798cd957129252a94a446ea5d965"
+   "weight_sha256": "d93a48d539f82dd45e5b39eed1fed21d104d3b32e036a0b4981a74a596dce31c"
   },
   {
    "index": 226,
@@ -2553,13 +2553,13 @@
   {
    "index": 227,
    "split": "train",
-   "name": "227-rbump-expo-160x14",
+   "name": "227-rmsnorm_sq-expo-160x14",
    "width": 160,
    "depth": 14,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "expo",
    "seed": 4105400094201949157,
-   "weight_sha256": "04059b498afd81d5ee120c7a9291378d3f3fba81b883fa03982376d9432eab07"
+   "weight_sha256": "a085d927d839a0dac23bb5e4c6a64610c0778a3e6e3729aa37b4ff9f2aa8c54e"
   },
   {
    "index": 228,
@@ -2586,13 +2586,13 @@
   {
    "index": 230,
    "split": "train",
-   "name": "230-zgauss-uniform-24x5",
+   "name": "230-rmsnorm_exp-uniform-24x5",
    "width": 24,
    "depth": 5,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "uniform",
    "seed": 488317185409856982,
-   "weight_sha256": "e50ef9aca40bf5f6d39db3950d8e0f29cb9bcc416fc608b134ab3cfad9e3be0c"
+   "weight_sha256": "ff550766412488121ab5d1279760984afaad1e096b34c09bd57a32dafe795945"
   },
   {
    "index": 231,
@@ -2641,24 +2641,24 @@
   {
    "index": 235,
    "split": "train",
-   "name": "235-rbump-uniform-320x24",
+   "name": "235-rmsnorm_sq-uniform-320x24",
    "width": 320,
    "depth": 24,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "uniform",
    "seed": 4509595906590634453,
-   "weight_sha256": "59c3a040ee807640ad78ae64e0202f95cb6297bc4ca16c0c278020d6401c7799"
+   "weight_sha256": "f73b25bd6247707061a633548f8a762fabf815ee6ecd557a9f18f8d68d715d37"
   },
   {
    "index": 236,
    "split": "train",
-   "name": "236-rbump-orth-256x20",
+   "name": "236-rmsnorm_sq-orth-256x20",
    "width": 256,
    "depth": 20,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "orth",
    "seed": 4464646567377551608,
-   "weight_sha256": "108b7272aa6f7048e92f548a26a8e600270ef0d2a430dcefd8fb40bff68cf336"
+   "weight_sha256": "269c1459b5ef0b0b538ebd9e71e5fc7889cfa98518ad0c9404031b66e2d916ec"
   },
   {
    "index": 237,
@@ -2674,35 +2674,35 @@
   {
    "index": 238,
    "split": "train",
-   "name": "238-rbump-expo-320x20",
+   "name": "238-rmsnorm_sq-expo-320x20",
    "width": 320,
    "depth": 20,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "expo",
    "seed": 1513102752304429628,
-   "weight_sha256": "c7d587ebe0008a71fe6c0b14b95e06815ed30443dbcffab13821e66264182496"
+   "weight_sha256": "bc990e54703a736d3780ec86f08d91a671e8b62511c60c0c2253b494f2d46926"
   },
   {
    "index": 239,
    "split": "train",
-   "name": "239-rbump-uniform-24x20",
+   "name": "239-rmsnorm_sq-uniform-24x20",
    "width": 24,
    "depth": 20,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "uniform",
    "seed": 652299698665413374,
-   "weight_sha256": "8e937f6ec980e1e1567c4fc316c6aed139752e41c2fdb9911944d6dc417fa017"
+   "weight_sha256": "d438d809da159f39ca32f3e0aa67c98c8ac0957b53c7a7ac32d51c4e026bdf80"
   },
   {
    "index": 240,
    "split": "train",
-   "name": "240-rbump-expo-96x4",
+   "name": "240-rmsnorm_sq-expo-96x4",
    "width": 96,
    "depth": 4,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "expo",
    "seed": 2438628451088214796,
-   "weight_sha256": "bc83ae15c43309e32183acc4e2bc1b4de34874c083db276c7178f81bf9b11a13"
+   "weight_sha256": "4fafa4af2dcdb792cff28c4a2ac152b87821c5a38cbb5765486c1e4042a730f7"
   },
   {
    "index": 241,
@@ -2718,24 +2718,24 @@
   {
    "index": 242,
    "split": "train",
-   "name": "242-rbump-expo-288x12",
+   "name": "242-rmsnorm_sq-expo-288x12",
    "width": 288,
    "depth": 12,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "expo",
    "seed": 1404962949137865263,
-   "weight_sha256": "1b74c11b6f87d0bb1ef109f2318c8b9ee53ab0dd6e86fd50766eb9f397f64fbc"
+   "weight_sha256": "466ca0cf0645c0cefa93892404ca041ea2dfd6a917be96a5b6767a3a9cb8bea4"
   },
   {
    "index": 243,
    "split": "train",
-   "name": "243-gabor-orth-384x12",
+   "name": "243-rbump-orth-384x12",
    "width": 384,
    "depth": 12,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "orth",
    "seed": 2110577284708563224,
-   "weight_sha256": "ff1e7b190cef43b5a09fada3975ac107111230504a97832cf638a66cb1c08898"
+   "weight_sha256": "e12e8ef81834a17f43da02c83411d137347aef1764f3b7c530b086ea876dc4d5"
   },
   {
    "index": 244,
@@ -2762,24 +2762,24 @@
   {
    "index": 246,
    "split": "train",
-   "name": "246-gabor-expo-160x8",
+   "name": "246-rbump-expo-160x8",
    "width": 160,
    "depth": 8,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "expo",
    "seed": 2990711787629254214,
-   "weight_sha256": "e2cdf4bf53b2cf95ee611b7903fdcf0b93e589938dfb82bdbe733a76e27d1b6f"
+   "weight_sha256": "f83e87d18b796bb102f5ef563ef6be4c402aa033ba3b0dffe35d20620831ca9c"
   },
   {
    "index": 247,
    "split": "train",
-   "name": "247-gabor-uniform-40x5",
+   "name": "247-rbump-uniform-40x5",
    "width": 40,
    "depth": 5,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "uniform",
    "seed": 3369886521642269626,
-   "weight_sha256": "fdf7e12a7850e96a52101e7aa63de203fb7720b6520e4adc00eba231b73bb53f"
+   "weight_sha256": "c6d80a03d6e4ec76145dfaab1496fc80e6943c02a47c41b8413c4d825eadf33c"
   },
   {
    "index": 248,
@@ -2828,13 +2828,13 @@
   {
    "index": 252,
    "split": "train",
-   "name": "252-zgauss-gauss-128x10",
+   "name": "252-rmsnorm_exp-gauss-128x10",
    "width": 128,
    "depth": 10,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "gauss",
    "seed": 4214505169169890943,
-   "weight_sha256": "dd3b73b05e11d6905871305fe55b322835eba96e0c59a6f1b4d5aa4b949f734c"
+   "weight_sha256": "640e7503e6e0adc52934dbb6a5225877ce896bc339f7d5d26d36b3396935240f"
   },
   {
    "index": 253,
@@ -2861,24 +2861,24 @@
   {
    "index": 255,
    "split": "train",
-   "name": "255-tanh_rmsnorm-orth-40x7",
+   "name": "255-gabor-orth-40x7",
    "width": 40,
    "depth": 7,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "orth",
    "seed": 2351486375656621980,
-   "weight_sha256": "091b7b0373df2b7c1ce387dc2642d49615f2310be6e06afc89c6055fc6dff20f"
+   "weight_sha256": "9ba8f1dccefb692073c7d0a8ec947b495f212b29444ddc96411c6a878da07344"
   },
   {
    "index": 256,
    "split": "test",
-   "name": "256-rbump-orth-320x12",
+   "name": "256-rmsnorm_sq-orth-320x12",
    "width": 320,
    "depth": 12,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "orth",
    "seed": 3863367961751449271,
-   "weight_sha256": "fc8a70f8333303e05bf5ce900687dc2c67ee52a92c3523abb11f73707452fcbd"
+   "weight_sha256": "9295e4f2df69196c6781a144a1074ad06c430b89da8338a583fb3f5708b4c46d"
   },
   {
    "index": 257,
@@ -2905,24 +2905,24 @@
   {
    "index": 259,
    "split": "test",
-   "name": "259-tanh_rmsnorm-gauss-72x14",
+   "name": "259-gabor-gauss-72x14",
    "width": 72,
    "depth": 14,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "gauss",
    "seed": 4175985932771977314,
-   "weight_sha256": "fe145fa2d4f4bf92e3bda082f9ab8ce36001d8e9e0af50d0cda2790bffc292d2"
+   "weight_sha256": "8f6416b0ab1d343f825f724f4f8a893710d2c702478eee4b0d3381267a2a657b"
   },
   {
    "index": 260,
    "split": "test",
-   "name": "260-rbump-expo-192x5",
+   "name": "260-rmsnorm_sq-expo-192x5",
    "width": 192,
    "depth": 5,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "expo",
    "seed": 1752917194202224601,
-   "weight_sha256": "a59b90fb4bfc221a1638e0634bf518d254efd5356700ff72b328c021afbe7bca"
+   "weight_sha256": "e7acc8db569965af4019570cfb66dd9e1eccc696cfc57afcf76fd72370943db7"
   },
   {
    "index": 261,
@@ -2938,13 +2938,13 @@
   {
    "index": 262,
    "split": "test",
-   "name": "262-tanh_rmsnorm-gauss-84x12",
+   "name": "262-gabor-gauss-84x12",
    "width": 84,
    "depth": 12,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "gauss",
    "seed": 3535569834647866319,
-   "weight_sha256": "52d2c3e53d83734648557be7c17e1b38ccb8c0645deaadffc0d353fda28d14e0"
+   "weight_sha256": "fb2734ab5fa0af0daaf14c85cd7d5d3b064124cc64204c58f62ca130e57521e8"
   },
   {
    "index": 263,
@@ -2960,46 +2960,46 @@
   {
    "index": 264,
    "split": "test",
-   "name": "264-rbump-orth-48x24",
+   "name": "264-rmsnorm_sq-orth-48x24",
    "width": 48,
    "depth": 24,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "orth",
    "seed": 550034059251506511,
-   "weight_sha256": "aaa8af6e2bf0c29df5db81a47fb9a35661367114c2126c3811c06781b8e5b261"
+   "weight_sha256": "c7e5878554ebf68d7449a9f7077b5c18f2c67cfbac51bad75f488829a064fb12"
   },
   {
    "index": 265,
    "split": "test",
-   "name": "265-gabor-expo-84x10",
+   "name": "265-rbump-expo-84x10",
    "width": 84,
    "depth": 10,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "expo",
    "seed": 3110798280140233632,
-   "weight_sha256": "1612d9cedf7be2220203fa8b5f0f56626bcb7aa6796788c5cfd8c87a13e5b4d6"
+   "weight_sha256": "f28662bd34b39ccd33d5bced66561c5e53e79a4a408d16f6e3017efc65d91fdb"
   },
   {
    "index": 266,
    "split": "test",
-   "name": "266-tanh_rmsnorm-gauss-40x10",
+   "name": "266-gabor-gauss-40x10",
    "width": 40,
    "depth": 10,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "gauss",
    "seed": 3923260315100658396,
-   "weight_sha256": "e09c79d1adfe4a5e326d9468017bd7460bf7cfceca26cd0ede1c15316bbdfc5e"
+   "weight_sha256": "fe54066693a0342677581111bd3ecef868575e7d7cb24c09801c82cb6ebb06a5"
   },
   {
    "index": 267,
    "split": "test",
-   "name": "267-rbump-expo-128x8",
+   "name": "267-rmsnorm_sq-expo-128x8",
    "width": 128,
    "depth": 8,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "expo",
    "seed": 2400965605637351043,
-   "weight_sha256": "4d0541964b53ce705f3961bb142a468358e544559a417fedeedc8bb0fc76bce2"
+   "weight_sha256": "7d048342820cb6459ec729d2ba6a1c346d16ffce9789a4dfab74e44e578731e0"
   },
   {
    "index": 268,
@@ -3037,24 +3037,24 @@
   {
    "index": 271,
    "split": "test",
-   "name": "271-tanh_rmsnorm-orth-72x24",
+   "name": "271-gabor-orth-72x24",
    "width": 72,
    "depth": 24,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "orth",
    "seed": 4244600963000223687,
-   "weight_sha256": "6bf496bd2307e0d5a0333702d1ea172849bf9f2f7d3419fafaf1d94a0bea1359"
+   "weight_sha256": "5e47e52f7baf3b427307ddc9ef2e4a17f46a1f68700fd2fcb0bfb2fb85af3c97"
   },
   {
    "index": 272,
    "split": "test",
-   "name": "272-tanh_rmsnorm-expo-48x6",
+   "name": "272-gabor-expo-48x6",
    "width": 48,
    "depth": 6,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "expo",
    "seed": 587793272940543973,
-   "weight_sha256": "b46938ec4a27e72c65bac673688297af6d178c97f6dd1b06d29d48c3a155b579"
+   "weight_sha256": "026204bd0ba1bdb5ca3f365ce5199566481cebe1a03f82ed3c52794e82db4167"
   },
   {
    "index": 273,
@@ -3092,35 +3092,35 @@
   {
    "index": 276,
    "split": "test",
-   "name": "276-rbump-orth-84x5",
+   "name": "276-rmsnorm_sq-orth-84x5",
    "width": 84,
    "depth": 5,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "orth",
    "seed": 3691959261229649991,
-   "weight_sha256": "aa5b859aa517e369b2a2810c0cf4b2c4f9ab7367153492bc6eaaba55ab6c4faf"
+   "weight_sha256": "15c7741ba01a886e334f394a97aaaf0a20f4baaa5220b44f9397c77acf6b0976"
   },
   {
    "index": 277,
    "split": "test",
-   "name": "277-gabor-orth-32x6",
+   "name": "277-rbump-orth-32x6",
    "width": 32,
    "depth": 6,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "orth",
    "seed": 134636517303286746,
-   "weight_sha256": "26dddab7daf13ca7e237891b64a67093876023495d16dadaa9451faf65abbfdb"
+   "weight_sha256": "dc534f0af0144621d64e275a03dad3ed1c9ec795370273217fec9fc2e38de351"
   },
   {
    "index": 278,
    "split": "test",
-   "name": "278-tanh_rmsnorm-orth-72x8",
+   "name": "278-gabor-orth-72x8",
    "width": 72,
    "depth": 8,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "orth",
    "seed": 645313013681281981,
-   "weight_sha256": "fe96c1dcf75f2c379ecdde6295b1de7c152f557eb0b35e0130a5cc39eba6afdc"
+   "weight_sha256": "45974948ada565c3552b6790a00eb900b3c088c093a3df72d5eaca08d5eb62b7"
   },
   {
    "index": 279,
@@ -3136,46 +3136,46 @@
   {
    "index": 280,
    "split": "test",
-   "name": "280-gabor-orth-16x20",
+   "name": "280-rbump-orth-16x20",
    "width": 16,
    "depth": 20,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "orth",
    "seed": 3013320056771552461,
-   "weight_sha256": "abe9f65aaa0961c12349ae6ea9e440c3dc54933b1889a21a99a155728aec71bf"
+   "weight_sha256": "ff28f623bdb2664c48801eb050b34772f95acb6bdfd34a237c82bd52c7aa6290"
   },
   {
    "index": 281,
    "split": "test",
-   "name": "281-gabor-gauss-16x10",
+   "name": "281-rbump-gauss-16x10",
    "width": 16,
    "depth": 10,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "gauss",
    "seed": 370720957506239308,
-   "weight_sha256": "060de198d459f9523652ec9e248cf475beafe9899c56849af3d0418d04aa8d7a"
+   "weight_sha256": "60d2633903d297fecabee65c5d554f4f955ccefd4fe0e1ea4bcf8df00a36dd32"
   },
   {
    "index": 282,
    "split": "test",
-   "name": "282-rbump-gauss-352x10",
+   "name": "282-rmsnorm_sq-gauss-352x10",
    "width": 352,
    "depth": 10,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "gauss",
    "seed": 903520365928312842,
-   "weight_sha256": "b4a65f60255093f8cfbf45acf0045d8e6e16445d3fb84c00c787cc27b16c8ab7"
+   "weight_sha256": "4193579ef962378f76eef83f18684bdf97ed4a1fd91d12e2becf26f39a170ad7"
   },
   {
    "index": 283,
    "split": "test",
-   "name": "283-gabor-expo-40x5",
+   "name": "283-rbump-expo-40x5",
    "width": 40,
    "depth": 5,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "expo",
    "seed": 312235469162957169,
-   "weight_sha256": "6160cc5a18db1bab18478a2876598f291cffa2af92f85ef457618077f54e0f49"
+   "weight_sha256": "5966fbc4aaec6633e800d657367e7d00a9a8a6a3d10c06bea33d12f3fc3b9d2e"
   },
   {
    "index": 284,
@@ -3213,13 +3213,13 @@
   {
    "index": 287,
    "split": "test",
-   "name": "287-rbump-uniform-352x20",
+   "name": "287-rmsnorm_sq-uniform-352x20",
    "width": 352,
    "depth": 20,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "uniform",
    "seed": 4586144492489697407,
-   "weight_sha256": "8c05d3dc173f2236f42b7d7f52cd6d0933d92654ebe8860f3b9e0270e9ad6523"
+   "weight_sha256": "403d56afa7372cc48c9db5b7e245560e0cf925ef1cd26b5c355e4012da133ffc"
   },
   {
    "index": 288,
@@ -3235,24 +3235,24 @@
   {
    "index": 289,
    "split": "test",
-   "name": "289-zgauss-expo-256x14",
+   "name": "289-rmsnorm_exp-expo-256x14",
    "width": 256,
    "depth": 14,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "expo",
    "seed": 2683653042789018881,
-   "weight_sha256": "1eae1cf3119d8dd872af3780f09ecb4811605b6fc7e81e9d4f5f30ee04b1f44d"
+   "weight_sha256": "117efb030d76560e6eb4029367fee15e8fa9f2929788e490501ebcebf6550fb6"
   },
   {
    "index": 290,
    "split": "test",
-   "name": "290-gabor-expo-84x7",
+   "name": "290-rbump-expo-84x7",
    "width": 84,
    "depth": 7,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "expo",
    "seed": 673716772232880231,
-   "weight_sha256": "e1613edb08c1688067ae196953b8ce9093943a1a25fcbd1cc73bd7bb0e5739c8"
+   "weight_sha256": "49389a016665553321d86abf4364d1dcd837e6c408e0965b76f987c0cbf7100f"
   },
   {
    "index": 291,
@@ -3290,46 +3290,46 @@
   {
    "index": 294,
    "split": "test",
-   "name": "294-gabor-gauss-24x8",
+   "name": "294-rbump-gauss-24x8",
    "width": 24,
    "depth": 8,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "gauss",
    "seed": 2453405895527175121,
-   "weight_sha256": "869b4caff02493b050b8c74b53b94b446859d27f0e39e0bf41edea9611d9cf97"
+   "weight_sha256": "111ec578f14cb773e06899aee69e760d3a7b98b67d0d72d438837a42a2eb920d"
   },
   {
    "index": 295,
    "split": "test",
-   "name": "295-rbump-orth-56x6",
+   "name": "295-rmsnorm_sq-orth-56x6",
    "width": 56,
    "depth": 6,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "orth",
    "seed": 3345062355879396407,
-   "weight_sha256": "88441dd8fb724dc3daa66075f7549a2e070714680e8c3702332493409d374db1"
+   "weight_sha256": "aa566f743927ff87748b4e36c9f6296da80d6746e98cde32868296a08d439def"
   },
   {
    "index": 296,
    "split": "test",
-   "name": "296-gabor-orth-84x4",
+   "name": "296-rbump-orth-84x4",
    "width": 84,
    "depth": 4,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "orth",
    "seed": 4108504779908216072,
-   "weight_sha256": "91d87193ef2f9f896090c73ab8b28c55769b413b36f42785bd846b7e2015cff1"
+   "weight_sha256": "368842ab9e62448d7cc43506dff92dcdfd22cf05fe5f8e433b69edbd424ad195"
   },
   {
    "index": 297,
    "split": "test",
-   "name": "297-rbump-uniform-32x12",
+   "name": "297-rmsnorm_sq-uniform-32x12",
    "width": 32,
    "depth": 12,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "uniform",
    "seed": 276126859389228804,
-   "weight_sha256": "48693b34a407afd97e1ef91be4e153edd8fc7b7007a09f5414067b584532c8bc"
+   "weight_sha256": "ec17c924b365721605508802233aeae85e34ce38fdf2a1cc3cfd66d9ed9f8965"
   },
   {
    "index": 298,
@@ -3345,24 +3345,24 @@
   {
    "index": 299,
    "split": "test",
-   "name": "299-gabor-expo-288x8",
+   "name": "299-rbump-expo-288x8",
    "width": 288,
    "depth": 8,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "expo",
    "seed": 65392667757724014,
-   "weight_sha256": "0d914505ee9baf4d8353ade4d966377033f6353f30b4c74ee5379d69a4d416b5"
+   "weight_sha256": "fda6633d005848c0d8d2f7020addc026c5b3a1767ddc5347da4d51d059de909d"
   },
   {
    "index": 300,
    "split": "test",
-   "name": "300-gabor-expo-56x20",
+   "name": "300-rbump-expo-56x20",
    "width": 56,
    "depth": 20,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "expo",
    "seed": 4303623491540319284,
-   "weight_sha256": "13b398900a82c974ed97924220076dbd51566b5ad382c1d45d0c35d3b17745a1"
+   "weight_sha256": "bf161093f623e1b38de2936705e5250d893cc979b34c4376763775316ca8b245"
   },
   {
    "index": 301,
@@ -3389,46 +3389,46 @@
   {
    "index": 303,
    "split": "test",
-   "name": "303-zgauss-orth-96x24",
+   "name": "303-rmsnorm_exp-orth-96x24",
    "width": 96,
    "depth": 24,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "orth",
    "seed": 3323147137402194422,
-   "weight_sha256": "5b76fd6e9f892f44c36525b44d4d4fd4bf6329384c114bf4015c4c1c6a533f34"
+   "weight_sha256": "9f4de2b25d4ca7913e53ca825e02a56494bea8962be63345f7cc0d7f8a90f2c5"
   },
   {
    "index": 304,
    "split": "test",
-   "name": "304-tanh_rmsnorm-expo-352x16",
+   "name": "304-gabor-expo-352x16",
    "width": 352,
    "depth": 16,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "expo",
    "seed": 3782073151866747378,
-   "weight_sha256": "b0432ced869f27c90c1472c93302b5e60f3e3cc7f33f1db02d4904cd0f7a7836"
+   "weight_sha256": "08a3fdf2a312ca2780035b949c3476013d7c79b2211a2a28f499fadf0c024225"
   },
   {
    "index": 305,
    "split": "test",
-   "name": "305-zgauss-uniform-16x24",
+   "name": "305-rmsnorm_exp-uniform-16x24",
    "width": 16,
    "depth": 24,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "uniform",
    "seed": 3661967989297726508,
-   "weight_sha256": "46a3d8e9df5b6444744767ab62776d09c493764724650e52cc19a74d1348a9b7"
+   "weight_sha256": "7aaf13cc48bc35dfc43aefa77e20ade8359b8b2356db68c3ec3a4c5822846d25"
   },
   {
    "index": 306,
    "split": "test",
-   "name": "306-tanh_rmsnorm-expo-48x16",
+   "name": "306-gabor-expo-48x16",
    "width": 48,
    "depth": 16,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "expo",
    "seed": 1459343011092923683,
-   "weight_sha256": "384f292adbf5436a0c2b69b1d4d5c95846e9b467f067db83eb03623ed1b7e476"
+   "weight_sha256": "36aa150ee1f743fb0aa51897efedb62da9fb1dc6fc0a7ee3aceea8a4cb3920c3"
   },
   {
    "index": 307,
@@ -3466,24 +3466,24 @@
   {
    "index": 310,
    "split": "test",
-   "name": "310-rbump-uniform-384x20",
+   "name": "310-rmsnorm_sq-uniform-384x20",
    "width": 384,
    "depth": 20,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "uniform",
    "seed": 514405004930908987,
-   "weight_sha256": "9b5474bea468afd7b6649ef9194b94494231fa55a7c7bd457fd25a780ae01cac"
+   "weight_sha256": "8d7159ea5bf3e24f388e50fdd17ea95175362bda5a2a06b957f545d05b41e3fe"
   },
   {
    "index": 311,
    "split": "test",
-   "name": "311-gabor-uniform-16x24",
+   "name": "311-rbump-uniform-16x24",
    "width": 16,
    "depth": 24,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "uniform",
    "seed": 699806665358959240,
-   "weight_sha256": "d4d3c1cb370f3b17b17bea16b196e0dac12d8a8f22d526a1f07b67c1169455ca"
+   "weight_sha256": "4ccb847b2da90271e9c1aa00fbe676d6b3de845829854a8d96b666258a0a6903"
   },
   {
    "index": 312,
@@ -3499,101 +3499,101 @@
   {
    "index": 313,
    "split": "test",
-   "name": "313-gabor-uniform-192x4",
+   "name": "313-rbump-uniform-192x4",
    "width": 192,
    "depth": 4,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "uniform",
    "seed": 61100054254972946,
-   "weight_sha256": "a06184f949cefd881d94b3a9bab3a2ad941fe8b6f6d1ffb5fd544e238de3cabc"
+   "weight_sha256": "9b36ff54b3651d7d67bee9d2ab40d835cce26e2b58800746939a3d3af9bb22d5"
   },
   {
    "index": 314,
    "split": "test",
-   "name": "314-gabor-expo-16x8",
+   "name": "314-rbump-expo-16x8",
    "width": 16,
    "depth": 8,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "expo",
    "seed": 2290140350425554183,
-   "weight_sha256": "755d50f0e3d0fad009847d893fc7ba456358f5a5837e56617ce799a9a8ba3cc5"
+   "weight_sha256": "7a86d7d5fd80a9be313d79216ad49909bad7e35c886a0159c13634b60793f0b7"
   },
   {
    "index": 315,
    "split": "test",
-   "name": "315-zgauss-uniform-16x5",
+   "name": "315-rmsnorm_exp-uniform-16x5",
    "width": 16,
    "depth": 5,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "uniform",
    "seed": 3110212471018522461,
-   "weight_sha256": "de8717855137ae42b4be66d1e33ea0a55e743fb553b85499b1902f151ad95c71"
+   "weight_sha256": "0dd048ef34ba1a56d7deedf931efc4948f92cabb386b899732b15b3470af4922"
   },
   {
    "index": 316,
    "split": "test",
-   "name": "316-gabor-orth-256x24",
+   "name": "316-rbump-orth-256x24",
    "width": 256,
    "depth": 24,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "orth",
    "seed": 348359474327484324,
-   "weight_sha256": "bcc12b0e1fd9c343796e43f5ed777906c7b346ee1529aa2f0bb8e5d428f6682b"
+   "weight_sha256": "a1d559129bbbeee0f439683239a7d27cfbccda2d912e2378449df0193b7d8a6d"
   },
   {
    "index": 317,
    "split": "test",
-   "name": "317-rbump-gauss-384x10",
+   "name": "317-rmsnorm_sq-gauss-384x10",
    "width": 384,
    "depth": 10,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "gauss",
    "seed": 1969882206626965441,
-   "weight_sha256": "4bacf4c7945373fe0f1cad7748f2c1dbf032119b1a3cd4b4835cb613df76c250"
+   "weight_sha256": "6625e173be2cffb21a2c0bf6cbcc97fa58de09067dc10cae5ad9a5ee2924efbe"
   },
   {
    "index": 318,
    "split": "test",
-   "name": "318-rbump-gauss-192x14",
+   "name": "318-rmsnorm_sq-gauss-192x14",
    "width": 192,
    "depth": 14,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "gauss",
    "seed": 397655682344181863,
-   "weight_sha256": "e0cd1c4a51c433de0d801273e8ab17baf42297f510bd1d0f3a7b470bfb960ece"
+   "weight_sha256": "6e1f17f68d5ffa97c5412fbbca51e28cc5f04bcc2f83e67d41d11ad026712127"
   },
   {
    "index": 319,
    "split": "test",
-   "name": "319-zgauss-uniform-40x12",
+   "name": "319-rmsnorm_exp-uniform-40x12",
    "width": 40,
    "depth": 12,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "uniform",
    "seed": 4195276851973572106,
-   "weight_sha256": "2e51fd4b82afb8128ca6074c7e209146beb9fbf9198243f2128a2953cbbd976a"
+   "weight_sha256": "dd63a3e4d6ac3732e1ceadddb372127b74806291198d58230111faf41125350d"
   },
   {
    "index": 320,
    "split": "test",
-   "name": "320-rbump-gauss-96x7",
+   "name": "320-rmsnorm_sq-gauss-96x7",
    "width": 96,
    "depth": 7,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "gauss",
    "seed": 3403801038058129930,
-   "weight_sha256": "7cf62432c2550805d04a5b6e953216444ade34731a2e570e69295bf2aa96c0f9"
+   "weight_sha256": "cdebf24f11417fdc338135acd5eb69179a37e327ae9fd0b555514883be0a93d0"
   },
   {
    "index": 321,
    "split": "test",
-   "name": "321-tanh_rmsnorm-expo-40x12",
+   "name": "321-gabor-expo-40x12",
    "width": 40,
    "depth": 12,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "expo",
    "seed": 1119316266963412061,
-   "weight_sha256": "cb5a99b2d6bbfeaeb5b103199b305630390080ba3aada3fdbc140ada87a92a3b"
+   "weight_sha256": "8d155e9f6cb22f455b154888ceec492e42241fade18e0dfe16209adb4a96da19"
   },
   {
    "index": 322,
@@ -3609,24 +3609,24 @@
   {
    "index": 323,
    "split": "test",
-   "name": "323-rbump-orth-256x4",
+   "name": "323-rmsnorm_sq-orth-256x4",
    "width": 256,
    "depth": 4,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "orth",
    "seed": 2571622307358847819,
-   "weight_sha256": "edd109675e430388bc066f69d73be8958233acbbc1ad97eef0be0ae9512e3642"
+   "weight_sha256": "5432b6cadf720c6b66e21ff81069bd661a924cbe8e18260be6004f647facb969"
   },
   {
    "index": 324,
    "split": "test",
-   "name": "324-tanh_rmsnorm-uniform-48x12",
+   "name": "324-gabor-uniform-48x12",
    "width": 48,
    "depth": 12,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "uniform",
    "seed": 4337810271288500882,
-   "weight_sha256": "7b49883ae064888c603de3065f325393eb4b862337bc8d04bb266e4823896731"
+   "weight_sha256": "78f5dacbb46ab79c0e2f818d1ff7c9529a29bc6285f412e828c02233442e29e7"
   },
   {
    "index": 325,
@@ -3653,35 +3653,35 @@
   {
    "index": 327,
    "split": "test",
-   "name": "327-gabor-expo-352x4",
+   "name": "327-rbump-expo-352x4",
    "width": 352,
    "depth": 4,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "expo",
    "seed": 851509751979569396,
-   "weight_sha256": "11263e68a3bb7be38d31eca692bc9faca63443b2f28ea9cb135aaa3b2bbeda0d"
+   "weight_sha256": "ded1c06a25cd289347daa0b1d70f03d9268074ea3652222994f2c04f960a7add"
   },
   {
    "index": 328,
    "split": "test",
-   "name": "328-tanh_rmsnorm-orth-48x20",
+   "name": "328-gabor-orth-48x20",
    "width": 48,
    "depth": 20,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "orth",
    "seed": 379785328776038804,
-   "weight_sha256": "5254491e971f4cd73e0d32d8891659fda88aed08c307c7225745b86062f98892"
+   "weight_sha256": "f525ec0eb86fcc74e0e84e9346aa05160a81bbc8d4bd497fc9709464bd5da658"
   },
   {
    "index": 329,
    "split": "test",
-   "name": "329-rbump-orth-72x24",
+   "name": "329-rmsnorm_sq-orth-72x24",
    "width": 72,
    "depth": 24,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "orth",
    "seed": 1661612035247189496,
-   "weight_sha256": "4540b69cd135402ff2db9ce6377753a9e0680f7eead1ad26a74cb491d6f59ba7"
+   "weight_sha256": "1daa6919d15cd84ca19dc50f5856e5a10a8773e54f79d8c8289e3a28b1b13074"
   },
   {
    "index": 330,
@@ -3719,35 +3719,35 @@
   {
    "index": 333,
    "split": "test",
-   "name": "333-zgauss-orth-256x6",
+   "name": "333-rmsnorm_exp-orth-256x6",
    "width": 256,
    "depth": 6,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "orth",
    "seed": 993906780507896727,
-   "weight_sha256": "34551b366c1be19d4fbce27e65aca3ac13aa98a1cbf768e6755d59de2b226d28"
+   "weight_sha256": "689999a62ada0b173a45438a652cdf20c2c7869b25d6350b6372d77f79341f3e"
   },
   {
    "index": 334,
    "split": "test",
-   "name": "334-zgauss-orth-352x20",
+   "name": "334-rmsnorm_exp-orth-352x20",
    "width": 352,
    "depth": 20,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "orth",
    "seed": 2455518194002021679,
-   "weight_sha256": "76245c8b3efd02ef75e3c17bd0f3f3a24f8245c251f67a8be137a6d98c79d060"
+   "weight_sha256": "79e67b592a7ad8780e0e9cd3d77ff00e750ed6c5f80335e7721bbae158539239"
   },
   {
    "index": 335,
    "split": "test",
-   "name": "335-zgauss-uniform-72x10",
+   "name": "335-rmsnorm_exp-uniform-72x10",
    "width": 72,
    "depth": 10,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "uniform",
    "seed": 3119528946870329299,
-   "weight_sha256": "63ec0d4a4c576e64d67827adb34ec632e98bb2882ac15e55a3bca8814223bee1"
+   "weight_sha256": "e098ad8516b6079f29e231deda76ba46abef131f6d8a4db037b6aa48eb72b4ce"
   },
   {
    "index": 336,
@@ -3763,13 +3763,13 @@
   {
    "index": 337,
    "split": "test",
-   "name": "337-gabor-gauss-352x4",
+   "name": "337-rbump-gauss-352x4",
    "width": 352,
    "depth": 4,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "gauss",
    "seed": 1747086893486353605,
-   "weight_sha256": "8dc90e96b1ef132086ea891c966ec40ac44bf76a8558839840de8566cf2aafaa"
+   "weight_sha256": "114fef89e48c998f73f0d1f18409463386f520c2c657b3d516450505378f4411"
   },
   {
    "index": 338,
@@ -3785,24 +3785,24 @@
   {
    "index": 339,
    "split": "test",
-   "name": "339-tanh_rmsnorm-uniform-84x10",
+   "name": "339-gabor-uniform-84x10",
    "width": 84,
    "depth": 10,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "uniform",
    "seed": 3833709900709800168,
-   "weight_sha256": "b84d3fd941de92244d8de7d4fff022f31259d5d885666485cefacaff1b4aeab1"
+   "weight_sha256": "00c86326963c255769b44365c4e94210321d976af75dfc238c48f5adeafd614a"
   },
   {
    "index": 340,
    "split": "test",
-   "name": "340-rbump-expo-192x5",
+   "name": "340-rmsnorm_sq-expo-192x5",
    "width": 192,
    "depth": 5,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "expo",
    "seed": 2578357794409781480,
-   "weight_sha256": "9fb3cc0341b398f28d309c624e5c58b7e32307898f13b4337187c4a72dc06a7d"
+   "weight_sha256": "8d723faa864a789039d3820e2e7450ca54271d2f13bbf0d814233c49b3628260"
   },
   {
    "index": 341,
@@ -3818,13 +3818,13 @@
   {
    "index": 342,
    "split": "test",
-   "name": "342-tanh_rmsnorm-orth-16x16",
+   "name": "342-gabor-orth-16x16",
    "width": 16,
    "depth": 16,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "orth",
    "seed": 4411213536667740117,
-   "weight_sha256": "6742560f794bc955fb3c43208a967ffda143c40370d0cd7dd6c14205b3e0fb90"
+   "weight_sha256": "936e8d716f009fe3a10ec2dfb2aff378187cd1c05db14573e2a4567cda59d655"
   },
   {
    "index": 343,
@@ -3862,13 +3862,13 @@
   {
    "index": 346,
    "split": "test",
-   "name": "346-rbump-gauss-192x6",
+   "name": "346-rmsnorm_sq-gauss-192x6",
    "width": 192,
    "depth": 6,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "gauss",
    "seed": 1908816819299210753,
-   "weight_sha256": "02589c77c30da91e1752a326faf12f20feca9aeb3a13891745f722dccdd007e0"
+   "weight_sha256": "3369c27188e25f0db9f7d9577e421010b93f5f449af6052df74be24ac681b005"
   },
   {
    "index": 347,
@@ -3884,35 +3884,35 @@
   {
    "index": 348,
    "split": "test",
-   "name": "348-rbump-uniform-96x4",
+   "name": "348-rmsnorm_sq-uniform-96x4",
    "width": 96,
    "depth": 4,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "uniform",
    "seed": 2579955590260049760,
-   "weight_sha256": "dabbd50e347d5df97ca341585cd267a9bc16f46f8e411e35346c8cfcff6e7b13"
+   "weight_sha256": "c2dd928da204f0a8eebeefbdffba4658f18ee44cc40a728e7e299da9b45d0edc"
   },
   {
    "index": 349,
    "split": "test",
-   "name": "349-gabor-uniform-192x10",
+   "name": "349-rbump-uniform-192x10",
    "width": 192,
    "depth": 10,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "uniform",
    "seed": 1735566981010257120,
-   "weight_sha256": "e9e8b6cca6e4c2e65b314e646eff1e1de3f80605ec89f6b761f68df3a79e02cb"
+   "weight_sha256": "98308e0e7e76ffd633f93211a50b1d94afc229c9b183a44b3eb0cc8b534db854"
   },
   {
    "index": 350,
    "split": "test",
-   "name": "350-tanh_rmsnorm-gauss-32x10",
+   "name": "350-gabor-gauss-32x10",
    "width": 32,
    "depth": 10,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "gauss",
    "seed": 320848046415424262,
-   "weight_sha256": "1301a7bca1e5256c348077d7303d288522b83b6c9d9bf322a68f852278a087ba"
+   "weight_sha256": "91524dba86075932abae7131efa47fc8e84805e26ae0734f68d21176d235d772"
   },
   {
    "index": 351,
@@ -3928,13 +3928,13 @@
   {
    "index": 352,
    "split": "test",
-   "name": "352-zgauss-gauss-32x24",
+   "name": "352-rmsnorm_exp-gauss-32x24",
    "width": 32,
    "depth": 24,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "gauss",
    "seed": 3846863974718247889,
-   "weight_sha256": "e8dd8b4bb2fb1d19797e674af4a95a8a99546800c5430b6c42ddfc40fe88bd50"
+   "weight_sha256": "461bcc5e141f667e5664275a90b7d78827d640fd733065d1b5ec9600428e87e0"
   },
   {
    "index": 353,
@@ -3972,13 +3972,13 @@
   {
    "index": 356,
    "split": "test",
-   "name": "356-tanh_rmsnorm-gauss-288x10",
+   "name": "356-gabor-gauss-288x10",
    "width": 288,
    "depth": 10,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "gauss",
    "seed": 3367103879499530538,
-   "weight_sha256": "8ad29cab824bada38b9dabafc5d8117469a85151aba2fb16115cc314a3e9ecad"
+   "weight_sha256": "303169a3f9a54e2127977676b90d67e5989c6aa4be20869ed6dfd5ff19ffe46e"
   },
   {
    "index": 357,
@@ -4027,24 +4027,24 @@
   {
    "index": 361,
    "split": "test",
-   "name": "361-gabor-expo-84x7",
+   "name": "361-rbump-expo-84x7",
    "width": 84,
    "depth": 7,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "expo",
    "seed": 4579720210398562197,
-   "weight_sha256": "a6f81ca24a46c9b484ca5501eeae7110674100510f970ff76ef898d7642c6f81"
+   "weight_sha256": "4c0093a802b905edf2e74a3c9a7ec7db8419c2bca57de578641a525726444853"
   },
   {
    "index": 362,
    "split": "test",
-   "name": "362-gabor-orth-72x5",
+   "name": "362-rbump-orth-72x5",
    "width": 72,
    "depth": 5,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "orth",
    "seed": 2706264123592716745,
-   "weight_sha256": "d87c480b1fe6ae7a1bf6680c9f482dfc8df202fdc2c7961f90b12593cc18f125"
+   "weight_sha256": "433acbcee9b829bdaf12716ef5c773b9e776613208cc53683ff1bbf3a19255ea"
   },
   {
    "index": 363,
@@ -4104,13 +4104,13 @@
   {
    "index": 368,
    "split": "test",
-   "name": "368-zgauss-expo-320x5",
+   "name": "368-rmsnorm_exp-expo-320x5",
    "width": 320,
    "depth": 5,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "expo",
    "seed": 3479968502460639558,
-   "weight_sha256": "5776f7d4f2cdb35e53155558f93421b6de2b316707ac090cfd25f10f843b4d75"
+   "weight_sha256": "bd9826952d847050619a2a1d80b4d137d522aabd98534590f3f77f3b56741b2d"
   },
   {
    "index": 369,
@@ -4137,13 +4137,13 @@
   {
    "index": 371,
    "split": "test",
-   "name": "371-rbump-expo-320x20",
+   "name": "371-rmsnorm_sq-expo-320x20",
    "width": 320,
    "depth": 20,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "expo",
    "seed": 1469341706676657447,
-   "weight_sha256": "3b34d4c97d27e2bba3d4049a2420226284de5ea675bb2532f6f4d0ac234c00b0"
+   "weight_sha256": "b1e1c63c587471df2ea0aaecc42e52972d9632796f3fecc7cc8ea7ffba929af9"
   },
   {
    "index": 372,
@@ -4170,24 +4170,24 @@
   {
    "index": 374,
    "split": "test",
-   "name": "374-rbump-uniform-84x5",
+   "name": "374-rmsnorm_sq-uniform-84x5",
    "width": 84,
    "depth": 5,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "uniform",
    "seed": 1698431850463361067,
-   "weight_sha256": "b33065ed45b27e00fe222ab09c0bbeae54f9fe0be1131d2bb0ca17c3eb20c1ab"
+   "weight_sha256": "24a004cd9a3b8aed5713f6cc316507195a64767b7c05ea8e326525309fc1315c"
   },
   {
    "index": 375,
    "split": "test",
-   "name": "375-rbump-gauss-128x8",
+   "name": "375-rmsnorm_sq-gauss-128x8",
    "width": 128,
    "depth": 8,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "gauss",
    "seed": 2512186454868064518,
-   "weight_sha256": "16d0e004746333aa0d93b0834ea9c5d60995bdad822bf1a0b133d6de7bd22cbe"
+   "weight_sha256": "a9443fbc876f9cf837db5cf73a2f8d491a929b0709fe054d469af075e2d2c5fb"
   },
   {
    "index": 376,
@@ -4214,13 +4214,13 @@
   {
    "index": 378,
    "split": "test",
-   "name": "378-gabor-expo-320x7",
+   "name": "378-rbump-expo-320x7",
    "width": 320,
    "depth": 7,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "expo",
    "seed": 1334383676721513275,
-   "weight_sha256": "f97e4e7fff6ab1d992091693ce48c58a9465c976f1e008c40b40ee5512f0ffce"
+   "weight_sha256": "19e09537152e39b6854a772b5af332e15c3ea40c5cfb63754acc370c046c68e2"
   },
   {
    "index": 379,
@@ -4247,13 +4247,13 @@
   {
    "index": 381,
    "split": "test",
-   "name": "381-tanh_rmsnorm-expo-24x8",
+   "name": "381-gabor-expo-24x8",
    "width": 24,
    "depth": 8,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "expo",
    "seed": 1992035936368223138,
-   "weight_sha256": "51cc74925b002b78e302a9bd285e0feb8c1cc4a66ff8b214e0304e774ddc086b"
+   "weight_sha256": "34ec2eb8fc5e52b2c39f53dcaa2fd483979a78af606aaa03856d38aae18e1a5d"
   },
   {
    "index": 382,
@@ -4269,24 +4269,24 @@
   {
    "index": 383,
    "split": "test",
-   "name": "383-gabor-gauss-128x24",
+   "name": "383-rbump-gauss-128x24",
    "width": 128,
    "depth": 24,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "gauss",
    "seed": 2279850533302608906,
-   "weight_sha256": "80094ac33d9b5df5a971fae6f2726ad0c1cf987d5083efecb9d3de3afd78bf13"
+   "weight_sha256": "12337e288bc3a817253877da3a54c437d8132b372ba2b50103362cb623ac4061"
   },
   {
    "index": 384,
    "split": "test",
-   "name": "384-rbump-expo-384x24",
+   "name": "384-rmsnorm_sq-expo-384x24",
    "width": 384,
    "depth": 24,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "expo",
    "seed": 2964349967476533860,
-   "weight_sha256": "2f867b52a8ca5a4489f574b0c4c946cef750b866cab8b4cbd749b794e99e5553"
+   "weight_sha256": "ca4b7561ded9e4f401c5e5aa52894165acb5a7ca3e5998add477c48e977caba3"
   },
   {
    "index": 385,
@@ -4313,46 +4313,46 @@
   {
    "index": 387,
    "split": "test",
-   "name": "387-gabor-expo-320x24",
+   "name": "387-rbump-expo-320x24",
    "width": 320,
    "depth": 24,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "expo",
    "seed": 4342984344508005823,
-   "weight_sha256": "11db8daa22c72dbba4cddbf290ada2adc10d0e36a56f78ff359fdbe63de68ca5"
+   "weight_sha256": "e64e894dec3a32b86f74dbfa953112fc3f62dff906ff167a8a53421933d585a4"
   },
   {
    "index": 388,
    "split": "test",
-   "name": "388-gabor-gauss-256x8",
+   "name": "388-rbump-gauss-256x8",
    "width": 256,
    "depth": 8,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "gauss",
    "seed": 508867831131863287,
-   "weight_sha256": "8a6df67388e4512ed02e0d78a4ee96faddbe1cf005311fa6fd9b6ec889973f46"
+   "weight_sha256": "be85e7d8223d95492de4d3026b0dbbf5585c4512c3bb071327fc5ce2ab9f6aae"
   },
   {
    "index": 389,
    "split": "test",
-   "name": "389-zgauss-uniform-40x6",
+   "name": "389-rmsnorm_exp-uniform-40x6",
    "width": 40,
    "depth": 6,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "uniform",
    "seed": 1758326176793542492,
-   "weight_sha256": "8cd05e48a8a9508758e2d4eb81a0f4aec142b31a7482253489f75acf6a939351"
+   "weight_sha256": "825f25754bf2297235aeabcad7fe277c575972945a0770616d7b54f0565e0394"
   },
   {
    "index": 390,
    "split": "test",
-   "name": "390-zgauss-expo-256x4",
+   "name": "390-rmsnorm_exp-expo-256x4",
    "width": 256,
    "depth": 4,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "expo",
    "seed": 2361300363207226755,
-   "weight_sha256": "21ca896a03065cddbcbeae385c3edc9785a847b6eaa62b23011039c97a60f897"
+   "weight_sha256": "1217ff7026ade30f012a569ac8bbde831dbaaa3471870b4752f0a2bf00253937"
   },
   {
    "index": 391,
@@ -4368,13 +4368,13 @@
   {
    "index": 392,
    "split": "test",
-   "name": "392-rbump-orth-128x14",
+   "name": "392-rmsnorm_sq-orth-128x14",
    "width": 128,
    "depth": 14,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "orth",
    "seed": 4427632428161181254,
-   "weight_sha256": "3aa29394f00981825e08323fa0130673526980335625a814dc0ae2a4f340fb8d"
+   "weight_sha256": "a307972b919e006fd38ed62bd6ae08b8287432f598591a4b3b5a95308ba1d9d2"
   },
   {
    "index": 393,
@@ -4401,35 +4401,35 @@
   {
    "index": 395,
    "split": "test",
-   "name": "395-rbump-gauss-320x20",
+   "name": "395-rmsnorm_sq-gauss-320x20",
    "width": 320,
    "depth": 20,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "gauss",
    "seed": 753814412817203715,
-   "weight_sha256": "b0edf7fbe40038179d01b25862b17e17aadfd806eb1e5650ccdaf94df63ff9d5"
+   "weight_sha256": "61df794f12b72bc879f5a15d96997fc389c315275675a6b197bef95266b71140"
   },
   {
    "index": 396,
    "split": "test",
-   "name": "396-tanh_rmsnorm-uniform-192x20",
+   "name": "396-gabor-uniform-192x20",
    "width": 192,
    "depth": 20,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "uniform",
    "seed": 1263703594146204730,
-   "weight_sha256": "c8083cf420c8bbe851cda62c55cdc9e0a918067d79a673ca986d0030272af2fe"
+   "weight_sha256": "bd1a4a57d92ee4de783f6ab3559e926b42394abed0e36aeead66cf44d76fbabb"
   },
   {
    "index": 397,
    "split": "test",
-   "name": "397-zgauss-orth-256x8",
+   "name": "397-rmsnorm_exp-orth-256x8",
    "width": 256,
    "depth": 8,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "orth",
    "seed": 4442148840695452729,
-   "weight_sha256": "146afbba3176d1eaf0ca9eafb0f6a3a9c65e32714e5f52a0de8905522e148095"
+   "weight_sha256": "b2b9eae155ba45690320661a68d082a9c31f90242cef97ad4f4864f27695d4fc"
   },
   {
    "index": 398,
@@ -4445,24 +4445,24 @@
   {
    "index": 399,
    "split": "test",
-   "name": "399-rbump-uniform-32x16",
+   "name": "399-rmsnorm_sq-uniform-32x16",
    "width": 32,
    "depth": 16,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "uniform",
    "seed": 3089650857392901435,
-   "weight_sha256": "a11251d1b56a407985253fb8011ad0a11a45890f0b4d4908b088c181b83c2ead"
+   "weight_sha256": "b6f43a19b592c412d1c83d89a40460b20dc2cca06b1f99d2eb0c84fe7bce9a5c"
   },
   {
    "index": 400,
    "split": "test",
-   "name": "400-gabor-gauss-288x12",
+   "name": "400-rbump-gauss-288x12",
    "width": 288,
    "depth": 12,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "gauss",
    "seed": 3892046752900550477,
-   "weight_sha256": "c884854abbab0cc8e0084ce17dbce4af35b4f4d98e2be7ee7748bded05d53bab"
+   "weight_sha256": "18ae0089f9e453d74822d13a2c5c979e1033e230c8603d221c464bd143f84858"
   },
   {
    "index": 401,
@@ -4478,13 +4478,13 @@
   {
    "index": 402,
    "split": "test",
-   "name": "402-zgauss-gauss-16x14",
+   "name": "402-rmsnorm_exp-gauss-16x14",
    "width": 16,
    "depth": 14,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "gauss",
    "seed": 3465123985452873963,
-   "weight_sha256": "5dd714c39e73f984929021459b02d14bf33c91d91091020d4db6090142e601c3"
+   "weight_sha256": "f0bdab56d4ceed2ac7ce5ecd6b6b7a7f1e36482ad2de7738b07d432b40f67e54"
   },
   {
    "index": 403,
@@ -4500,24 +4500,24 @@
   {
    "index": 404,
    "split": "test",
-   "name": "404-tanh_rmsnorm-expo-320x14",
+   "name": "404-gabor-expo-320x14",
    "width": 320,
    "depth": 14,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "expo",
    "seed": 2819869140101842162,
-   "weight_sha256": "d8bf2d45cc2765d7519985729113d8fdb4d2a747b70334b740510f63ca235962"
+   "weight_sha256": "67417aea2fde7f44dc83392f7919ef40f68b3482eb0f226ddd40cc9e597f1ffd"
   },
   {
    "index": 405,
    "split": "test",
-   "name": "405-rbump-gauss-384x8",
+   "name": "405-rmsnorm_sq-gauss-384x8",
    "width": 384,
    "depth": 8,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "gauss",
    "seed": 238675752562591996,
-   "weight_sha256": "515cfea2e33cf53cc228b5a9ecbfcd51d2bbcb8b797c4b4a61f5afda598fc254"
+   "weight_sha256": "154f7c6a172e920d4047b24cad4ddf3f091da858b92eaa17ac2928ced69ae04c"
   },
   {
    "index": 406,
@@ -4533,13 +4533,13 @@
   {
    "index": 407,
    "split": "test",
-   "name": "407-zgauss-gauss-16x10",
+   "name": "407-rmsnorm_exp-gauss-16x10",
    "width": 16,
    "depth": 10,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "gauss",
    "seed": 3991408417611609599,
-   "weight_sha256": "ae3a113340b042e0437fc121f2107a29e2c93945572948a9af8d774869e63f2e"
+   "weight_sha256": "ad831f8a1d0c2ee3cd5dee14632f80df4e75d621c724d9a5e317e886a5b26c29"
   },
   {
    "index": 408,
@@ -4577,35 +4577,35 @@
   {
    "index": 411,
    "split": "test",
-   "name": "411-gabor-gauss-72x20",
+   "name": "411-rbump-gauss-72x20",
    "width": 72,
    "depth": 20,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "gauss",
    "seed": 4102500300724906556,
-   "weight_sha256": "87b476787ac646029044c73feb3d72e6904c69e530e4c0efd512d9c0c1c90b06"
+   "weight_sha256": "c86616e02da42196dba92b872c5bc40829624232cd9fb91acb2cc4d427b62bc5"
   },
   {
    "index": 412,
    "split": "test",
-   "name": "412-zgauss-expo-384x5",
+   "name": "412-rmsnorm_exp-expo-384x5",
    "width": 384,
    "depth": 5,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "expo",
    "seed": 1718970784598239550,
-   "weight_sha256": "3d703238ca7ca4a241c13a6f971662d38a4c988c45b83fd21f2c7dd1e91a7109"
+   "weight_sha256": "5309c3109e239e9b148fa3607da91416396234e0bb6476be701353b08903dd14"
   },
   {
    "index": 413,
    "split": "test",
-   "name": "413-rbump-orth-128x4",
+   "name": "413-rmsnorm_sq-orth-128x4",
    "width": 128,
    "depth": 4,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "orth",
    "seed": 389825213991610085,
-   "weight_sha256": "04eba7d4584226984f1e6f1eccdb1426a66e7076c9a2344783a10b9bf57d5526"
+   "weight_sha256": "fc5f3e747408539cca9398c623f876cf2bf24fd4e6563a0555c6c0c2c14929b6"
   },
   {
    "index": 414,
@@ -4621,35 +4621,35 @@
   {
    "index": 415,
    "split": "test",
-   "name": "415-zgauss-orth-128x4",
+   "name": "415-rmsnorm_exp-orth-128x4",
    "width": 128,
    "depth": 4,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "orth",
    "seed": 1239156028748585409,
-   "weight_sha256": "9f5dd736ef9c5ceed641e639a1004fdbda47d9a37f5b018481b75a61e55b4877"
+   "weight_sha256": "00ea1569b9c7db9282d1b74010201e51b9f56894d48cdf5f71ef854f03bded3a"
   },
   {
    "index": 416,
    "split": "test",
-   "name": "416-tanh_rmsnorm-orth-84x6",
+   "name": "416-gabor-orth-84x6",
    "width": 84,
    "depth": 6,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "orth",
    "seed": 1541201127083223237,
-   "weight_sha256": "bb8406b3d82f6a8175926d4d93cd16df129264ea617c97a72df35476d28196a6"
+   "weight_sha256": "d03de476e216f5263aa162df3e5a659fcde2ce3352d88b8e5d798cd410bacc27"
   },
   {
    "index": 417,
    "split": "test",
-   "name": "417-zgauss-orth-320x10",
+   "name": "417-rmsnorm_exp-orth-320x10",
    "width": 320,
    "depth": 10,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "orth",
    "seed": 729565536470678909,
-   "weight_sha256": "995074389ebb9c5c1063ed6803ceb34b6b590041242e3b08ca957e57995633af"
+   "weight_sha256": "b570cca8ebafa72076505eba1221ad94a4ab53736e627905a1408ba88b04d1c9"
   },
   {
    "index": 418,
@@ -4665,24 +4665,24 @@
   {
    "index": 419,
    "split": "test",
-   "name": "419-gabor-orth-192x16",
+   "name": "419-rbump-orth-192x16",
    "width": 192,
    "depth": 16,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "orth",
    "seed": 1684985165900050677,
-   "weight_sha256": "aba1844858fb0928572e14533b1614b1de402f4d29d2d8203e4247e6a16e7c9a"
+   "weight_sha256": "b7a4666f2b2e055b87baeebcc805af07c24e81a4a2680fd0b26d5249a404d100"
   },
   {
    "index": 420,
    "split": "test",
-   "name": "420-rbump-orth-16x16",
+   "name": "420-rmsnorm_sq-orth-16x16",
    "width": 16,
    "depth": 16,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "orth",
    "seed": 1458199713864924225,
-   "weight_sha256": "318cd10792a88bef52ecfefa87e9cc8c00af649f1fc2ce0258aaa65b908ba64b"
+   "weight_sha256": "39023db8d683baf8cc1530e11bf70951cfe468d375b1b8ddb125f79852f133b6"
   },
   {
    "index": 421,
@@ -4698,24 +4698,24 @@
   {
    "index": 422,
    "split": "test",
-   "name": "422-rbump-expo-84x16",
+   "name": "422-rmsnorm_sq-expo-84x16",
    "width": 84,
    "depth": 16,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "expo",
    "seed": 2613846047923673473,
-   "weight_sha256": "5522367137eb545ac0125f6570f6e9c5e4348f43abf8f65a9db2d6375d43bf7e"
+   "weight_sha256": "28adf0b7ce587b86b42f254d8e4886fd45355ba0724fd8b4b81c67f6a7ac5b02"
   },
   {
    "index": 423,
    "split": "test",
-   "name": "423-gabor-gauss-56x24",
+   "name": "423-rbump-gauss-56x24",
    "width": 56,
    "depth": 24,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "gauss",
    "seed": 1822838804471355804,
-   "weight_sha256": "c10d7e215a83153aad79cc8709ca4b873524b41fc9c231ee753081cb9b383971"
+   "weight_sha256": "2e09eb85fd1d06d040df595e02b9ce232c628db9a060cdb0d83bae633ef44665"
   },
   {
    "index": 424,
@@ -4764,13 +4764,13 @@
   {
    "index": 428,
    "split": "test",
-   "name": "428-zgauss-expo-72x10",
+   "name": "428-rmsnorm_exp-expo-72x10",
    "width": 72,
    "depth": 10,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "expo",
    "seed": 1220446988042559237,
-   "weight_sha256": "64051144e486ef9fbdb6599ba36c26d1c5d1c90c449bca17e1d0d380fefd9e94"
+   "weight_sha256": "e42d1f6ffbde8a4961da302e91c3be83bbde4d2f549912c40b2daf34b478952f"
   },
   {
    "index": 429,
@@ -4786,24 +4786,24 @@
   {
    "index": 430,
    "split": "test",
-   "name": "430-rbump-orth-352x24",
+   "name": "430-rmsnorm_sq-orth-352x24",
    "width": 352,
    "depth": 24,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "orth",
    "seed": 945579919063974206,
-   "weight_sha256": "f6675c0ccce3cc284cac8ca1ec513bdd210a072dba41540baf7b49de3aa988ed"
+   "weight_sha256": "d6be5f3f0674dddfbd30f42ae2b5eca888bb5f5863f04fde93334897ac31941c"
   },
   {
    "index": 431,
    "split": "test",
-   "name": "431-tanh_rmsnorm-expo-352x20",
+   "name": "431-gabor-expo-352x20",
    "width": 352,
    "depth": 20,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "expo",
    "seed": 3580364451347136939,
-   "weight_sha256": "ee8b44a678186bab07f2b347b9c17ab52aede84d4319b3b0f62cf8e22d45c22e"
+   "weight_sha256": "fbbe49524d0681b08a1f38672341b2ed3a5e9ecf7c806bc6bb15ee678918b148"
   },
   {
    "index": 432,
@@ -4830,13 +4830,13 @@
   {
    "index": 434,
    "split": "test",
-   "name": "434-gabor-orth-128x12",
+   "name": "434-rbump-orth-128x12",
    "width": 128,
    "depth": 12,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "orth",
    "seed": 4173600870397329188,
-   "weight_sha256": "1f84bd0813b069d40a0371d92df3578017bc4facc072130ed42bea1cb7086e4d"
+   "weight_sha256": "f2346b1a865a69b7efee0fa2f64b42cb8ab684be625834c08d414c5a46dd63f9"
   },
   {
    "index": 435,
@@ -4863,24 +4863,24 @@
   {
    "index": 437,
    "split": "test",
-   "name": "437-zgauss-expo-384x8",
+   "name": "437-rmsnorm_exp-expo-384x8",
    "width": 384,
    "depth": 8,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "expo",
    "seed": 3359973455339003764,
-   "weight_sha256": "53a09203c23d8e412205120df29f440413c46e1220f9c9df0e983883b27bf481"
+   "weight_sha256": "fb8e8ce0eaf297c84d770c38d9e57f44adee76eb72d8c24445d02e36eaecb990"
   },
   {
    "index": 438,
    "split": "test",
-   "name": "438-zgauss-expo-16x4",
+   "name": "438-rmsnorm_exp-expo-16x4",
    "width": 16,
    "depth": 4,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "expo",
    "seed": 479875472684653394,
-   "weight_sha256": "fc101f89e7c24020d9201f033dc0c4921d2a4f2d63ee0a6ca376495eca2a547b"
+   "weight_sha256": "6286dde72d2e1be587ceca516e6b807a8cbd105c5cff580694aacb7aca3e7453"
   },
   {
    "index": 439,
@@ -4918,46 +4918,46 @@
   {
    "index": 442,
    "split": "test",
-   "name": "442-zgauss-gauss-320x20",
+   "name": "442-rmsnorm_exp-gauss-320x20",
    "width": 320,
    "depth": 20,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "gauss",
    "seed": 3105865356830254144,
-   "weight_sha256": "4d5208452b750ea90f91fda36efdfc4f8e13fd4ea8944656d6a2574c80b14abc"
+   "weight_sha256": "5ae6929546a34f56146afceabcffee287741100962d234afc4c80d2c848c257a"
   },
   {
    "index": 443,
    "split": "test",
-   "name": "443-tanh_rmsnorm-gauss-48x5",
+   "name": "443-gabor-gauss-48x5",
    "width": 48,
    "depth": 5,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "gauss",
    "seed": 830745989380818860,
-   "weight_sha256": "4d6f39ceaab0faf597011325137bacf2e87e228054b392b811720980082ea311"
+   "weight_sha256": "15c75b3cabcb26e0d8cf55f19f3664d7bcce58427c3964882edec83aadf4b3ee"
   },
   {
    "index": 444,
    "split": "test",
-   "name": "444-zgauss-uniform-192x7",
+   "name": "444-rmsnorm_exp-uniform-192x7",
    "width": 192,
    "depth": 7,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "uniform",
    "seed": 3689733195302978237,
-   "weight_sha256": "1368f3894b16d077c0496bcd2f2e6230b407c14380735eab0b858b374068b2da"
+   "weight_sha256": "04879a72e0ecef665ee85c58a721a64259209ad37bab7479cadd8b9627d78bdc"
   },
   {
    "index": 445,
    "split": "test",
-   "name": "445-rbump-orth-56x20",
+   "name": "445-rmsnorm_sq-orth-56x20",
    "width": 56,
    "depth": 20,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "orth",
    "seed": 1809871636403464980,
-   "weight_sha256": "6c468469425dea96ede7ea56a22355c9143b507b5d29685cf33ea39dec5426a4"
+   "weight_sha256": "256ed6d78529d687e7b846749f838e3ee25dc491e5d95f1705fb70ec888bdbf8"
   },
   {
    "index": 446,
@@ -4973,24 +4973,24 @@
   {
    "index": 447,
    "split": "test",
-   "name": "447-zgauss-gauss-256x12",
+   "name": "447-rmsnorm_exp-gauss-256x12",
    "width": 256,
    "depth": 12,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "gauss",
    "seed": 4185207940896966451,
-   "weight_sha256": "4272e3cae26bcf06ee5a288cec3f9da42c002927e60613ebd20a50966e6c0511"
+   "weight_sha256": "24a1f9de940767b1dafceeea874ef1e0a3e7bf25b88db752209bdf988e14a9df"
   },
   {
    "index": 448,
    "split": "test",
-   "name": "448-gabor-expo-56x16",
+   "name": "448-rbump-expo-56x16",
    "width": 56,
    "depth": 16,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "expo",
    "seed": 835716577552700906,
-   "weight_sha256": "58482748a89bf70a9645829fe8c1514cb4dc2ae7e0e2a0b16c05d10252260e1d"
+   "weight_sha256": "5392dc07d729346497e8aef558d9b82a04633f1020e228bddf82133b651b2325"
   },
   {
    "index": 449,
@@ -5017,35 +5017,35 @@
   {
    "index": 451,
    "split": "test",
-   "name": "451-tanh_rmsnorm-uniform-40x4",
+   "name": "451-gabor-uniform-40x4",
    "width": 40,
    "depth": 4,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "uniform",
    "seed": 4349717402860963316,
-   "weight_sha256": "1c80a6743a95c7c4b62643d6ee19dd5568a4aabf24f34b4856ceb417636cc737"
+   "weight_sha256": "2cc684b3e665cb59502cc0ff60853a5a2e0078563e8fa6b66c44ba562240ddb9"
   },
   {
    "index": 452,
    "split": "test",
-   "name": "452-rbump-expo-24x12",
+   "name": "452-rmsnorm_sq-expo-24x12",
    "width": 24,
    "depth": 12,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "expo",
    "seed": 4459192832905501511,
-   "weight_sha256": "32b765067a108d764ad98de1e9e257e36171e789cd9c2a5525f69bfb46305a27"
+   "weight_sha256": "f0c8169a71a9b47a9e9372b6dec16410987a43d04dccf078578d56c85dd63ac9"
   },
   {
    "index": 453,
    "split": "test",
-   "name": "453-gabor-expo-32x16",
+   "name": "453-rbump-expo-32x16",
    "width": 32,
    "depth": 16,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "expo",
    "seed": 4222085497306622694,
-   "weight_sha256": "38f09681f225e120f3d0b01d204e61d9ba9ca24108d915fdecac85b902d16b5c"
+   "weight_sha256": "e724ff4e89538d75c5262a36b022ab13ab8832e2a844721e7cb52fe29a639627"
   },
   {
    "index": 454,
@@ -5094,24 +5094,24 @@
   {
    "index": 458,
    "split": "test",
-   "name": "458-rbump-expo-192x6",
+   "name": "458-rmsnorm_sq-expo-192x6",
    "width": 192,
    "depth": 6,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "expo",
    "seed": 2411192062019852305,
-   "weight_sha256": "e515d8bee3bb0dfbc6bfeba047f45b762ce42f3f5018c4b18ea20de2181639a3"
+   "weight_sha256": "23f333d7761fcfb335fbc6330be512fe125471fffeb46765ab2f4e77bf565b95"
   },
   {
    "index": 459,
    "split": "test",
-   "name": "459-rbump-gauss-84x4",
+   "name": "459-rmsnorm_sq-gauss-84x4",
    "width": 84,
    "depth": 4,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "gauss",
    "seed": 2356154221683195994,
-   "weight_sha256": "0f816a79f86ebe828188af006e90c1933fe969b2d15bc622609f0192a1a48bef"
+   "weight_sha256": "0180166f80cd8b91275c7a8ff99d7607c4fa9c67d806a53c0bf42b412b4ce38e"
   },
   {
    "index": 460,
@@ -5138,79 +5138,79 @@
   {
    "index": 462,
    "split": "test",
-   "name": "462-tanh_rmsnorm-gauss-160x7",
+   "name": "462-gabor-gauss-160x7",
    "width": 160,
    "depth": 7,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "gauss",
    "seed": 3134589074217321671,
-   "weight_sha256": "4b607ca12293f3515d1e09c45891978323cddcf967bea2d102ccd026882fd4e4"
+   "weight_sha256": "43fc3c1e345ada4123dbf01456aa590cca84445dd3936f9369416b7da6a30730"
   },
   {
    "index": 463,
    "split": "test",
-   "name": "463-gabor-gauss-56x12",
+   "name": "463-rbump-gauss-56x12",
    "width": 56,
    "depth": 12,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "gauss",
    "seed": 1101112987747613132,
-   "weight_sha256": "f2c22191fe7b28d7e59e3c330fa683d2843eaaec9569d85f7b2db06b70e3f0cf"
+   "weight_sha256": "6bb5df60d31b37294c564314f672c0df93911d722dd7110db7129688374ad13b"
   },
   {
    "index": 464,
    "split": "test",
-   "name": "464-tanh_rmsnorm-uniform-84x8",
+   "name": "464-gabor-uniform-84x8",
    "width": 84,
    "depth": 8,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "uniform",
    "seed": 4233252036062735136,
-   "weight_sha256": "7307acaa3df9ee8a41703663b19ed4ac2ca6c6097b5d52890eb44938adb7b481"
+   "weight_sha256": "56ca9f6607cd3c384f9735b42812d4c4270cd6b197eb906a455b1bcb2dcfc121"
   },
   {
    "index": 465,
    "split": "test",
-   "name": "465-tanh_rmsnorm-expo-64x5",
+   "name": "465-gabor-expo-64x5",
    "width": 64,
    "depth": 5,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "expo",
    "seed": 2503220527941764981,
-   "weight_sha256": "ad929f819fb9e7bf08c91ad76262b5d5370ca5df2e9f4b6b2842df96aa4d7f51"
+   "weight_sha256": "98efa094ce53e7bcdfbace54f387fe29b3a41ce312727a46ebc189594cdffcd5"
   },
   {
    "index": 466,
    "split": "test",
-   "name": "466-zgauss-gauss-48x14",
+   "name": "466-rmsnorm_exp-gauss-48x14",
    "width": 48,
    "depth": 14,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "gauss",
    "seed": 1456309561400900628,
-   "weight_sha256": "015c3f10592cd4ff900434d00679511b3dde8c7f713488c1b765dda60da7342a"
+   "weight_sha256": "e2f8073c5d4e0a9ad80bf3573784e74a7cc354aded269a45eaccb6a7a6e32586"
   },
   {
    "index": 467,
    "split": "test",
-   "name": "467-tanh_rmsnorm-orth-288x6",
+   "name": "467-gabor-orth-288x6",
    "width": 288,
    "depth": 6,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "orth",
    "seed": 1721668945813069711,
-   "weight_sha256": "856bdcd241ea8e40651a1bd9070a1345afe617825b47cd7d2a7e94f85dfdb041"
+   "weight_sha256": "9c6a4bfb13ece82b90babc26fa8405a23e623769c6e78c7d27869a95438ed09a"
   },
   {
    "index": 468,
    "split": "test",
-   "name": "468-zgauss-expo-72x10",
+   "name": "468-rmsnorm_exp-expo-72x10",
    "width": 72,
    "depth": 10,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "expo",
    "seed": 1325548844261569291,
-   "weight_sha256": "49245515203dc9ec5ac82f3f3b76cc7dfc93ed99de9c3835a836bc1ce197d3c5"
+   "weight_sha256": "656fe88743ac0096c9b7e4386ce4deb912b9f9638c4cf1afb379a6c7b7793bc3"
   },
   {
    "index": 469,
@@ -5226,35 +5226,35 @@
   {
    "index": 470,
    "split": "test",
-   "name": "470-rbump-gauss-192x12",
+   "name": "470-rmsnorm_sq-gauss-192x12",
    "width": 192,
    "depth": 12,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "gauss",
    "seed": 588975428064454092,
-   "weight_sha256": "0dfc2d88ea73a003295bd4ec66b9053e724d3e177d53125a05658a80f3926d26"
+   "weight_sha256": "d76c816595c4affcfc73e25583622b087a79e1eaf2308795337488dea4323ae5"
   },
   {
    "index": 471,
    "split": "test",
-   "name": "471-tanh_rmsnorm-uniform-128x16",
+   "name": "471-gabor-uniform-128x16",
    "width": 128,
    "depth": 16,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "uniform",
    "seed": 2788544970196010664,
-   "weight_sha256": "ceba73110b501c448a532d9dc1f87c3878ed920baf748b47e95fc6531f6df393"
+   "weight_sha256": "fa0460c992589da9e3a9618d8011792a5161cc68178368d557cdf9318cb0479b"
   },
   {
    "index": 472,
    "split": "test",
-   "name": "472-tanh_rmsnorm-uniform-128x5",
+   "name": "472-gabor-uniform-128x5",
    "width": 128,
    "depth": 5,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "uniform",
    "seed": 1710329836448800035,
-   "weight_sha256": "104e0947fce06aba8e8b71ed12cb3f3b34b85c782aba7f0789e1755dc8b9917e"
+   "weight_sha256": "197776601be6c7092d4bd60f470064cf067e51ba74d6ce9d34c2874b57494227"
   },
   {
    "index": 473,
@@ -5281,35 +5281,35 @@
   {
    "index": 475,
    "split": "test",
-   "name": "475-rbump-expo-128x5",
+   "name": "475-rmsnorm_sq-expo-128x5",
    "width": 128,
    "depth": 5,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "expo",
    "seed": 3496734275963777264,
-   "weight_sha256": "a52a2c3510e3f213cc4538e8694263fa9804a50e412f3bdad49b1c6322f02ffc"
+   "weight_sha256": "b6fbcf9eab64e0fa07f2e7acec4ddefb79d61319f43a1e11459c0dd44f72df20"
   },
   {
    "index": 476,
    "split": "test",
-   "name": "476-gabor-uniform-32x6",
+   "name": "476-rbump-uniform-32x6",
    "width": 32,
    "depth": 6,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "uniform",
    "seed": 240001923176894891,
-   "weight_sha256": "103bcac7de5404cc771bc446e8e6501935c04157eaa26d3c29c8e07a410a92cd"
+   "weight_sha256": "18eae652cde2e173e0ff86a50ab1c34d4a8b0c564c9a8b51968a2c7f1618e850"
   },
   {
    "index": 477,
    "split": "test",
-   "name": "477-rbump-orth-84x12",
+   "name": "477-rmsnorm_sq-orth-84x12",
    "width": 84,
    "depth": 12,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "orth",
    "seed": 907443343831912769,
-   "weight_sha256": "ee7a67fbbb077bdf1cb03b931a154ba14e31a9658552c4c2491d7954176561df"
+   "weight_sha256": "13d16172cf78f597e1eaf91f4325d0a9d1c9254650dba60c8825c33388b559a3"
   },
   {
    "index": 478,
@@ -5369,24 +5369,24 @@
   {
    "index": 483,
    "split": "test",
-   "name": "483-zgauss-orth-24x5",
+   "name": "483-rmsnorm_exp-orth-24x5",
    "width": 24,
    "depth": 5,
-   "activation": "zgauss",
+   "activation": "rmsnorm_exp",
    "strategy": "orth",
    "seed": 3353581736170151531,
-   "weight_sha256": "c30b1a3cd95f2aedfc7403105ff4e0ab076a82bfbf754546ff23f8c435abdbd1"
+   "weight_sha256": "a4696c703f28981d88da92bcba1e13e37d8c5e6a7e48fd2d3b5ff03beb27f82d"
   },
   {
    "index": 484,
    "split": "test",
-   "name": "484-gabor-gauss-16x24",
+   "name": "484-rbump-gauss-16x24",
    "width": 16,
    "depth": 24,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "gauss",
    "seed": 3687524858663069207,
-   "weight_sha256": "800d6f301f7946b9c3c3e76614cedb60a132bd7b0da2c5af65156cf510131d4b"
+   "weight_sha256": "f3c8a5297e319e674d90f25352547a0519e103e6e14ea91b8243df69d666d2f5"
   },
   {
    "index": 485,
@@ -5435,13 +5435,13 @@
   {
    "index": 489,
    "split": "test",
-   "name": "489-gabor-expo-384x24",
+   "name": "489-rbump-expo-384x24",
    "width": 384,
    "depth": 24,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "expo",
    "seed": 2934705004318422125,
-   "weight_sha256": "927a5a4ed0f880fdac203c32b7e3d1dd28d73f3fd0726d5beec42761e6617169"
+   "weight_sha256": "f80953deb1f8a5e4f52f9726ac88cb734359074cda350e6821ec2968beaedb4b"
   },
   {
    "index": 490,
@@ -5468,13 +5468,13 @@
   {
    "index": 492,
    "split": "test",
-   "name": "492-gabor-orth-288x4",
+   "name": "492-rbump-orth-288x4",
    "width": 288,
    "depth": 4,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "orth",
    "seed": 2765260204316236057,
-   "weight_sha256": "77e3d25e34822ad7c5bc08c0077c8b05a39d0d1cdf486e648d3234281a007e0e"
+   "weight_sha256": "b11475085842fea7d54c9ca0f0a7200e2c5a07d679d89e26de3275e073e330e6"
   },
   {
    "index": 493,
@@ -5501,13 +5501,13 @@
   {
    "index": 495,
    "split": "test",
-   "name": "495-gabor-uniform-192x4",
+   "name": "495-rbump-uniform-192x4",
    "width": 192,
    "depth": 4,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "uniform",
    "seed": 2651640764542388753,
-   "weight_sha256": "e5cb03aed1e57e15bb4ba6db3209625e7f251b18c1f9e3b0e9b9b217064c5310"
+   "weight_sha256": "5754a543fe4bcf44a00daf8901adb7e7bbd979f5580196e43bc5325d4be7edfe"
   },
   {
    "index": 496,
@@ -5578,13 +5578,13 @@
   {
    "index": 502,
    "split": "test",
-   "name": "502-tanh_rmsnorm-gauss-84x8",
+   "name": "502-gabor-gauss-84x8",
    "width": 84,
    "depth": 8,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "gauss",
    "seed": 3980177176422651401,
-   "weight_sha256": "f01811d370c7b28e2a66b473fdd3ddf173071323a78dcd6f77e0e062ccb4e76e"
+   "weight_sha256": "0b52bbd4aff6d58d7f5950875f4c85eec5e4eb5aa43ea87cc950c2174b035872"
   },
   {
    "index": 503,
@@ -5600,13 +5600,13 @@
   {
    "index": 504,
    "split": "test",
-   "name": "504-tanh_rmsnorm-uniform-128x16",
+   "name": "504-gabor-uniform-128x16",
    "width": 128,
    "depth": 16,
-   "activation": "tanh_rmsnorm",
+   "activation": "gabor",
    "strategy": "uniform",
    "seed": 1989875226754695219,
-   "weight_sha256": "26fd64c2a9cb7deaf5a7e4c1c03086826dc66645db62c70e84c9b12bf750e01f"
+   "weight_sha256": "adcc289a8d60085d1aeec131340a7e824aaadd1058268cac78abb33019a448e9"
   },
   {
    "index": 505,
@@ -5655,13 +5655,13 @@
   {
    "index": 509,
    "split": "test",
-   "name": "509-rbump-gauss-128x20",
+   "name": "509-rmsnorm_sq-gauss-128x20",
    "width": 128,
    "depth": 20,
-   "activation": "rbump",
+   "activation": "rmsnorm_sq",
    "strategy": "gauss",
    "seed": 1625538672617003650,
-   "weight_sha256": "e68f03dbc2463b15c37bd93a3cde8dcb4d5aef6766622361ed39e2f8b97db693"
+   "weight_sha256": "b792640ba881b416381517d15a761040c2cbf76b32f59e50901c1d85543a175f"
   },
   {
    "index": 510,
@@ -5677,13 +5677,13 @@
   {
    "index": 511,
    "split": "test",
-   "name": "511-gabor-orth-128x7",
+   "name": "511-rbump-orth-128x7",
    "width": 128,
    "depth": 7,
-   "activation": "gabor",
+   "activation": "rbump",
    "strategy": "orth",
    "seed": 3130185638723895524,
-   "weight_sha256": "2994813f7e6be614795ec837cca8edc442c54faeb46bdb5fa8608dc86d41292c"
+   "weight_sha256": "38cde1017b3ff7d58e2f38e7e8a8b09d6cdf4c4c1f072da8eede10d9092c20dc"
   }
  ]
 }

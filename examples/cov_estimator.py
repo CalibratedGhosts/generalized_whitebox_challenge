@@ -17,8 +17,9 @@ rule for off-diagonals, exact on the diagonal:
 
     Cov(phi_i, phi_j) ~= g_i g_j Sigma_ij   (i != j),     Var(phi_i) = m2_i - m1_i^2
 
-For ``tanh_rmsnorm`` the layer RMS is approximated by its expectation
-sqrt(mean_j(mu_j^2 + Sigma_jj)) and treated as a constant.
+For the layer-normalised activations (``rmsnorm_sq``, ``rmsnorm_exp``) the
+layer RMS is approximated by its Gaussian-moment expectation and treated as a
+constant (see ``_nodes``).
 
 Cost ~ 4 w^3 per layer (the two covariance matmuls) -- about 1% of the budget
 at the largest shape, so the compute multiplier sits at the 0.1 floor. This is
@@ -34,6 +35,19 @@ import flopscope.numpy as fnp
 from gwc.sdk import BaseEstimator, Network, SetupContext, activation
 
 K = 40
+
+
+def _nodes(name, Z, mu_pre, v):
+    """phi at the quadrature nodes. Layer-normalised activations use the *expected*
+    layer RMS (from the Gaussian moments) as a constant -- an approximation."""
+    if name == "rmsnorm_sq":
+        r2 = fnp.mean(mu_pre * mu_pre + v) + fnp.float32(1e-6)                        # E[mean_j z_j^2]
+        return (Z * Z) / r2
+    if name == "rmsnorm_exp":
+        e = fnp.exp(fnp.minimum(Z, 60.0))
+        r2 = fnp.mean(fnp.exp(fnp.minimum(2.0 * mu_pre + 2.0 * v, 120.0))) + fnp.float32(1e-6)  # E[e^{2z}]
+        return e / fnp.sqrt(r2)
+    return activation(name, Z)
 
 
 class Estimator(BaseEstimator):
@@ -56,11 +70,7 @@ class Estimator(BaseEstimator):
             sd = fnp.sqrt(v)
             Zc = sd[:, None] * self._x[None, :]                                   # centred nodes (w, K)
             Z = mu_pre[:, None] + Zc
-            if net.activation == "tanh_rmsnorm":
-                rms = fnp.sqrt(fnp.mean(mu_pre * mu_pre + v) + fnp.float32(1e-6))
-                A = fnp.tanh(Z / rms)
-            else:
-                A = activation(net.activation, Z)
+            A = _nodes(net.activation, Z, mu_pre, v)
             m1 = A @ self._w
             m2 = (A * A) @ self._w
             gain = ((A * Zc) @ self._w) / v                                        # E[phi'(z)] via Stein

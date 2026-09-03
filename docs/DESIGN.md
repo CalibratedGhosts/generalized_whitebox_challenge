@@ -69,6 +69,34 @@ MSE-to-1e-6 benchmark measures.) Full-grid verification (18×11×4×2 seeds per 
 forward passes): zero NaN; six "vanish" corners at width 16–24 × depth 16–24, handled by the
 validity resample.
 
+### 4b. The layer-normalised pair (replacing the odd activations)
+
+The first release used `tanh(rms_norm(z))` and `z·e^{−z²}`. With the real ground truth
+(2²¹ samples) **every** network of either activation had final-layer means below the
+benchmark's resolution for all four weight strategies: both are odd functions of the
+pre-activation and every layer preserves sign symmetry, so their means are exactly zero for
+symmetric weights (and unresolvably small for the skewed exponential). They were replaced by
+two layer-normalised activations, chosen by measurement (full-grid stability, informativeness
+at ground-truth precision, variance health with depth, and the moment-map redundancy test):
+
+| candidate | stable | informative | σ² with depth | worst R² vs set | outcome |
+|---|---|---|---|---|---|
+| `rmsnorm(x)²` | ✓ | ✓ (ratio ~1e5) | healthy (≈1–2) | 0.990 (vs `relu`) | **adopted** (`rmsnorm_sq`) |
+| `rmsnorm(tanh(x))` | ✓ | ✗ odd → dead | — | — | rejected |
+| `rmsnorm(sigmoid(x))` | ✓ | ✓ | **collapses** (1e-14 at 384×24: sigmoid's slope ≤ ¼ contracts fluctuations 2×/layer) | — | rejected |
+| `rmsnorm(relu(x))` | ✓ | ✓ | healthy | **1.000** (same shape as `relu`) | rejected |
+| `r·tanh(r)`, `r=rmsnorm(x)` | ✓ | ✓ | healthy | 1.000 (|r|-like: `relu=(r+|r|)/2`) | rejected |
+| `relu(rmsnorm(x))²` | ✓ | ✓ | healthy | 0.973 | viable (stabilised ReLU²) |
+| `rmsnorm(exp(x))` | ✓ | ✓ | healthy (0.02–0.7) | **0.896** | **adopted** (`rmsnorm_exp`) |
+
+General lessons: (i) an odd activation can never be informative in a bias-free network with
+symmetric weights; (ii) a non-odd activation creates fixed per-neuron offsets, and if its slope
+is < 1 the input-dependent fluctuations contract layer after layer until the network is
+deterministic — a normalised activation must therefore also be non-contracting; (iii) the
+redundancy proxy is blind to the layer coupling, so `rmsnorm(φ)` with φ already in the set is
+only worth adding if its element-wise shape is new. The final set has six element-wise and two
+coupled activations, all informative.
+
 ## 5. Scoring: relative to sampling, geometric mean
 
 Final-layer activation variances range from ~2e-4 (deep `cos`: the network collapses to a
@@ -81,25 +109,24 @@ dominating. The compute discount is then applied exactly as in the challenge.
 
 Two consequences worth knowing:
 
-* **Odd activations are uninformative without biases.** With the real ground truth (2²¹
-  samples) the final-layer means of every `tanh_rmsnorm` and `zgauss` network — for *all four*
-  weight strategies, including the skewed exponential — are below the benchmark's resolution
-  (`ratio_zero ≈ 1/32`): predicting zero is already at the floor. Left in a geometric mean, these
-  free near-zero values dominated the headline (`cov_estimator` scored 0.74 overall while being
-  3–17× worse than sampling on six activations). They are therefore flagged `informative=false`
-  from the ground truth alone (`mean(target²)/(σ²/N_REF) ≤ 3·N_REF/G`), reported, and excluded
-  from the headline; every ratio is also floored at the resolution `N_REF/G`. Train: 184/256
-  informative, test: 199/256. **Recommended follow-up:** add a per-layer bias vector
-  (`z = a@W + b`, `b ~ N(0, β²)`) to every network. That makes the odd activations — and all
-  others — carry rich, resolvable per-neuron structure, is closer to real networks, and costs a
-  ~75-minute re-precompute plus a `net.biases` field in the estimator API.
+* **Uninformative networks are excluded from the headline.** A network whose target energy is
+  below the ground-truth resolution (`mean(target²)/(σ²/N_REF) ≤ 3·N_REF/G`) cannot separate
+  methods — predicting zero already sits at the floor — and, left in a geometric mean, such free
+  near-zero values dominate it (in the first release `cov_estimator` scored 0.74 overall while
+  being 3–17× worse than sampling on six activations, purely from the dead odd-activation
+  networks). They are flagged from the ground truth alone, reported, and excluded; every ratio
+  is also floored at the resolution `N_REF/G`. With the current activation set (§4b) **all 256
+  train and all 256 test networks are informative**, so the rule is a safeguard rather than an
+  active filter.
 * Analytic Gaussian-propagation methods (mean-field or full-covariance) lose to sampling on most
-  of this family — on the real ground truth `cov_estimator` is 6.4× worse than sampling overall
-  (20× at width ≤ 64, 1.7× at width ≥ 256; it wins only on `gabor`), `gh_estimator` 34×. Beating
-  sampling *everywhere* requires handling non-Gaussianity and correlations — the intended
-  difficulty. Metered Monte-Carlo scores 0.971 (its geometric mean sits a few percent under 1
-  because the per-network ratio is noisy at small width and the geometric mean of a noisy
-  quantity is below its mean).
+  of this family — on the real ground truth `cov_estimator` is 30× worse than sampling overall
+  (62× at width ≤ 64, 11× at width ≥ 256; it wins only on `gabor`; 400× on `rmsnorm_sq` and
+  2·10⁴× on `rmsnorm_exp`, where treating the layer RMS as a constant fails), `gh_estimator`
+  73×. Beating sampling *everywhere* requires handling non-Gaussianity, correlations and the
+  layer coupling — the intended difficulty. Metered Monte-Carlo scores 0.927 (bias-corrected
+  geometric mean 0.996: the anchor is exact; the raw figure sits under 1 because the
+  per-network ratio is noisy at small width and the geometric mean of a noisy quantity is below
+  its mean).
 
 ## 6. Ground-truth precision
 

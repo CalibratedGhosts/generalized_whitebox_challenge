@@ -43,8 +43,9 @@ def test_gains_are_unit_second_moment_normalisers():
     # g = 1/sqrt(E[phi(z)^2]) for z ~ N(0,1)  (tanh_rmsnorm is scale-free -> 1)
     z = np.random.default_rng(1).standard_normal(2_000_000).astype(np.float32)
     for a in NAMES:
-        if a == "tanh_rmsnorm":
-            assert GAIN[a] == 1.0
+        if a.startswith("rmsnorm"):
+            # layer-normalised: scale-free (the next layer renormalises); gain only needs to be sane
+            assert 0.3 < GAIN[a] <= 1.0
             continue
         m2 = float(np.mean(apply_np(a, z).astype(np.float64) ** 2))
         assert abs(1.0 / np.sqrt(m2) - GAIN[a]) / GAIN[a] < 0.01, a
