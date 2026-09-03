@@ -29,10 +29,10 @@ def tiny_gt(tmp_path_factory):
 
 def test_grader_end_to_end_zero_and_mc(tiny_gt):
     d, idx = tiny_gt
-    z = grader.grade(ROOT / "examples/zero_estimator.py", "train", indices=idx, gt_dir=d, quiet=True, predict_timeout_s=120)
+    z = grader.grade(ROOT / "tests/fixtures/zero_estimator.py", "train", indices=idx, gt_dir=d, quiet=True, predict_timeout_s=120)
     assert z["n_networks"] == 2 and z["aggregate"]["n_failed"] == 0
     assert all(r["flops_used"] == 0 and r["multiplier"] == 0.1 for r in z["rows"])
-    m = grader.grade(ROOT / "examples/mc_estimator.py", "train", indices=idx, gt_dir=d, quiet=True, predict_timeout_s=300)
+    m = grader.grade(ROOT / "tests/fixtures/mc_estimator.py", "train", indices=idx, gt_dir=d, quiet=True, predict_timeout_s=300)
     assert m["aggregate"]["n_failed"] == 0
     for r in m["rows"]:
         assert 0.80 < r["utilization"] < 0.95

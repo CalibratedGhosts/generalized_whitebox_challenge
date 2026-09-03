@@ -8,15 +8,10 @@ Every network applies ONE of these after each linear layer::
 Six are element-wise; ``rmsnorm_sq`` and ``rmsnorm_exp`` couple the neurons of a
 layer through an RMS normalisation over the layer (per input).
 
-The set was chosen (see docs/DESIGN.md) so that every activation is numerically
-stable at every width/depth/weight-strategy in the challenge under a fixed
-per-activation gain, has *informative* targets (per-neuron means resolvable at
-the ground-truth precision -- this rules out odd activations, whose means vanish
-by sign symmetry), does not collapse to a deterministic output with depth, and
-so that the moment maps m(mu, sigma) = E[phi(mu + sigma z)] are pairwise
-non-redundant (no pair is affinely equivalent given mu).
-
-``RETIRED`` names remain callable so older datasets can be reproduced.
+All eight are numerically stable at every width/depth/weight-strategy in the
+challenge under the per-activation gain in ``GAIN`` (weights are scaled by
+``GAIN[name] / sqrt(width)``). ``RETIRED`` names remain callable so older
+datasets can be reproduced; they are not part of the challenge.
 
 Two implementations of the same function are provided:
 
@@ -45,15 +40,15 @@ FORMULA = {
     "gabor": "cos(2 z) * exp(-z^2 / 2)",
     "rbump": "max(z, 0) * exp(-z)",
     "zgauss": "z * exp(-z^2)",
-    "rmsnorm_sq": "r^2,  r = z / sqrt(mean_j(z_j^2) + 1e-6)   [layer-normalised x^2]",
-    "rmsnorm_relu2": "max(r, 0)^2,  r = z / sqrt(mean_j(z_j^2) + 1e-6)   [layer-normalised ReLU^2]",
-    "rmsnorm_exp": "e / sqrt(mean_j(e_j^2) + 1e-6),  e = exp(min(z, 60))   [softmax-like]",
+    "rmsnorm_sq": "r^2,  r = z / sqrt(mean_j(z_j^2) + 1e-6)",
+    "rmsnorm_relu2": "max(r, 0)^2,  r = z / sqrt(mean_j(z_j^2) + 1e-6)",
+    "rmsnorm_exp": "e / sqrt(mean_j(e_j^2) + 1e-6),  e = exp(min(z, 60))",
 }
 
 CLASS = {
     "relu": "one-sided, linear tail",
-    "relu2_sat": "one-sided, quadratic onset, saturating (stable ReLU^2)",
-    "sq_sat": "even, quadratic onset, saturating (stable x^2)",
+    "relu2_sat": "one-sided, quadratic onset, saturating",
+    "sq_sat": "even, quadratic onset, saturating",
     "cos": "periodic, bounded",
     "tanh_rmsnorm": "odd, bounded, coupled across the layer",
     "gabor": "even, localised, oscillatory",

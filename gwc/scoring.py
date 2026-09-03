@@ -47,6 +47,7 @@ from gwc.netspec import Network
 
 EPS = 1e-30
 INFORMATIVE_SIGNAL_MULT = 3.0   # target energy must exceed 3x the ground-truth noise
+COLLAPSE_VAR = 1e-6             # final-layer activation variance below this: output is (near-)deterministic
 
 
 def resolution(n_ref: int = N_REF, n_gt: int = GROUND_TRUTH_SAMPLES) -> float:
@@ -78,6 +79,7 @@ class NetScore:
     resolution: float         # N_REF / G  (smallest measurable ratio)
     signal_ratio: float       # mean(target^2) / mc_ref  (the zero predictor's ratio)
     informative: bool         # signal_ratio > 3 * resolution
+    degenerate: bool          # final-layer sigma^2 < COLLAPSE_VAR (near-deterministic output)
     ratio_final: float
     ratio_all: float
     ratio_final_corrected: float
@@ -117,6 +119,7 @@ def score_network(net: Network, target: Dict[str, np.ndarray], pred: Optional[np
     res = resolution(n_ref, n_gt)
     signal_ratio = float(np.mean(means[-1] ** 2)) / max(mc_ref_final, EPS)
     informative = bool(signal_ratio > INFORMATIVE_SIGNAL_MULT * res)
+    degenerate = bool(var_final < COLLAPSE_VAR)
     ratio_final = mse_final / max(mc_ref_final, EPS)
     ratio_all = mse_all / max(mc_ref_all, EPS)
     ratio_corr = max(mse_final - nf, 0.0) / max(mc_ref_final, EPS)
@@ -130,7 +133,7 @@ def score_network(net: Network, target: Dict[str, np.ndarray], pred: Optional[np
         wall_s=float(stats.get("wall_s", 0.0)), failed=failed, failure=failure, error=error,
         mse_final=mse_final, mse_all=mse_all, mc_ref_final=mc_ref_final, mc_ref_all=mc_ref_all,
         noise_floor_final=nf, resolution=res, signal_ratio=signal_ratio, informative=informative,
-        ratio_final=ratio_final, ratio_all=ratio_all, ratio_final_corrected=ratio_corr,
+        degenerate=degenerate, ratio_final=ratio_final, ratio_all=ratio_all, ratio_final_corrected=ratio_corr,
         at_noise_floor=bool(mse_final < 2.0 * nf),
         multiplier=mult, adjusted_ratio=max(ratio_final, res) * mult,
         beats_sampling=bool((not failed) and ratio_final < 1.0),
@@ -171,16 +174,20 @@ def _group(rows: List[NetScore], keyf) -> Dict[str, Dict]:
 def aggregate(rows: List[NetScore]) -> Dict:
     if not rows:
         return {"n": 0}
-    inf = [r for r in rows if r.informative]
+    inf = [r for r in rows if r.informative and not r.degenerate]
     uninf = [r for r in rows if not r.informative]
+    degen = [r for r in rows if r.degenerate]
     scored = inf if inf else rows
     adj = [r.adjusted_ratio for r in scored]
     srt = sorted(adj, reverse=True)
     k = max(1, len(srt) // 10)
     return {
         "n": len(rows),
-        "n_informative": len(inf),
+        "n_informative": len(inf),      # scored: informative and not degenerate
         "n_uninformative": len(uninf),
+        "n_degenerate": len(degen),
+        "n_excluded": len(rows) - len(inf),
+        "degenerate": [{"index": r.index, "name": r.name, "sigma2": r.mc_ref_final * N_REF} for r in degen],
         "n_failed": sum(r.failed for r in rows),
         "failures": {f: sum(1 for r in rows if r.failure == f) for f in ("error", "timeout", "budget_exhausted", "bad_output")},
         # ---- headline (informative networks) ----
@@ -226,14 +233,15 @@ def format_report(agg: Dict, title: str) -> str:
     L.append("=" * 78)
     L.append(title)
     L.append("=" * 78)
-    L.append(f"  networks: {agg['n']}   informative: {agg['n_informative']}   failed: {agg['n_failed']}  {agg['failures']}")
+    L.append(f"  networks: {agg['n']}   scored: {agg['n_informative']}   excluded: {agg['n_excluded']} "
+             f"(uninformative {agg['n_uninformative']}, degenerate {agg['n_degenerate']})   failed: {agg['n_failed']}  {agg['failures']}")
     L.append(f"  HEADLINE  geo-mean adjusted ratio : {_f(agg['geo_adjusted_ratio'])}   (informative networks; lower is better; 1.0 = full-budget sampling)")
     L.append(f"            geo-mean raw ratio      : {_f(agg['geo_ratio'])}   (MSE / sampling MSE, before compute discount)")
     L.append(f"            geo-mean bias-corrected : {_f(agg['geo_ratio_corrected'])}   (ground-truth noise removed, floored at resolution {agg['resolution']:.3g})")
     L.append(f"            all-layers ratio        : {_f(agg['geo_ratio_all_layers'])}")
     L.append(f"            worst-decile geo-mean   : {_f(agg['worst_decile_geo_adjusted_ratio'])}   (generalisation tail)")
     L.append(f"            median / mean adjusted  : {_f(agg['median_adjusted_ratio'])} / {_f(agg['mean_adjusted_ratio'])}")
-    L.append(f"            all-networks geo-mean   : {_f(agg['geo_adjusted_ratio_all_networks'])}   (incl. {agg['n_uninformative']} uninformative; NOT the headline)")
+    L.append(f"            all-networks geo-mean   : {_f(agg['geo_adjusted_ratio_all_networks'])}   (incl. {agg['n_excluded']} excluded; NOT the headline)")
     L.append(f"  beats sampling: {100*agg['frac_beats_sampling']:.1f}%   at noise floor: {100*agg['frac_at_noise_floor']:.1f}%   "
              f"mean budget use: {100*agg['mean_utilization']:.2f}%   mean multiplier: {agg['mean_multiplier']:.3f}   wall: {agg['total_wall_s']:.0f}s")
     for name, key in (("activation", "by_activation"), ("weight strategy", "by_strategy"), ("width", "by_width"), ("depth", "by_depth")):
@@ -253,6 +261,9 @@ def format_report(agg: Dict, title: str) -> str:
     if agg["n_uninformative"]:
         L.append(f"  uninformative (target below ground-truth resolution; reported, not scored): "
                  f"{agg['n_uninformative']} networks, e.g. " + ", ".join(u["name"] for u in agg["uninformative"][:4]))
+    if agg["n_degenerate"]:
+        L.append(f"  degenerate (near-deterministic output, sigma^2 < {COLLAPSE_VAR:g}; reported, not scored): "
+                 f"{agg['n_degenerate']} networks: " + ", ".join(d["name"] for d in agg["degenerate"][:4]))
     L.append("=" * 78)
     return "\n".join(L)
 

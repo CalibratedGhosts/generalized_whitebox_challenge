@@ -237,3 +237,19 @@ def test_uninformative_targets_are_flagged_and_excluded_from_headline():
     assert agg["n_informative"] == 1 and agg["n_uninformative"] == 1
     assert agg["geo_adjusted_ratio"] == pytest.approx(t.adjusted_ratio)
     assert agg["uninformative"][0]["index"] == s.index
+
+
+def test_degenerate_networks_are_flagged_and_excluded():
+    from gwc.budget import GROUND_TRUTH_SAMPLES
+    from gwc.scoring import COLLAPSE_VAR
+    means = np.full((3, 8), 0.7, np.float32)
+    # near-deterministic output: final-layer variance far below COLLAPSE_VAR
+    collapsed = {"means": means, "vars": np.full((3, 8), 1e-9, np.float32), "n_samples": GROUND_TRUTH_SAMPLES}
+    healthy = {"means": means, "vars": np.full((3, 8), 0.1, np.float32), "n_samples": GROUND_TRUTH_SAMPLES}
+    c = score_network(_net(), collapsed, means.copy(), {"budget": 100, "flops_used": 1})
+    h = score_network(_net(), healthy, means.copy(), {"budget": 100, "flops_used": 1})
+    assert c.degenerate and c.informative and not h.degenerate
+    agg = aggregate([c, h])
+    assert agg["n_degenerate"] == 1 and agg["n_informative"] == 1 and agg["n_excluded"] == 1
+    assert agg["geo_adjusted_ratio"] == pytest.approx(h.adjusted_ratio)
+    assert agg["degenerate"][0]["sigma2"] < COLLAPSE_VAR

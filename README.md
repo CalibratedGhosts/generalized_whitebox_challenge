@@ -1,244 +1,150 @@
-# Generalized WhiteBox Challenge (gwc)
+# Generalized WhiteBox Challenge — grading service
 
-**Predict the mean activation of every neuron in a random MLP — from its weights alone,
-without sampling it — within a FLOP budget — for *any* activation, weight distribution,
-width and depth.**
-
-This generalizes the [ARC WhiteBox Estimation Challenge](https://www.aicrowd.com/challenges/arc-white-box-estimation-challenge-2026)
-(one activation, one shape) to a family of **18 widths × 11 depths × 8 activations × 4 weight
-distributions**, so that a method can only score well by being genuinely general. It keeps the
-challenge's machinery: `flopscope`-metered FLOPs, a per-network FLOP budget, and the
-compute-discounted score.
-
-* 512 networks, sampled independently (type first, then weights), split **256 train / 256 test**.
-* Ground truth (Monte-Carlo, 2²¹ samples per network) is precomputed and stored **encrypted**.
-* You submit a Python estimator; the grader runs it and returns rich per-type diagnostics.
-* The **train** split can be graded without limit. The **test** split is graded **at most once
-  every 4 hours** — it is the number that counts.
-
-If you are an agent working on this: read [`AGENT_BRIEF.md`](AGENT_BRIEF.md) first.
-
----
+Predict the mean activation of every neuron of a random MLP from its weights, within a FLOP
+budget, across many widths, depths, activation functions and weight distributions. This page is
+the complete description of the task and of the grading system.
 
 ## 1. The task
 
-A network of type `(width w, depth d, activation φ, strategy s)` has `d` weight matrices
-`W_1..W_d ∈ ℝ^{w×w}` (drawn by strategy `s`, scaled so pre-activations stay ~unit variance) and
-computes, for an input `x ~ N(0, I_w)`:
+A network has `depth` weight matrices `W_1..W_depth`, each `(width, width)` float32, and one
+activation `φ`. For an input `x ~ N(0, I_width)` it computes (row-vector convention):
 
 ```
 a_0 = x
-a_l = φ(a_{l-1} @ W_l)          l = 1..d          (row-vector convention: z = a @ W)
+a_l = φ(a_{l-1} @ W_l)          l = 1 .. depth
 ```
 
-The **target** is the matrix of per-layer, per-neuron activation means
-`M[l, i] = E_x[ a_l[i] ]`, shape `(d, w)`. Your estimator receives the network (weights,
-activation name, strategy name, width, depth) and a FLOP budget, and returns its prediction of
-`M`. The **final layer** (`M[d-1]`) is what is scored; all layers are reported.
+The **target** is `M[l, i] = E_x[ a_l[i] ]`, the expected activation of every neuron in every
+layer, shape `(depth, width)`. Your estimator receives the network and a FLOP budget and returns
+its estimate of `M`. The last layer `M[depth-1]` is what is scored; all layers are reported.
 
 ### Activations
 
-| name | φ(z) | class | metered cost / element |
-|---|---|---|---|
-| `relu` | `max(z,0)` | one-sided, linear tail | 1 |
-| `relu2_sat` | `r²/(1+r²)`, `r=max(z,0)` | one-sided, quadratic onset, saturating | 5 |
-| `sq_sat` | `z²/(1+z²)` | even, quadratic onset, saturating | 4 |
-| `cos` | `cos(z)` | periodic, bounded | 16 |
-| `gabor` | `cos(2z)·exp(−z²/2)` | even, localised, oscillatory | 37 |
-| `rbump` | `r·exp(−r)`, `r=max(z,0)` | one-sided, localised | 19 |
-| `rmsnorm_sq` | `r²`, `r = z / sqrt(mean_j z_j² + 1e-6)` | even, quadratic, **layer-normalised (coupled)** | 4 |
-| `rmsnorm_exp` | `e / sqrt(mean_j e_j² + 1e-6)`, `e = exp(min(z,60))` | exponential, softmax-like, **layer-normalised (coupled)** | 20 |
-
-`rmsnorm_sq` and `rmsnorm_exp` are not element-wise: the RMS is over the neurons of the layer
-(for one input), so every neuron's output depends on the whole pre-activation vector.
-Why these eight (and not `x²`, `ReLU²`, `tanh(rms_norm)`, `SiLU`, ...): see
-[`docs/DESIGN.md`](docs/DESIGN.md) — every activation must be numerically stable at depth 24
-under a fixed gain (rules out anything super-linear), must have *informative* targets (rules out
-odd activations such as `tanh(rms_norm)` or `z·e^{−z²}`, whose means vanish by sign symmetry),
-must not collapse to a deterministic output with depth (rules out `rmsnorm(sigmoid)`), and no
-two may be affinely equivalent as moment maps (rules out `|z|`, `elu`, `silu`, `softsign`,
-`rmsnorm(relu)`, ...).
-
-### Weight strategies
-
-All entries are scaled by `g_φ / sqrt(w)` where `g_φ = 1/sqrt(E[φ(z)²])` (the generalisation of
-He initialisation), so the strategies differ in **shape**, not scale:
-
-| name | entries | character |
+| name | φ(z) | notes |
 |---|---|---|
-| `uniform` | `U(−1,1)·√3` | bounded, flat |
-| `gauss` | `N(0,1)` | Gaussian |
-| `orth` | `g_φ · Q`, Q Haar-random orthogonal | norm-preserving, structured |
-| `expo` | `−1 + Exp(rate 1)` | floor at −1, mean 0, right-skewed (E[w³]=2) |
+| `relu` | `max(z, 0)` | |
+| `relu2_sat` | `r² / (1 + r²)`, `r = max(z, 0)` | |
+| `sq_sat` | `z² / (1 + z²)` | |
+| `cos` | `cos(z)` | |
+| `gabor` | `cos(2z) · exp(−z²/2)` | |
+| `rbump` | `r · exp(−r)`, `r = max(z, 0)` | |
+| `rmsnorm_sq` | `r²`, `r = z / sqrt(mean_j z_j² + 1e-6)` | mean over the layer, per input |
+| `rmsnorm_exp` | `e / sqrt(mean_j e_j² + 1e-6)`, `e = exp(min(z, 60))` | mean over the layer, per input |
 
-Widths: `16 24 32 40 48 56 64 72 84 96 128 160 192 256 288 320 352 384`.
-Depths: `4 5 6 7 8 10 12 14 16 20 24`. Type components are sampled independently and uniformly;
-a draw is rejected (and redrawn) only if a forward probe is degenerate (NaN, or final RMS
-outside `[1e-2, 1e2]`) — fewer than 0.1% of random draws trip this, and none of this dataset's
-512 draws did.
+The first six act element-wise. The last two normalise over the neurons of the layer for each
+input, so a neuron's output depends on the whole pre-activation vector.
 
-### FLOP budget
+### Weight distributions (`net.strategy`)
 
-The budget is denominated in Monte-Carlo samples: it is the metered cost of `N_REF = 2¹⁶`
-forward samples through *that* network,
+Each matrix is drawn i.i.d. and scaled by `g_φ / sqrt(width)`, where `g_φ = 1/sqrt(E[φ(z)²])`
+for `z ~ N(0,1)` (`g_φ` is given in `gwc.activations.GAIN`):
+
+| name | entries before scaling |
+|---|---|
+| `uniform` | `U(−1, 1) · sqrt(3)` |
+| `gauss` | `N(0, 1)` |
+| `orth` | a Haar-random orthogonal matrix, scaled by `g_φ` only (no `1/sqrt(width)`) |
+| `expo` | `−1 + Exp(rate 1)` (support `[−1, ∞)`, mean 0, variance 1) |
+
+### Dataset
+
+512 networks. Each is drawn by first sampling its type — width, depth, activation, weight
+distribution, each uniformly and independently — and then its weights. Widths
+`16 24 32 40 48 56 64 72 84 96 128 160 192 256 288 320 352 384`; depths
+`4 5 6 7 8 10 12 14 16 20 24`. Networks `0–255` are the **train** split, `256–511` the **test**
+split. `data/manifest.json` fixes every network (type, weight seed, weight hash); weights are
+regenerated from the seed and hash-checked when loaded. Ground truth is Monte-Carlo with
+`2²¹` samples per network, stored encrypted; the grader decrypts it in memory.
+
+### Budget
+
+`budget(net) = 2¹⁶ · c(net)`, where `c` is the metered cost of pushing one sample through the
+network:
 
 ```
-B(net) = N_REF · [ 16w + w + d·w(2w−1) + d·A_φ(w) + 4dw ]
-              rng    wrap   matmuls      activation   f64 accumulation
+c = 16w + w + d·w·(2w − 1) + d·A_φ(w) + 4dw       (w = width, d = depth)
 ```
 
-(`A_φ(w)` is the exact flopscope cost of the activation on one row). So at every type a
-full-budget sampler reaches the same relative accuracy — that is the bar. Budgets range from
-`1.7e8` (relu 16×4) to `4.9e11` (gabor 384×24).
+`A_φ(w)` is the exact metered cost of the activation on one row. `gwc info --index N` prints a
+network's budget.
 
-## 2. Scoring
-
-Raw MSEs are not comparable across activations (deep `cos` activations have variance ~2e-4,
-`rmsnorm_sq` ~1–2; mean magnitudes range from ~0.1 to ~1). Every network is therefore scored
-**relative to budget-matched sampling**:
-
-```
-ratio     = mse_final / (σ² / N_REF)          σ² = mean final-layer activation variance
-                                             (σ²/N_REF = the MSE a full-budget MC estimator gets)
-adjusted  = max(ratio, RES) · max(0.1, flops_used / B)   (multiplier forced to 1.0 on failure)
-RES       = N_REF / G = 1/32                          (the benchmark's resolution, see below)
-HEADLINE  = geometric mean of `adjusted` over the split's INFORMATIVE networks   (lower is better)
-```
-
-* `ratio < 1` beats sampling. `adjusted` applies the challenge's compute discount: use ≤10% of the
-  budget and you get the maximal 10× discount; use it all and you get none.
-* Geometric mean → scale-free; no single network type can dominate.
-* **Resolution floor.** The stored ground truth carries Monte-Carlo noise `σ²/G` (`G = 2²¹`), so no
-  method can be *measured* better than `ratio = N_REF/G = 1/32`; ratios are floored there.
-* **Informative networks.** A network whose true means are below that resolution cannot tell
-  methods apart (predicting zero already sits at the floor). Such networks are flagged
-  `informative = false` (a property of the data, decided from the ground truth alone), reported,
-  and **excluded from the headline** so that free zeros cannot drag a geometric mean down. With
-  the current activation set **all 256 train and all 256 test networks are informative** (the
-  rule exists because an earlier set with odd activations had 28% dead networks; see
-  `docs/DESIGN.md` §4b).
-* **Failures** (exception, timeout, budget exhausted, wrong shape/non-finite output): the
-  prediction is replaced by zeros and scored with multiplier 1.0 — bad, but bounded.
-* **Bias-corrected ratio** `(mse − σ²/G)/(σ²/N_REF)`: the stored ground truth carries its own MC
-  noise `σ²/G` (`G = 2²¹`, i.e. 1/32 of the sampling bar), which inflates every measured MSE by
-  that amount. The corrected figure estimates your *true* error; `at_noise_floor` flags networks
-  where you are within 2× of the ground-truth resolution.
-* Also reported: worst-decile geometric mean (the generalisation tail), fraction of networks
-  beating sampling, all-layers ratio, per-activation / per-strategy / per-width / per-depth
-  breakdowns, budget utilisation, and the worst/best networks with error messages.
-
-Reference points, headline on the *train* split (256 networks, all informative; `examples/`):
-
-| estimator | headline | notes |
-|---|---|---|
-| `mc_estimator` (metered sampling, 90% budget) | **0.927** | the calibration anchor: bias-corrected geo-mean 0.996; 0.76–1.11 on every activation |
-| `cov_estimator` (full-covariance Gaussian + GH) | 30.5 (test: 28.1) | beats sampling only on `gabor`; 11 at w≥256, 62 at w≤64; 400 on `rmsnorm_sq`, 2e4 on `rmsnorm_exp` |
-| `gh_estimator` (mean-field Gaussian + GH) | 73 | correlations matter |
-| `zero_estimator` | 2.7e4 | |
-
-So the reference-style analytic method loses to sampling on most of this family — badly at small
-width and catastrophically on the layer-normalised activations, where treating the layer RMS as
-a constant is a poor approximation. Being good *everywhere* is the point.
-
-## 3. Submitting
-
-### Write an estimator
+## 2. Writing an estimator
 
 ```python
-# my_estimator.py
-import flopscope.numpy as fnp                      # metered numpy -- use this for ALL math
+import flopscope.numpy as fnp                       # metered numpy: use it for ALL arithmetic in predict
 from gwc.sdk import BaseEstimator, Network, SetupContext, activation
 
 class Estimator(BaseEstimator):
-    def setup(self, ctx: SetupContext) -> None:    # optional, runs once, off-budget
-        # ctx.activations, ctx.strategies, ctx.widths, ctx.depths, ctx.n_ref, ctx.seed
-        ...
-    def predict(self, net: Network, budget: int):  # metered, per network
-        # net.width, net.depth, net.activation (str), net.strategy (str), net.seed
-        # net.weights: list of (width, width) float32 numpy arrays  (wrap with fnp.asarray)
-        # activation(net.activation, z): the metered activation function
-        return fnp.zeros((net.depth, net.width), dtype=fnp.float32)   # shape (depth, width)
+    def setup(self, ctx: SetupContext) -> None:     # optional; runs once, off-budget
+        ...                                         # ctx.activations, ctx.strategies, ctx.widths, ctx.depths, ctx.n_ref
+    def predict(self, net: Network, budget: int):   # metered; one call per network
+        # net.width, net.depth, net.activation, net.strategy, net.seed
+        # net.weights: list of (width, width) float32 numpy arrays   -> wrap with fnp.asarray(W)
+        # activation(net.activation, z): the network's activation, metered
+        return fnp.zeros((net.depth, net.width), dtype=fnp.float32)   # shape (depth, width), float32
 ```
 
-### Run it
+A runnable copy of this is `examples/estimator_template.py`. The file must define a class named
+`Estimator` (or pass `--class-name`).
+
+## 3. Commands
 
 ```bash
-cd <repo>
-uv sync                                            # once
-uv run gwc smoke  --estimator my_estimator.py      # 8 small train networks, seconds, unlimited
-uv run gwc submit --estimator my_estimator.py      # full train split (256 networks), unlimited
-uv run gwc submit --estimator my_estimator.py --split test    # held-out; once per 4 h
-uv run gwc status                                  # cooldown + history
-uv run gwc info                                    # dataset / types / budgets
+uv sync                                                    # once
+uv run gwc info                                            # dataset, activations, budgets
+uv run gwc smoke  --estimator my_estimator.py              # 8 small train networks (seconds); unlimited
+uv run gwc submit --estimator my_estimator.py              # the 256 train networks; unlimited
+uv run gwc submit --estimator my_estimator.py --split test # the 256 test networks; once every 4 hours
+uv run gwc status                                          # test cooldown and history
 ```
 
-Useful flags: `--indices 3,7,9` (train only: specific networks), `--timeout S` (per-network
-wall cap, default 300 s), `--json` (full machine-readable result), `--tag NAME`. Every run is
-saved under `runs/<timestamp>-<split>/` with `result.json` (all per-network rows), `worker.log`
-(your estimator's stderr/tracebacks) and `preds.npz`.
+Options: `--indices 3,7,9` (train only: chosen networks), `--timeout S` (per-network wall-clock
+cap, default 300 s), `--tag NAME`, `--json` (full result on stdout).
 
-Python API: `from gwc.grader import grade, report; r = grade("my_estimator.py", "train"); print(report(r))`.
+Every run is written to `runs/<timestamp>-<split>/`: `result.json` (aggregate + one row per
+network with every number below), `worker.log` (your estimator's stderr and tracebacks),
+`preds.npz` (your predictions). Python: `from gwc.grader import grade, report`.
 
-### Rules (the grader assumes you follow them)
+## 4. Scoring
 
-1. **All numeric work in `predict` goes through `flopscope.numpy` (`fnp`) and `gwc.sdk.activation`.**
-   Unmetered NumPy/SciPy/torch inside `predict` makes the FLOP count — and thus the score —
-   meaningless (the reported multiplier would be wrong). `setup()` is off-budget and unmetered.
-2. Do not read `data/targets_*.enc`, the key in `$GWC_SECRETS_DIR` (default `~/.gwc`), the
-   cooldown state, or `data/cache/`. Do not tamper with the cooldown.
-3. Do not special-case network indices, names or seeds. Solve the *type*. (Note `net.seed` is
-   the stream the weights were drawn from — if you sample, derive an independent stream from it,
-   e.g. `fnp.random.default_rng(fnp.random.SeedSequence([net.seed, 1]))`.)
-4. Return a finite `(depth, width)` array for every network.
-
-## 4. Splits and the test cooldown
-
-* `train` = networks 0–255. Grade it as often as you like; iterate here.
-* `test` = networks 256–511, same distribution, never used for development. The grader refuses
-  a test run within **4 hours** of the previous one (state in `$GWC_SECRETS_DIR/test-submissions.json`).
-  `gwc status` shows the remaining time and your test history. Treat test results as the
-  score of record; a large train–test gap means you have over-fitted the train networks.
-
-## 5. Baselines (`examples/`)
-
-| file | idea | typical behaviour |
-|---|---|---|
-| `zero_estimator.py` | predict 0 | headline 2.7e4 (train) |
-| `mc_estimator.py` | honest metered Monte-Carlo, 90% of budget, float64 accumulation | 0.927 — the calibration anchor, flat across activations |
-| `gh_estimator.py` | mean-field Gaussian propagation, Gauss–Hermite moments | 73 — cheap (0.1 floor) but ignores correlations |
-| `cov_estimator.py` | full-covariance Gaussian propagation, Stein-lemma gains, GH moments | 30.5 train / 28.1 test — the general analogue of the ARC reference; only wins on `gabor` |
-
-## 6. Layout
+For each network, with `σ²` the mean variance of its last-layer activations:
 
 ```
-gwc/activations.py   the 8 activations (metered `apply`, unmetered `apply_np`), gains
-gwc/weights.py       the 4 weight strategies
-gwc/netspec.py       types, deterministic sampler, validity probe, manifest (+hash-verified regeneration)
-gwc/budget.py        cost model, per-network budget, MC reference, score multiplier (from whestbench)
-gwc/groundtruth.py   Monte-Carlo ground truth (parallel, resumable)
-gwc/crypto.py        Fernet encryption of targets (key never in the repo)
-gwc/worker.py        subprocess that runs a submission under flopscope budgets + timeouts
-gwc/scoring.py       per-network scores, geometric-mean aggregation, breakdowns, report
-gwc/grader.py        orchestration, splits, smoke set, 4-hour test cooldown
-gwc/cli.py           `gwc smoke | submit | status | info | build-targets`
-data/manifest.json   the 512 network types + weight seeds + weight hashes (weights regenerate from these)
-data/targets_*.enc   encrypted ground truth per split
-examples/            baselines        tests/  pytest suite        docs/DESIGN.md  design rationale
+ratio     = mse_last_layer / (σ² / 2¹⁶)           1.0 = the MSE of spending the whole budget on
+                                                   plain Monte-Carlo sampling of this network
+adjusted  = max(ratio, 1/32) · max(0.1, flops_used / budget)
+HEADLINE  = geometric mean of `adjusted` over the scored networks of the split   (lower is better)
 ```
 
-Weights are regenerated from the manifest seeds at load time and verified against SHA-256
-hashes, so a different NumPy/BLAS that reproduces different bits fails loudly rather than
-silently changing the task (pinned: `numpy==2.2.6`, `flopscope==0.12.1`, `whestbench==0.16.1`).
+* `flops_used` is what flopscope metered inside `predict`. The multiplier is forced to `1.0` for a
+  failed network (exception, timeout, budget exceeded, wrong shape or non-finite output), whose
+  prediction is replaced by zeros.
+* `1/32` is the resolution of the stored ground truth (its own Monte-Carlo noise); nothing can be
+  measured below it.
+* A network is **excluded from the headline** (but reported) if its target cannot separate
+  methods: *uninformative* (target energy below the ground-truth resolution) or *degenerate*
+  (`σ² < 1e-6`, near-deterministic output). The current dataset has 0 uninformative and 1
+  degenerate network (`#305`, test split).
 
-## 7. Operator notes
+The report also gives: raw and bias-corrected geometric-mean ratios, the all-layers ratio, the
+worst-decile geometric mean, the fraction of networks with `ratio < 1`, budget utilisation,
+breakdowns by activation / weight distribution / width / depth, and the best and worst networks
+with error messages. Per-network rows are in `result.json`.
 
-* Ground truth: `uv run python scripts/precompute.py` (parallel, resumable), then
-  `uv run gwc build-targets` to encrypt `data/cache/gt/*.npz` into `data/targets_{train,test}.enc`.
-  The Fernet key is created at `$GWC_SECRETS_DIR/gwc-fernet.key` (default `~/.gwc`) and must be
-  present on any machine that grades. **Never commit the key, the raw `data/cache/`, or `runs/`.**
-* `gwc submit --split test --force` bypasses the cooldown (operator use only).
-* Trust model: the targets are encrypted at rest and the submission runs in a separate process
-  that never receives them. This is an honesty barrier and an over-fitting rate-limiter, not a
-  defence against an adversary who controls the machine (who could read the key). FLOP metering
-  is cooperative (rule 1). If you need adversarial guarantees, grade on a machine the submission
-  cannot access.
+## 5. Rules
+
+1. All arithmetic inside `predict` goes through `flopscope.numpy` (`fnp`) and `gwc.sdk.activation`.
+   Unmetered NumPy/SciPy/torch inside `predict` is not allowed. `setup()` is off-budget.
+2. Do not read `data/targets_*.enc`, the key or state under `$GWC_SECRETS_DIR` (default `~/.gwc`),
+   or `runs/` of other estimators; do not alter the cooldown state.
+3. Do not special-case network indices, names or seeds. The same code must handle every type.
+4. Return a finite float32 array of shape `(depth, width)` for every network.
+
+## 6. Operator notes
+
+Ground truth: `uv run python scripts/precompute.py` (parallel, resumable, writes
+`data/cache/gt/`), then `uv run gwc build-targets` to encrypt into `data/targets_*.enc`. The
+Fernet key is created at `$GWC_SECRETS_DIR/gwc-fernet.key`; the test-split cooldown state is
+`$GWC_SECRETS_DIR/test-submissions.json`. Never commit the key, `data/cache/`, or `runs/`.
+`gwc submit --split test --force` bypasses the cooldown. Tests: `uv run pytest -q`.
+Pinned: `numpy==2.2.6`, `flopscope==0.12.1`, `whestbench==0.16.1`.
