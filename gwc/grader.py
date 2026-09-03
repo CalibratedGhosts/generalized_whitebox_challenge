@@ -215,3 +215,30 @@ def grade(estimator_path: "str | Path", split: str = "train", *, indices: Option
 def report(result: Dict) -> str:
     title = f"gwc  {Path(result['estimator']).name}  |  split={result['split']}  n={result['n_networks']}  wall={result['wall_s']:.0f}s"
     return format_report(result["aggregate"], title)
+
+
+def rescore(run_dir: "str | Path", gt_dir: Optional[Path] = None, n_ref: int = N_REF) -> Dict:
+    """Re-score a saved run (its predictions + stats) with the current scoring code.
+
+    Useful when the scoring/aggregation changes: the estimator does not have to
+    be re-executed. Writes ``result.rescored.json`` next to the original.
+    """
+    run_dir = Path(run_dir)
+    args = json.loads((run_dir / "args.json").read_text())
+    idx = [int(i) for i in args["indices"]]
+    split = "test" if all(i >= N_TRAIN for i in idx) else "train"
+    nets = load_meta(split, idx)
+    stats = {int(k): v for k, v in json.loads((run_dir / "stats.json").read_text()).items()}
+    preds = {}
+    if (run_dir / "preds.npz").exists():
+        z = np.load(run_dir / "preds.npz")
+        preds = {int(k[1:]): z[k] for k in z.files}
+    targets = load_targets(split, idx, gt_dir=gt_dir)
+    rows = [score_network(n, targets[n.index], preds.get(n.index), stats[n.index], n_ref=n_ref) for n in nets]
+    agg = aggregate(rows)
+    old = json.loads((run_dir / "result.json").read_text()) if (run_dir / "result.json").exists() else {}
+    result = {**old, "n_networks": len(idx), "indices": idx, "split": old.get("split", split),
+              "estimator": old.get("estimator", args["estimator"]), "wall_s": old.get("wall_s", 0.0),
+              "run_dir": str(run_dir), "aggregate": agg, "rows": rows_to_dicts(rows), "rescored": True}
+    (run_dir / "result.rescored.json").write_text(json.dumps(result, indent=1, default=float))
+    return result

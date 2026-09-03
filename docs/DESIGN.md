@@ -81,12 +81,25 @@ dominating. The compute discount is then applied exactly as in the challenge.
 
 Two consequences worth knowing:
 
-* On odd activations, predicting zero already beats sampling (ratio ≈ 0.4–0.8): the true means
-  are small and the remaining error is skew-induced fine structure. Every method gets this for
-  free, so it is a common offset, not a differentiator.
-* Analytic Gaussian-propagation methods (mean-field or full-covariance) lose to sampling by
-  10–500× on the narrowest networks and win on wide ones. Beating sampling *everywhere* requires
-  handling non-Gaussianity and correlations — the intended difficulty.
+* **Odd activations are uninformative without biases.** With the real ground truth (2²¹
+  samples) the final-layer means of every `tanh_rmsnorm` and `zgauss` network — for *all four*
+  weight strategies, including the skewed exponential — are below the benchmark's resolution
+  (`ratio_zero ≈ 1/32`): predicting zero is already at the floor. Left in a geometric mean, these
+  free near-zero values dominated the headline (`cov_estimator` scored 0.74 overall while being
+  3–17× worse than sampling on six activations). They are therefore flagged `informative=false`
+  from the ground truth alone (`mean(target²)/(σ²/N_REF) ≤ 3·N_REF/G`), reported, and excluded
+  from the headline; every ratio is also floored at the resolution `N_REF/G`. Train: 184/256
+  informative, test: 199/256. **Recommended follow-up:** add a per-layer bias vector
+  (`z = a@W + b`, `b ~ N(0, β²)`) to every network. That makes the odd activations — and all
+  others — carry rich, resolvable per-neuron structure, is closer to real networks, and costs a
+  ~75-minute re-precompute plus a `net.biases` field in the estimator API.
+* Analytic Gaussian-propagation methods (mean-field or full-covariance) lose to sampling on most
+  of this family — on the real ground truth `cov_estimator` is 6.4× worse than sampling overall
+  (20× at width ≤ 64, 1.7× at width ≥ 256; it wins only on `gabor`), `gh_estimator` 34×. Beating
+  sampling *everywhere* requires handling non-Gaussianity and correlations — the intended
+  difficulty. Metered Monte-Carlo scores 0.971 (its geometric mean sits a few percent under 1
+  because the per-network ratio is noisy at small width and the geometric mean of a noisy
+  quantity is below its mean).
 
 ## 6. Ground-truth precision
 

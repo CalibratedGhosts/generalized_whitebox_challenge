@@ -180,9 +180,10 @@ def test_score_ratio_and_multiplier_semantics():
     variances = np.full((3, 8), 0.2, np.float32)
     target = {"means": means, "vars": variances, "n_samples": 1_000_000}
     budget = 1000
-    # perfect prediction, 5% of budget -> ratio 0, multiplier floor 0.1
+    # perfect prediction, 5% of budget -> ratio 0, multiplier floor 0.1; adjusted floored at the resolution
     s = score_network(_net(), target, means.copy(), {"budget": budget, "flops_used": 50})
-    assert s.mse_final == 0.0 and s.multiplier == 0.1 and s.adjusted_ratio == 0.0 and s.beats_sampling
+    assert s.mse_final == 0.0 and s.multiplier == 0.1 and s.beats_sampling
+    assert s.adjusted_ratio == pytest.approx(s.resolution * 0.1) and s.resolution == pytest.approx(N_REF / 1_000_000)
     # error of 0.01 everywhere, full budget -> ratio = 1e-4 / (0.2/N_REF)
     pred = means + 0.01
     s = score_network(_net(), target, pred, {"budget": budget, "flops_used": budget})
@@ -208,3 +209,30 @@ def test_geo_mean_and_aggregate():
     assert agg["n"] == 2 and agg["n_failed"] == 0
     assert agg["geo_adjusted_ratio"] == pytest.approx(geo_mean([r.adjusted_ratio for r in rows]))
     assert "relu" in agg["by_activation"] and agg["by_activation"]["relu"]["n"] == 2
+
+
+# ---------------------------------------------------------------------------
+# informative networks + resolution floor
+# ---------------------------------------------------------------------------
+
+
+def test_uninformative_targets_are_flagged_and_excluded_from_headline():
+    from gwc.budget import GROUND_TRUTH_SAMPLES
+    from gwc.scoring import resolution
+    res = resolution()
+    assert res == pytest.approx(N_REF / GROUND_TRUTH_SAMPLES)
+    variances = np.full((3, 8), 0.4, np.float32)
+    # target means far below ground-truth noise -> uninformative; zero prediction sits at the floor
+    tiny = {"means": np.full((3, 8), 1e-5, np.float32), "vars": variances, "n_samples": GROUND_TRUTH_SAMPLES}
+    s = score_network(_net(), tiny, np.zeros((3, 8)), {"budget": 100, "flops_used": 1})
+    assert not s.informative and s.signal_ratio < 3 * res
+    assert s.adjusted_ratio == pytest.approx(max(s.ratio_final, res) * 0.1)
+    # resolvable target -> informative
+    big = {"means": np.full((3, 8), 0.3, np.float32), "vars": variances, "n_samples": GROUND_TRUTH_SAMPLES}
+    t = score_network(_net(), big, big["means"].copy(), {"budget": 100, "flops_used": 1})  # bit-exact prediction
+    assert t.informative and t.ratio_final == 0.0 and t.adjusted_ratio == pytest.approx(res * 0.1)
+    # headline uses informative networks only; the uninformative one is listed separately
+    agg = aggregate([s, t])
+    assert agg["n_informative"] == 1 and agg["n_uninformative"] == 1
+    assert agg["geo_adjusted_ratio"] == pytest.approx(t.adjusted_ratio)
+    assert agg["uninformative"][0]["index"] == s.index

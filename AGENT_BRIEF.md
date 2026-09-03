@@ -58,9 +58,10 @@ uv run gwc submit --estimator examples/cov_estimator.py    # ~minutes: all 256 t
 * Weight distributions differ in shape, not scale: `orth` is exactly norm-preserving, `expo` is
   skewed (nonzero third moment), `uniform` is bounded. Methods assuming Gaussian weights will
   show it in the per-strategy breakdown.
-* Odd activations (`zgauss`, `tanh_rmsnorm`) have means near zero; predicting zero there already
-  beats sampling. The remaining error is the skew-induced fine structure — hard, and worth
-  little unless you are already good elsewhere. Do not spend your effort there first.
+* Odd activations (`zgauss`, `tanh_rmsnorm`) have means below the benchmark's resolution, so
+  those networks are flagged *uninformative* and excluded from the headline (predicting zero
+  there is already at the floor). Return a sensible prediction for them, but do not spend effort
+  there — the headline is decided on the other six activations.
 * `tanh_rmsnorm` couples the neurons of a layer; a per-neuron model needs a model of the layer
   RMS.
 * Budget utilisation ≤ 10% gives the full discount; there is no reward for using less. Spending

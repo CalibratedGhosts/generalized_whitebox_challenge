@@ -71,7 +71,8 @@ He initialisation), so the strategies differ in **shape**, not scale:
 Widths: `16 24 32 40 48 56 64 72 84 96 128 160 192 256 288 320 352 384`.
 Depths: `4 5 6 7 8 10 12 14 16 20 24`. Type components are sampled independently and uniformly;
 a draw is rejected (and redrawn) only if a forward probe is degenerate (NaN, or final RMS
-outside `[1e-2, 1e2]`) — this affected ~0.1% of draws.
+outside `[1e-2, 1e2]`) — fewer than 0.1% of random draws trip this, and none of this dataset's
+512 draws did.
 
 ### FLOP budget
 
@@ -96,13 +97,22 @@ Raw MSEs are not comparable across activations (deep `cos` activations have vari
 ```
 ratio     = mse_final / (σ² / N_REF)          σ² = mean final-layer activation variance
                                              (σ²/N_REF = the MSE a full-budget MC estimator gets)
-adjusted  = ratio · max(0.1, flops_used / B)  (multiplier forced to 1.0 on failure)
-HEADLINE  = geometric mean of `adjusted` over the split's networks      (lower is better)
+adjusted  = max(ratio, RES) · max(0.1, flops_used / B)   (multiplier forced to 1.0 on failure)
+RES       = N_REF / G = 1/32                          (the benchmark's resolution, see below)
+HEADLINE  = geometric mean of `adjusted` over the split's INFORMATIVE networks   (lower is better)
 ```
 
 * `ratio < 1` beats sampling. `adjusted` applies the challenge's compute discount: use ≤10% of the
   budget and you get the maximal 10× discount; use it all and you get none.
 * Geometric mean → scale-free; no single network type can dominate.
+* **Resolution floor.** The stored ground truth carries Monte-Carlo noise `σ²/G` (`G = 2²¹`), so no
+  method can be *measured* better than `ratio = N_REF/G = 1/32`; ratios are floored there.
+* **Informative networks.** A network whose true means are below that resolution cannot tell
+  methods apart (predicting zero already sits at the floor). Such networks — in this dataset all
+  of them are `tanh_rmsnorm` / `zgauss`, whose means are ~1e-4 with any weight strategy — are
+  flagged `informative = false` (a property of the data, decided from the ground truth alone),
+  reported, but **excluded from the headline** so that free zeros cannot drag a geometric mean
+  down. Train: 184 of 256 informative; test: 199 of 256. `gwc info` and every report list them.
 * **Failures** (exception, timeout, budget exhausted, wrong shape/non-finite output): the
   prediction is replaced by zeros and scored with multiplier 1.0 — bad, but bounded.
 * **Bias-corrected ratio** `(mse − σ²/G)/(σ²/N_REF)`: the stored ground truth carries its own MC
@@ -113,11 +123,17 @@ HEADLINE  = geometric mean of `adjusted` over the split's networks      (lower i
   beating sampling, all-layers ratio, per-activation / per-strategy / per-width / per-depth
   breakdowns, budget utilisation, and the worst/best networks with error messages.
 
-Reference points on the *train* split (see `examples/`): metered Monte-Carlo sits at
-`adjusted ≈ 1` by construction (the calibration anchor); `zero` is ~10³; naive mean-field
-Gaussian propagation and full-covariance Gaussian propagation beat sampling on wide/shallow
-networks but are 10–500× *worse* than sampling on the narrowest ones. Being good everywhere
-is the point.
+Reference points, headline on the *train* split (256 networks, 184 informative; `examples/`):
+
+| estimator | headline | notes |
+|---|---|---|
+| `mc_estimator` (metered sampling, 90% budget) | **0.971** | the calibration anchor; 0.86–1.11 on every activation |
+| `cov_estimator` (full-covariance Gaussian + GH) | 6.45 (test: 5.36) | beats sampling only on `gabor`; 1.7 at w≥256, 20 at w≤64 |
+| `gh_estimator` (mean-field Gaussian + GH) | 34 | correlations matter |
+| `zero_estimator` | 3.2e4 | |
+
+So the reference-style analytic method loses to sampling on most of this family, and loses
+badly at small width. Being good *everywhere* is the point.
 
 ## 3. Submitting
 
@@ -182,10 +198,10 @@ Python API: `from gwc.grader import grade, report; r = grade("my_estimator.py", 
 
 | file | idea | typical behaviour |
 |---|---|---|
-| `zero_estimator.py` | predict 0 | terrible, except on odd activations (whose true means are ~0) |
-| `mc_estimator.py` | honest metered Monte-Carlo, 90% of budget, float64 accumulation | `adjusted ≈ 1.0` everywhere — the calibration anchor |
-| `gh_estimator.py` | mean-field Gaussian propagation, Gauss–Hermite moments | cheap (0.1 floor); ignores correlations → poor at small width |
-| `cov_estimator.py` | full-covariance Gaussian propagation, Stein-lemma gains, GH moments | the general analogue of the ARC reference; good wide/shallow, poor narrow/deep |
+| `zero_estimator.py` | predict 0 | headline 3.2e4 (train) |
+| `mc_estimator.py` | honest metered Monte-Carlo, 90% of budget, float64 accumulation | 0.971 — the calibration anchor, uniform across activations |
+| `gh_estimator.py` | mean-field Gaussian propagation, Gauss–Hermite moments | 34 — cheap (0.1 floor) but ignores correlations |
+| `cov_estimator.py` | full-covariance Gaussian propagation, Stein-lemma gains, GH moments | 6.45 train / 5.36 test — the general analogue of the ARC reference; only wins on `gabor` |
 
 ## 6. Layout
 
