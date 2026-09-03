@@ -235,7 +235,7 @@ def format_report(agg: Dict, title: str) -> str:
     L.append("=" * 78)
     L.append(f"  networks: {agg['n']}   scored: {agg['n_informative']}   excluded: {agg['n_excluded']} "
              f"(uninformative {agg['n_uninformative']}, degenerate {agg['n_degenerate']})   failed: {agg['n_failed']}  {agg['failures']}")
-    L.append(f"  HEADLINE  geo-mean adjusted ratio : {_f(agg['geo_adjusted_ratio'])}   (informative networks; lower is better; 1.0 = full-budget sampling)")
+    L.append(f"  HEADLINE  geo-mean adjusted ratio : {_f(agg['geo_adjusted_ratio'])}   (scored networks; lower is better; 1.0 = full-budget sampling)")
     L.append(f"            geo-mean raw ratio      : {_f(agg['geo_ratio'])}   (MSE / sampling MSE, before compute discount)")
     L.append(f"            geo-mean bias-corrected : {_f(agg['geo_ratio_corrected'])}   (ground-truth noise removed, floored at resolution {agg['resolution']:.3g})")
     L.append(f"            all-layers ratio        : {_f(agg['geo_ratio_all_layers'])}")
