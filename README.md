@@ -94,7 +94,7 @@ full-budget sampler reaches the same relative accuracy — that is the bar. Budg
 ## 2. Scoring
 
 Raw MSEs are not comparable across activations (deep `cos` activations have variance ~2e-4,
-`tanh_rmsnorm` ~0.4; odd activations have ~zero means). Every network is therefore scored
+`rmsnorm_sq` ~1–2; mean magnitudes range from ~0.1 to ~1). Every network is therefore scored
 **relative to budget-matched sampling**:
 
 ```
