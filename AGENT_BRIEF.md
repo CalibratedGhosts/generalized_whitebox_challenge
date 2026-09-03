@@ -13,7 +13,7 @@ tuned to one activation or one shape.
 The number that counts is the **test-split headline score** (geometric mean of the
 compute-adjusted ratio to budget-matched sampling; lower is better; `1.0` = as good as
 spending the whole budget on Monte-Carlo sampling). A method that is excellent on ReLU and
-useless on `gabor` or `tanh_rmsnorm` will score badly; so will one that wins at width 384 and
+useless on `gabor` or `rmsnorm_exp` will score badly; so will one that wins at width 384 and
 loses at width 16. Look at the per-activation / per-strategy / per-width / per-depth breakdowns
 and the worst-decile figure after every run — they tell you where your method does not
 generalize.
