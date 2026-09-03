@@ -1,0 +1,28 @@
+[project]
+name = "gwc"
+version = "0.1.0"
+description = "Generalized WhiteBox Challenge: FLOP-budgeted moment estimation across widths, depths, activations and weight distributions."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "numpy==2.2.6",
+  "flopscope==0.12.1",
+  "whestbench==0.16.1",
+  "cryptography>=42",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.scripts]
+gwc = "gwc.cli:main"
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["gwc*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
